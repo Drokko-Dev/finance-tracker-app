@@ -1,26 +1,23 @@
 @import "tailwindcss";
 
 @theme {
-  /* Fondo principal ultra claro */
   --color-main-bg: #f8fafc; /* Slate 50 */
-
-  /* Color de la tarjeta (blanco puro) */
   --color-card-bg: #ffffff;
-
-  /* Bordes sutiles para el efecto cristal claro */
   --color-border-subtle: rgba(0, 0, 0, 0.05);
-
-  /* Texto principal y secundario */
   --color-text-main: #0f172a; /* Slate 900 */
   --color-text-subtle: #64748b; /* Slate 500 */
-
-  /* El Degradado "tus finanzas" como color de acento principal */
   --color-accent: #38bdf8; /* Cian */
   --color-accent-end: #6366f1; /* Indigo */
-
-  /* Fuente moderna y limpia */
   --font-sans:
     "Bricolage Grotesque", "Plus Jakarta Sans", "Inter", system-ui, sans-serif;
+}
+
+.dark {
+  --color-main-bg: #0b0c10;
+  --color-card-bg: #17171b;
+  --color-text-main: #ffffff;
+  --color-text-subtle: #94a3b8;
+  --color-border-subtle: rgba(255, 255, 255, 0.05);
 }
 
 @layer base {
