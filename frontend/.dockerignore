@@ -1,0 +1,21 @@
+# Dependencias (Se instalan dentro del Dockerfile)
+node_modules
+npm-debug.log*
+
+# Compilación
+dist
+build
+.vite
+
+# Git y Documentación
+.git
+.gitignore
+README.md
+
+# Variables de entorno locales
+.env
+.env.local
+
+# Docker (No necesitas el Dockerfile dentro de la imagen)
+Dockerfile
+docker-compose.yml

@@ -1,0 +1,32 @@
+# Python bytecode
+
+**pycache**
+_.py[cod]
+_$py.class
+
+# Entornos virtuales
+
+venv
+.venv
+env
+
+# Variables de entorno (CRÍTICO)
+
+.env
+.env.local
+
+# Git y Documentación
+
+.git
+.gitignore
+README.md
+
+# Pruebas (Opcional, si no quieres que corran en prod)
+
+tests
+.pytest_cache
+.mypy_cache
+
+# Docker
+
+Dockerfile

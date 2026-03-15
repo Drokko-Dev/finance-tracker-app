@@ -1,0 +1,37 @@
+# --- Archivos del Sistema / IDE ---
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# --- Variables de Entorno (CRÍTICO) ---
+# Evita que se filtren tus credenciales de Supabase
+.env
+.env.local
+.env.*.local
+backend/.env
+frontend/.env
+
+# --- Backend (Python/FastAPI) ---
+backend/__pycache__/
+backend/*.py[cod]
+backend/venv/
+backend/.pytest_cache/
+backend/.mypy_cache/
+backend/app.db
+
+# --- Frontend (Node/React/Vite) ---
+frontend/node_modules/
+frontend/dist/
+frontend/dist-ssr/
+frontend/build/
+frontend/.vite/
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+
+# --- Docker ---
+*.log
+docker-compose.override.yml
