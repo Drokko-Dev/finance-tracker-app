@@ -1,25 +1,10 @@
-import { useEffect, useState } from "react";
-import { getTransactions } from "./api/transactions";
-import type { Transaction } from "./types/transactions";
+import { MainLayout } from "@/layout/MainLayout";
+import { DashboardPage } from "@/pages/DashboardPage";
 
-function App() {
-  const [transactions, setTransactions] = useState<Transaction[]>([]);
-
-  useEffect(() => {
-    getTransactions().then(setTransactions);
-  }, []);
-
+export function App() {
   return (
-    <div>
-      <h1>Transacciones</h1>
-
-      {transactions.map((t: Transaction) => (
-        <div key={t.id}>
-          {t.description} - {t.amount}
-        </div>
-      ))}
-    </div>
+    <MainLayout>
+      <DashboardPage />
+    </MainLayout>
   );
 }
-
-export default App;
