@@ -20,7 +20,7 @@ export const ThemeToggle = () => {
   return (
     <button
       onClick={() => setIsDark(!isDark)}
-      className="p-2 rounded-xl bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-500 dark:text-slate-400 hover:scale-110 transition-all"
+      className="cursor-pointer w-10 h-10 rounded-xl border border-[var(--color-border-subtle)] flex justify-center items-center transition-all duration-300 ease-in-out hover:shadow-md hover:-translate-y-0.5 hover:bg-slate-50 dark:hover:bg-white/5"
     >
       {isDark ? (
         <Sun className="w-5 h-5 text-yellow-400" />

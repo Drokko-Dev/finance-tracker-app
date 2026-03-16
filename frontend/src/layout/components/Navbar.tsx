@@ -1,33 +1,39 @@
-import { Bell, ChevronDown, Search } from "lucide-react";
+import { Bell, ChevronDown } from "lucide-react";
+/* import { ThemeToggle } from "@/components/ui/ThemeToggle"; */
+import { CoinsSVG } from "@/assets/svg";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 
+const iconBtnStyles =
+  "cursor-pointer w-10 h-10 rounded-xl border border-[var(--color-border-subtle)] flex justify-center items-center transition-all duration-300 ease-in-out hover:shadow-md hover:-translate-y-0.5 hover:bg-slate-50 dark:hover:bg-white/5";
+const profileBtnstyles =
+  "cursor-pointer px-4 py-2 rounded-2xl border border-[var(--color-border-subtle)] flex items-center gap-3 transition-all duration-300 ease-in-out hover:shadow-md hover:-translate-y-0.5 hover:bg-slate-50 dark:hover:bg-white/5";
+const textGradient =
+  "bg-gradient-to-r from-[var(--color-accent)] to-[var(--color-accent-end)] bg-clip-text text-transparent";
 export const Navbar = () => {
   return (
-    <header className="h-20 border-b border-[var(--color-border-subtle)] flex items-center justify-between px-8 bg-[var(--color-card-bg)]/80 backdrop-blur-md z-10 transition-colors duration-300">
-      <div className="relative group flex-1 max-w-md">
-        <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--color-text-subtle)] w-4 h-4" />
-        <input
-          type="text"
-          placeholder="Search transactions..."
-          className="bg-slate-100/60 dark:bg-white/5 pl-12 pr-6 py-2.5 rounded-xl w-full border border-[var(--color-border-subtle)] focus:outline-none focus:border-[var(--color-accent)] focus:ring-1 focus:ring-[var(--color-accent)] transition-all text-sm text-[var(--color-text-main)] outline-none"
-        />
-      </div>
-
-      <div className="flex items-center gap-6 ml-4">
+    <header className="h-20 w-full flex justify-between items-center px-4 border border-[var(--color-border-subtle)] bg-[var(--color-card-bg)] transition-colors duration-300">
+      <h1 className={`ml-5 flex justify-center items-center`}>
+        <CoinsSVG className={`w-8 h-8 text-[var(--color-accent)]`} />
+        <span className={`text-3xl font-bold ${textGradient}`}>Finanz</span>
+      </h1>
+      <div className="flex gap-3 items-center">
         <ThemeToggle />
-
-        <button className="relative p-3 text-[var(--color-text-subtle)] hover:text-[var(--color-text-main)] transition-colors cursor-pointer">
-          <Bell className="w-5 h-5" />
-          {/* El borde del puntito naranja debe ser igual al fondo del navbar */}
-          <span className="absolute top-3 right-3 w-2 h-2 bg-orange-500 rounded-full border-2 border-[var(--color-card-bg)]"></span>
+        <button className={iconBtnStyles}>
+          <Bell />
         </button>
-
-        <div className="flex items-center gap-3 bg-slate-100/50 dark:bg-white/5 px-3 py-1.5 rounded-xl border border-[var(--color-border-subtle)] cursor-pointer hover:bg-slate-200/50 dark:hover:bg-white/10 transition-all">
-          <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-cyan-400 to-indigo-500"></div>
-          <span className="text-sm font-bold hidden md:block text-[var(--color-text-main)]">
-            Jaime
-          </span>
-          <ChevronDown className="w-4 h-4 text-[var(--color-text-subtle)]" />
+        <div className={profileBtnstyles}>
+          <div className="w-10 h-10 flex-shrink-0">
+            <img
+              src="./src/assets/Profile5.png"
+              alt="Perfil"
+              className="rounded-full w-full h-full object-cover shadow-sm shadow-white/40"
+            />
+          </div>
+          <div className="flex flex-col">
+            <span className="text-md font-bold">Jaime Vega</span>
+            <span className="text-sm text-gray-500 font-bold">Admin</span>
+          </div>
+          <ChevronDown />
         </div>
       </div>
     </header>

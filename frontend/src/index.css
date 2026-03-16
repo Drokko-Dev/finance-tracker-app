@@ -17,7 +17,8 @@
   --color-card-bg: #17171b;
   --color-text-main: #ffffff;
   --color-text-subtle: #94a3b8;
-  --color-border-subtle: rgba(255, 255, 255, 0.05);
+  --color-border-subtle: rgba(255, 255, 255, 0.08);
+  --color-card-bg: #111115;
 }
 
 @layer base {
@@ -27,17 +28,8 @@
   }
 }
 
-/* Scrollbar para diseño claro */
-@layer utilities {
-  .custom-scrollbar::-webkit-scrollbar {
-    width: 6px;
-  }
-  .custom-scrollbar::-webkit-scrollbar-thumb {
-    @apply bg-slate-200 rounded-full hover:bg-slate-300;
-  }
-  /* Firefox */
-  .custom-scrollbar {
-    scrollbar-width: thin;
-    scrollbar-color: #e2e8f0 transparent; /* Slate 200 */
+@layer components {
+  .active {
+    @apply bg-gradient-to-r from-[var(--color-accent)] to-[var(--color-accent-end)] text-white shadow-lg shadow-cyan-500/20;
   }
 }

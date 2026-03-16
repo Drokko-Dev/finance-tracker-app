@@ -1,48 +1,47 @@
-// src/components/layout/Sidebar.tsx
+import {
+  LayoutDashboard,
+  ArrowRightLeft,
+  RefreshCw,
+  Users,
+  Trash2,
+} from "lucide-react";
+import React from "react";
+
+const NAV_LINKS = [
+  { name: "Resumen", href: "/", icon: LayoutDashboard }, // Solo el nombre del componente
+  { name: "Movimientos", href: "/movimientos", icon: ArrowRightLeft },
+  { name: "Mis Ciclos", href: "/ciclos", icon: RefreshCw },
+  { name: "Amigos", href: "/amigos", icon: Users },
+  { name: "Eliminados", href: "/eliminados", icon: Trash2 },
+];
+
+const normalLinkStyles =
+  "flex items-center gap-3 px-4 py-3 rounded-xl text-[var(--color-text-subtle)] hover:bg-[var(--color-text-subtle)]/15  transition-all font-medium hover:scale-[1.02] active:scale-95";
+const activeLinkStyles =
+  "flex items-center gap-3 px-4 py-3 rounded-xl font-medium active";
+
 export const Sidebar = () => (
-  <aside className="w-64 h-screen bg-[var(--color-card-bg)] border-r border-[var(--color-border-subtle)] p-6 flex flex-col transition-colors duration-300">
-    <div className="flex items-center gap-2 mb-10 px-2">
-      <div className="w-8 h-8 rounded-lg bg-gradient-to-r from-[var(--color-accent)] to-[var(--color-accent-end)] shadow-lg shadow-cyan-500/20"></div>
-      <span className="text-xl font-bold text-[var(--color-text-main)]">
-        Finanz
-      </span>
-    </div>
+  <aside className="w-64 h-full border-r border-[var(--color-border-subtle)] bg-[var(--color-card-bg)] transition-colors duration-300">
+    <nav className="p-4 flex flex-col gap-3">
+      <a className={activeLinkStyles} href="/">
+        <LayoutDashboard /> Activo
+      </a>
+      {NAV_LINKS.map((link) => {
+        const Icon = link.icon;
+        return (
+          <a key={link.name} href={link.href} className={normalLinkStyles}>
+            {/* 1. Contenedor de icono con tamaño fijo y centrado perfecto */}
+            <div className="w-5 h-5 flex items-center justify-center flex-shrink-0">
+              <Icon size={20} strokeWidth={2} />
+            </div>
 
-    <nav className="flex-1 space-y-2">
-      <NavItem icon="📊" label="Resumen" active />
-      <NavItem icon="🔄" label="Mis Ciclos" />
-      <NavItem icon="💸" label="Movimientos" />
-      <NavItem icon="👥" label="Amigos" />
-      <NavItem icon="🗑️" label="Eliminados" />
+            {/* 2. El SPAN del texto con leading-none y un pequeño ajuste de padding */}
+            <span className="leading-none pt-[2px] antialiased">
+              {link.name}
+            </span>
+          </a>
+        );
+      })}
     </nav>
-
-    {/* Un detalle pro: El pie del sidebar */}
-    <div className="pt-6 border-t border-[var(--color-border-subtle)]">
-      <div className="flex items-center gap-3 px-2">
-        <div className="w-8 h-8 rounded-full bg-slate-200 dark:bg-slate-800"></div>
-        <div className="overflow-hidden">
-          <p className="text-xs font-bold text-[var(--color-text-main)] truncate">
-            Jaime
-          </p>
-          <p className="text-[10px] text-[var(--color-text-subtle)] truncate">
-            Plan Premium
-          </p>
-        </div>
-      </div>
-    </div>
   </aside>
-);
-
-const NavItem = ({ icon, label, active }: any) => (
-  <div
-    className={`flex items-center gap-3 px-4 py-3 rounded-xl cursor-pointer transition-all duration-200 
-      ${
-        active
-          ? "bg-gradient-to-r from-[var(--color-accent)] to-[var(--color-accent-end)] text-white shadow-lg shadow-cyan-500/20"
-          : "text-[var(--color-text-subtle)] hover:bg-slate-100 dark:hover:bg-white/5 hover:text-[var(--color-text-main)]"
-      }`}
-  >
-    <span className="text-lg">{icon}</span>
-    <span className="font-medium text-sm">{label}</span>
-  </div>
 );
