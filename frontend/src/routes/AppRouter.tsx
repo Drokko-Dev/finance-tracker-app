@@ -1,5 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import { lazy, Suspense } from "react";
+import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 
 // Importaciones dinámicas (Lazy)
 const DashboardPage = lazy(() =>
@@ -23,7 +24,7 @@ const NotFoundPage = lazy(() =>
 
 export const AppRouter = () => {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<LoadingSpinner/>}>
       <Routes>
         <Route path="/" element={<DashboardPage />} />
         {/* Ruta comodín para 404 */}
