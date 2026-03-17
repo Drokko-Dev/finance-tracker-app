@@ -8,6 +8,7 @@ import {
   Trash2,
   X,
 } from "lucide-react";
+import { Link, useLocation } from "react-router-dom";
 
 const NAV_LINKS = [
   { name: "Resumen", href: "/", icon: LayoutDashboard }, // Solo el nombre del componente
@@ -25,6 +26,7 @@ const activeLinkStyles =
   "flex items-center gap-3 px-4 py-3 rounded-xl font-medium active";
 
 export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
+  const location = useLocation();
   return (
     <>
       {/* Overlay: Fondo oscuro que cierra el menú al tocar fuera (solo en móvil) */}
@@ -60,10 +62,10 @@ export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
             {NAV_LINKS.map((link) => {
               const Icon = link.icon;
               return (
-                <a
+                <Link
                   key={link.name}
-                  href={link.href}
-                  className={normalLinkStyles}
+                  to={link.href}
+                  className={location.pathname === link.href ? activeLinkStyles:normalLinkStyles}
                 >
                   <div className="w-5 h-5 flex items-center justify-center flex-shrink-0">
                     <Icon size={20} strokeWidth={2} />
@@ -71,7 +73,7 @@ export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
                   <span className="leading-none pt-[2px] antialiased">
                     {link.name}
                   </span>
-                </a>
+                </Link>
               );
             })}
           </nav>
