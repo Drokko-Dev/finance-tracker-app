@@ -13,12 +13,15 @@
 }
 
 .dark {
-  --color-main-bg: #0b0c10;
-  --color-card-bg: #17171b;
+  /* El negro fuerte que te gustó para Navbar y Sidebar */
+  --color-card-bg: #0a0a0c;
+
+  /* Un gris casi negro para el fondo principal (opcional, para dar profundidad) */
+  --color-main-bg: #0d0d0f;
+
   --color-text-main: #ffffff;
   --color-text-subtle: #94a3b8;
   --color-border-subtle: rgba(255, 255, 255, 0.08);
-  --color-card-bg: #111115;
 }
 
 @layer base {
