@@ -1,40 +1,71 @@
-import { Bell, ChevronDown } from "lucide-react";
-/* import { ThemeToggle } from "@/components/ui/ThemeToggle"; */
-import { CoinsSVG } from "@/assets/svg";
+import { Bell, ChevronDown, Menu } from "lucide-react";
+import { LogoSVG } from "@/assets/svg";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
+import profileImg from "@/assets/Profile5.png";
+import type { NavbarProps } from "@/types/Navbar";
 
-const iconBtnStyles =
-  "cursor-pointer w-10 h-10 rounded-xl border border-[var(--color-border-subtle)] flex justify-center items-center transition-all duration-300 ease-in-out hover:shadow-md hover:-translate-y-0.5 hover:bg-slate-50 dark:hover:bg-white/5";
-const profileBtnstyles =
-  "cursor-pointer px-4 py-2 rounded-2xl border border-[var(--color-border-subtle)] flex items-center gap-3 transition-all duration-300 ease-in-out hover:shadow-md hover:-translate-y-0.5 hover:bg-slate-50 dark:hover:bg-white/5";
-const textGradient =
-  "bg-gradient-to-r from-[var(--color-accent)] to-[var(--color-accent-end)] bg-clip-text text-transparent";
-export const Navbar = () => {
+export const Navbar = ({ onOpenMenu }: NavbarProps) => {
+  // Botones de acción (Sol, Campana) con tus variables
+  const actionBtnStyles =
+    "p-2.5 rounded-full border border-[var(--color-border-subtle)] " +
+    "text-[var(--color-text-subtle)] hover:text-[var(--color-text-main)] " +
+    "hover:bg-white/5 transition-all cursor-pointer";
+
+  // Perfil "Píldora" con tus variables
+  const profileBtnStyles =
+    "flex items-center gap-3 p-1.5 pr-2 rounded-full hover:bg-white/5 " +
+    "transition-colors border border-transparent hover:border-[var(--color-border-subtle)] " +
+    "group cursor-pointer";
+
   return (
-    <header className="h-20 w-full flex justify-between items-center px-4 border border-[var(--color-border-subtle)] bg-[var(--color-card-bg)] transition-colors duration-300">
-      <h1 className={`ml-5 flex justify-center items-center`}>
-        <CoinsSVG className={`w-8 h-8 text-[var(--color-accent)]`} />
-        <span className={`text-3xl font-bold ${textGradient}`}>Finanz</span>
-      </h1>
-      <div className="flex gap-3 items-center">
-        <ThemeToggle />
-        <button className={iconBtnStyles}>
-          <Bell />
+    <header className="h-16 flex-shrink-0 flex items-center justify-between px-4 sm:px-6 border-b border-[var(--color-border-subtle)] bg-[var(--color-card-bg)] relative z-20">
+      {/* Left: Mobile Menu & Logo */}
+      <div className="flex items-center gap-4">
+        <button
+          onClick={onOpenMenu}
+          className="md:hidden p-2 -ml-2 text-[var(--color-text-subtle)] hover:text-[var(--color-text-main)] transition-colors cursor-pointer"
+        >
+          <Menu className="w-5 h-5" />
         </button>
-        <div className={profileBtnstyles}>
-          <div className="w-10 h-10 flex-shrink-0">
-            <img
-              src="./src/assets/Profile5.png"
-              alt="Perfil"
-              className="rounded-full w-full h-full object-cover shadow-sm shadow-white/40"
-            />
+
+        <a href="/" className="flex items-center group cursor-pointer">
+          {/* Usamos tu LogoSVG con el color de acento de tu tema */}
+          <LogoSVG className="w-6 h-6 text-[var(--color-accent)] group-hover:opacity-80 transition-opacity" />
+          <span className="text-2xl font-semibold tracking-tight text-[var(--color-text-main)]">
+            Finanz
+          </span>
+        </a>
+      </div>
+
+      {/* Right: Actions & Profile */}
+      <div className="flex items-center gap-2 sm:gap-4">
+        {/* ThemeToggle usando el estilo de botón de acción circular */}
+        <ThemeToggle className={actionBtnStyles} />
+
+        <button className={`${actionBtnStyles} relative`}>
+          <Bell className="w-[18px] h-[18px]" />
+        </button>
+
+        {/* Separator usando tu variable de borde */}
+        <div className="hidden sm:block h-8 w-px bg-[var(--color-border-subtle)] mx-1"></div>
+
+        {/* Profile Section */}
+        <button className={profileBtnStyles}>
+          <img
+            src={profileImg}
+            alt="Profile"
+            className="w-8 h-8 rounded-full border border-[var(--color-border-subtle)] object-cover"
+          />
+          <div className="hidden md:flex flex-col items-start leading-none">
+            <span className="text-base font-medium text-[var(--color-text-subtle)] group-hover:text-[var(--color-text-main)] transition-colors tracking-tight">
+              Jaime Vega
+            </span>
+            <span className="text-xs text-[var(--color-text-subtle)] opacity-70 font-medium mt-1">
+              Admin
+            </span>
           </div>
-          <div className="flex flex-col">
-            <span className="text-md font-bold">Jaime Vega</span>
-            <span className="text-sm text-gray-500 font-bold">Admin</span>
-          </div>
-          <ChevronDown />
-        </div>
+          <ChevronDown className="w-4 h-4 text-[var(--color-text-subtle)] group-hover:text-[var(--color-text-main)] transition-colors ml-1 hidden sm:block" />
+        </button>
       </div>
     </header>
   );
