@@ -15,6 +15,10 @@ backend/.env
 frontend/.env
 
 # --- Backend (Python/FastAPI) ---
+# Python bytecode
+**/__pycache__/
+*.py[cod]
+*$py.class
 backend/__pycache__/
 backend/*.py[cod]
 backend/venv/
