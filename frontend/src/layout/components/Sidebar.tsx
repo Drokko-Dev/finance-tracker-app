@@ -55,10 +55,6 @@ export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
             </button>
           </div>
           <nav className="flex flex-col gap-3">
-            <a className={activeLinkStyles} href="/">
-              <LayoutDashboard size={20} />{" "}
-              <span className="pt-[2px]">Activo</span>
-            </a>
             {NAV_LINKS.map((link) => {
               const Icon = link.icon;
               return (
