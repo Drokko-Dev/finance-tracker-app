@@ -35,3 +35,43 @@ export const MoonSVG = ({ className }: Props) => (
     <path d="M12 1.992a10 10 0 1 0 9.236 13.838c.341-.82-.476-1.644-1.298-1.31a6.5 6.5 0 0 1-6.864-10.787l.077-.08c.551-.63.113-1.653-.758-1.653h-.266l-.068-.006-.06-.002z" />
   </svg>
 );
+
+export const LogoSVG = ({ className }: Props) => (
+  <svg
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    className={`text-[#00E5FF] group-hover:opacity-80 transition-opacity ${className}`}
+  >
+    <path
+      d="M14 6C14 8.20914 12.2091 10 10 10C7.79086 10 6 8.20914 6 6C6 3.79086 7.79086 2 10 2C12.2091 2 14 3.79086 14 6Z"
+      stroke="currentColor"
+      stroke-width="2"
+    />
+    <path
+      d="M18 18C18 20.2091 16.2091 22 14 22C11.7909 22 10 20.2091 10 18C10 15.7909 11.7909 14 14 14C16.2091 14 18 15.7909 18 18Z"
+      stroke="currentColor"
+      stroke-width="2"
+    />
+    <path
+      d="M6 18C6 20.2091 7.79086 22 10 22"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+    />
+    <path
+      d="M18 6C18 3.79086 16.2091 2 14 2"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+    />
+    <path
+      d="M10 10L14 14"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+    />
+  </svg>
+);
