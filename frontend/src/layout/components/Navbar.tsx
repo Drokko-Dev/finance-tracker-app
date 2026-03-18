@@ -3,6 +3,7 @@ import { LogoSVG } from "@/assets/svg";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import profileImg from "@/assets/Profile5.png";
 import type { NavbarProps } from "@/types/Navbar";
+import { Link } from "react-router-dom";
 
 export const Navbar = ({ onOpenMenu }: NavbarProps) => {
   // Botones de acción (Sol, Campana) con tus variables
@@ -28,13 +29,13 @@ export const Navbar = ({ onOpenMenu }: NavbarProps) => {
           <Menu className="w-5 h-5" />
         </button>
 
-        <a href="/" className="flex items-center group cursor-pointer">
+        <Link to={"/"} className="flex items-center group cursor-pointer">
           {/* Usamos tu LogoSVG con el color de acento de tu tema */}
           <LogoSVG className="w-6 h-6 text-[var(--color-accent)] group-hover:opacity-80 transition-opacity" />
           <span className="text-2xl font-semibold tracking-tight text-[var(--color-text-main)]">
             Finanz
           </span>
-        </a>
+        </Link>
       </div>
 
       {/* Right: Actions & Profile */}
