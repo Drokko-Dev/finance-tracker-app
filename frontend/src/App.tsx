@@ -1,7 +1,14 @@
 import { MainLayout } from "@/layout/MainLayout";
-import { DashboardPage } from "@/pages/DashboardPage";
-import { MiPrimerComponente } from "./components/ui/Pruebas";
+import { BrowserRouter } from "react-router-dom";
+import { AppRouter } from "./routes/AppRouter";
+
 
 export function App() {
-  return <MainLayout></MainLayout>;
+  return (
+    <BrowserRouter>
+      <MainLayout>
+        <AppRouter/>
+      </MainLayout>
+    </BrowserRouter>
+  );
 }
