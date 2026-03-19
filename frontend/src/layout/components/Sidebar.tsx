@@ -37,7 +37,7 @@ export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
 
       <aside
         className={`
-        fixed inset-y-0 left-0 z-50 w-64 bg-[var(--color-card-bg)] border-r border-[var(--color-border-subtle)]
+        fixed inset-y-0 left-0 z-50 w-64 bg-card-bg border-r border-border-subtle
         transition-transform duration-300 ease-in-out transform
         ${isOpen ? "translate-x-0" : "-translate-x-full"}
         lg:static lg:translate-x-0 lg:h-full lg:z-0
@@ -45,11 +45,11 @@ export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
       >
         <div className="p-4 flex flex-col gap-3">
           {/* Botón para cerrar (solo móvil) */}
-          <div className="lg:hidden flex items-center justify-between border-b border-[var(--color-border-subtle)]">
+          <div className="lg:hidden flex items-center justify-between border-b border-border-subtle">
             <Logo />
             <button
               onClick={onClose}
-              className="cursor-pointer self-end p-2 text-[var(--color-text-subtle)] hover:text-red-500 transition-all duration-200 hover:scale-[1.02] active:scale-90"
+              className="cursor-pointer self-end p-2 text-text-subtle hover:text-red-500 transition-all duration-200 hover:scale-[1.02] active:scale-90"
             >
               <X size={24} />
             </button>
@@ -63,10 +63,10 @@ export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
                   to={link.href}
                   className={location.pathname === link.href ? activeLinkStyles:normalLinkStyles}
                 >
-                  <div className="w-5 h-5 flex items-center justify-center flex-shrink-0">
+                  <div className="w-5 h-5 flex items-center justify-center shrink-0">
                     <Icon size={20} strokeWidth={2} />
                   </div>
-                  <span className="leading-none pt-[2px] antialiased">
+                  <span className="leading-none pt-0.5 antialiased">
                     {link.name}
                   </span>
                 </Link>
