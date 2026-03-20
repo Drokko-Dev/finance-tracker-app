@@ -9,7 +9,7 @@ export const DashboardPage = () => {
       {/* 2. Contenido Principal */}
       <main className="flex-1 overflow-y-auto custom-scrollbar relative">
         {/* 3. El Bento Grid Layout */}
-        <div className="grid grid-cols-12 gap-8 max-w-[1600px] mx-auto">
+        <div className="grid grid-cols-12 gap-8 max-w-400 mx-auto">
           {/* Fila 1: Gráfico de Barras y Tarjeta de Crédito */}
           <MoneyFlow className="col-span-12 lg:col-span-8" />
           <MyCards className="col-span-12 lg:col-span-4" />
