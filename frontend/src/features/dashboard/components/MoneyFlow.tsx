@@ -22,7 +22,7 @@ export const MoneyFlow = ({ className }: { className?: string }) => {
         {data.map((val, i) => (
           <div
             key={i}
-            className="flex flex-col items-center gap-2 w-full max-w-[12px]"
+            className="flex flex-col items-center gap-2 w-full max-w-3"
           >
             <div
               style={{ height: `${val}%` }}
