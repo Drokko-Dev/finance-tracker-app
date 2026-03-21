@@ -24,7 +24,7 @@ export const Navbar = ({ onOpenMenu }: NavbarProps) => {
       <div className="flex items-center gap-4">
         <button
           onClick={onOpenMenu}
-          className="md:hidden p-2 -ml-2 text-[var(--color-text-subtle)] hover:text-[var(--color-text-main)] transition-colors cursor-pointer"
+          className="lg:hidden p-2 -ml-2 text-[var(--color-text-subtle)] hover:text-[var(--color-text-main)] transition-colors cursor-pointer"
         >
           <Menu className="w-5 h-5" />
         </button>
@@ -58,7 +58,7 @@ export const Navbar = ({ onOpenMenu }: NavbarProps) => {
             className="w-8 h-8 rounded-full border border-[var(--color-border-subtle)] object-cover"
           />
           <div className="hidden md:flex flex-col items-start leading-none">
-            <span className="text-base font-medium text-[var(--color-text-subtle)] group-hover:text-[var(--color-text-main)] transition-colors tracking-tight">
+            <span className="text-base font-medium text-[var(--color-text-main)] transition-colors tracking-tight">
               Jaime Vega
             </span>
             <span className="text-xs text-[var(--color-text-subtle)] opacity-70 font-medium mt-1">
