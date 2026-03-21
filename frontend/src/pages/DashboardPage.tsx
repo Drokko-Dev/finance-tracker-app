@@ -1,26 +1,22 @@
-import { MoneyFlow } from "@/features/dashboard/components/MoneyFlow";
+import { DateSelector } from "@/features/dashboard/components/DateSelector";
 import { MyCards } from "@/features/dashboard/components/MyCards";
-import { TransactionTable } from "@/features/dashboard/components/TransactionTable";
-import { ExpenseCharts } from "@/features/dashboard/components/ExpenseCharts";
 
 export const DashboardPage = () => {
   return (
-    <div className="">
-      {/* 2. Contenido Principal */}
-      <main className="flex-1 overflow-y-auto custom-scrollbar relative">
-        {/* 3. El Bento Grid Layout */}
-        <div className="grid grid-cols-12 gap-8 max-w-400 mx-auto">
-          {/* Fila 1: Gráfico de Barras y Tarjeta de Crédito */}
-          <MoneyFlow className="col-span-12 lg:col-span-8" />
-          <MyCards className="col-span-12 lg:col-span-4" />
-
-          {/* Fila 2: Tabla de Transacciones y Gráfico de Gastos (Circular) */}
-          <TransactionTable className="col-span-12 lg:col-span-8" />
-          <ExpenseCharts className="col-span-12 lg:col-span-4" />
+    <div className="flex flex-col gap-10">
+      <header className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
+        <div className="flex flex-col gap-2">
+          <h1 className="text-2xl font-semibold tracking-tight text-text-main)]">
+            Resumen Financiero
+          </h1>
+          <p className="text-sm text-text-subtle">
+            Monitorea tu salud financiera y evolución.
+          </p>
         </div>
-
-        {/* Espaciado extra al final */}
-        <div className="h-20"></div>
+        <DateSelector />
+      </header>
+      <main className="">
+        <MyCards />
       </main>
     </div>
   );
