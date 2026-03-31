@@ -13,6 +13,7 @@
 }
 
 .dark {
+  color-scheme: dark;
   /* El negro fuerte que te gustó para Navbar y Sidebar */
   --color-card-bg: #0a0a0c;
 
@@ -26,13 +27,13 @@
 
 @layer base {
   body {
-    @apply bg-[var(--color-main-bg)] text-[var(--color-text-main)] antialiased;
+    @apply bg-main-bg text-text-main antialiased;
     font-feature-settings: "cv02", "cv03", "cv04", "gray";
   }
 }
 
 @layer components {
   .active {
-    @apply bg-gradient-to-r from-[var(--color-accent)] to-[var(--color-accent-end)] text-white shadow-lg shadow-cyan-500/20;
+    @apply bg-linear-to-r from-[var(--color-accent)] to-[var(--color-accent-end)] text-white shadow-lg shadow-cyan-500/20;
   }
 }
