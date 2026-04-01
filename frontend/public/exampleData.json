@@ -1,0 +1,212 @@
+[
+  {
+    "id": 1,
+    "monto": 150.5,
+    "categoria": "Comida",
+    "fecha": "2024-03-20",
+    "descripcion": "Cena familiar"
+  },
+  {
+    "id": 2,
+    "monto": 45.0,
+    "categoria": "Transporte",
+    "fecha": "2024-03-18",
+    "descripcion": "Carga de combustible"
+  },
+  {
+    "id": 3,
+    "monto": 1200.0,
+    "categoria": "Vivienda",
+    "fecha": "2024-03-01",
+    "descripcion": "aaaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaa Pago de alquiler"
+  },
+  {
+    "id": 4,
+    "monto": 85.2,
+    "categoria": "Servicios",
+    "fecha": "2024-03-15",
+    "descripcion": "Recibo de luz"
+  },
+  {
+    "id": 5,
+    "monto": 200.0,
+    "categoria": "Comida",
+    "fecha": "2024-03-22",
+    "descripcion": "Supermercado"
+  },
+  {
+    "id": 6,
+    "monto": 30.0,
+    "categoria": "Entretenimiento",
+    "fecha": "2024-03-23",
+    "descripcion": "Entrada al cine"
+  },
+  {
+    "id": 7,
+    "monto": 60.0,
+    "categoria": "Transporte",
+    "fecha": "2024-03-24",
+    "descripcion": "Viaje en app de transporte"
+  },
+  {
+    "id": 8,
+    "monto": 500.0,
+    "categoria": "Salud",
+    "fecha": "2024-03-25",
+    "descripcion": "Consulta odontológica"
+  },
+  {
+    "id": 9,
+    "monto": 12.5,
+    "categoria": "Comida",
+    "fecha": "2024-03-26",
+    "descripcion": "Café y postre"
+  },
+  {
+    "id": 10,
+    "monto": 45.9,
+    "categoria": "Servicios",
+    "fecha": "2024-03-10",
+    "descripcion": "Suscripción mensual de internet"
+  },
+  {
+    "id": 11,
+    "monto": 300.0,
+    "categoria": "Vivienda",
+    "fecha": "2024-03-05",
+    "descripcion": "Mantenimiento de edificio"
+  },
+  {
+    "id": 12,
+    "monto": 18.0,
+    "categoria": "Comida",
+    "fecha": "2024-03-27",
+    "descripcion": "Almuerzo ejecutivo"
+  },
+  {
+    "id": 13,
+    "monto": 95.0,
+    "categoria": "Ropa",
+    "fecha": "2024-03-28",
+    "descripcion": "Compra de zapatillas"
+  },
+  {
+    "id": 14,
+    "monto": 25.0,
+    "categoria": "Transporte",
+    "fecha": "2024-03-29",
+    "descripcion": "Lavado de auto"
+  },
+  {
+    "id": 15,
+    "monto": 110.0,
+    "categoria": "Educación",
+    "fecha": "2024-03-02",
+    "descripcion": "Compra de libros técnicos"
+  },
+  {
+    "id": 16,
+    "monto": 55.3,
+    "categoria": "Salud",
+    "fecha": "2024-03-12",
+    "descripcion": "Compra de vitaminas"
+  },
+  {
+    "id": 17,
+    "monto": 75.0,
+    "categoria": "Entretenimiento",
+    "fecha": "2024-03-14",
+    "descripcion": "Suscripción servicio de streaming"
+  },
+  {
+    "id": 18,
+    "monto": 15.0,
+    "categoria": "Comida",
+    "fecha": "2024-03-16",
+    "descripcion": "Snacks para la oficina"
+  },
+  {
+    "id": 19,
+    "monto": 220.0,
+    "categoria": "Servicios",
+    "fecha": "2024-03-08",
+    "descripcion": "Factura de gas trimestral"
+  },
+  {
+    "id": 20,
+    "monto": 40.0,
+    "categoria": "Transporte",
+    "fecha": "2024-03-11",
+    "descripcion": "Peajes de autopista"
+  },
+  {
+    "id": 21,
+    "monto": 850.0,
+    "categoria": "Vivienda",
+    "fecha": "2024-03-04",
+    "descripcion": "Reparación de tubería cocina"
+  },
+  {
+    "id": 22,
+    "monto": 12.0,
+    "categoria": "Comida",
+    "fecha": "2024-03-19",
+    "descripcion": "Helado artesanal"
+  },
+  {
+    "id": 23,
+    "monto": 65.0,
+    "categoria": "Ropa",
+    "fecha": "2024-03-21",
+    "descripcion": "Camisa de vestir"
+  },
+  {
+    "id": 24,
+    "monto": 150.0,
+    "categoria": "Educación",
+    "fecha": "2024-03-06",
+    "descripcion": "Curso online de programación"
+  },
+  {
+    "id": 25,
+    "monto": 35.5,
+    "categoria": "Salud",
+    "fecha": "2024-03-13",
+    "descripcion": "Medicamentos gripe"
+  },
+  {
+    "id": 26,
+    "monto": 90.0,
+    "categoria": "Entretenimiento",
+    "fecha": "2024-03-07",
+    "descripcion": "Cena y show en vivo"
+  },
+  {
+    "id": 27,
+    "monto": 28.0,
+    "categoria": "Comida",
+    "fecha": "2024-03-09",
+    "descripcion": "Pizza para llevar"
+  },
+  {
+    "id": 28,
+    "monto": 55.0,
+    "categoria": "Transporte",
+    "fecha": "2024-03-17",
+    "descripcion": "Renovación de licencia"
+  },
+  {
+    "id": 29,
+    "monto": 210.0,
+    "categoria": "Comida",
+    "fecha": "2024-03-22",
+    "descripcion": "Compras mensuales de carne"
+  },
+  {
+    "id": 30,
+    "monto": 100.0,
+    "categoria": "Servicios",
+    "fecha": "2024-03-28",
+    "descripcion": "Pago de telefonía móvil"
+  }
+]
