@@ -10,6 +10,8 @@ from app.models import (
 
 # Importar routers
 from app.api.v1.endpoints import transactions
+from app.api.v1.endpoints import users
+from app.api.v1.endpoints import account
 
 # Crear tablas (Solo para desarrollo inicial)
 Base.metadata.create_all(bind=engine)
@@ -27,6 +29,8 @@ app.add_middleware(
 
 # Registro de Rutas
 app.include_router(transactions.router, prefix="/api/v1")
+app.include_router(users.router, prefix="/api/v1")
+app.include_router(account.router, prefix="/api/v1")
 
 @app.get("/", tags=["Root"])
 def root():

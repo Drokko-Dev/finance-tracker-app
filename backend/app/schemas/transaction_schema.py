@@ -1,7 +1,11 @@
 from pydantic import BaseModel
 
 class TransactionCreate(BaseModel):
-    amount: float
+    user_id: int
+    account_id: int
+    category_id: int
+    type: str
+    amount: int
     description: str
 
 

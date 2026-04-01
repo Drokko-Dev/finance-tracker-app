@@ -4,8 +4,10 @@
 
 1. Clona el repo.
 2. Crea un archivo `.env` en `/backend` con tu `DATABASE_URL` de Supabase.
-3. Ejecuta `docker-compose up --build`.
-4. Frontend: http://localhost:5173 | Backend Docs: http://localhost:8000/docs
+3. Instala pipenv, con pip install pipenv
+4. Ejecuta pipenv install, luego pipenv shell para iniciar el entorno y exit para salir
+5. Ejecuta `docker-compose up --build`.
+6. Frontend: http://localhost:5173 | Backend Docs: http://localhost:8000/docs
 
 ## Personal Finance Tracker
 
