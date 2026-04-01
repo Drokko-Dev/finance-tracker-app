@@ -6,14 +6,10 @@ def get_all(db: Session):
     return db.query(Transaction).all()
 
 def create(db: Session, data: TransactionCreate):
-    # Convertimos Schema (Pydantic) a Modelo (SQLAlchemy)
-    db_transaction = Transaction(
-        amount=data.amount,
-        description=data.description
-        # Nota: Si en tu modelo user_id es obligatorio, aquí fallará.
-        # Por ahora lo dejamos así para probar la conexión básica.
-    )
+    db_transaction = Transaction(**data.model_dump())
     db.add(db_transaction)
     db.commit()
     db.refresh(db_transaction)
     return db_transaction
+
+
