@@ -8,3 +8,8 @@ class Tag(Base):
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id"))
     name = Column(String, nullable=False) #Viaje, salida viernes, viaje a la playa, etc.
+    #add: fecha de inici0 del tag
+    #add: fecha de expiracion
+    start_date = Column(DateTime, nullable=True, default=None)
+    expiration_date = Column(DateTime, nullable=True, default=None)
+    
