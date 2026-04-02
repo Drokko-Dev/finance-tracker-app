@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { MoveDown, MoveUp } from 'lucide-react';
 
 interface item {
@@ -9,8 +9,8 @@ interface item {
 }
 
 interface Props {
-  data: item[],
-  setData: ()=> void
+  data: item[];
+  setData: (item[])=> void()
 }
 
 
@@ -19,7 +19,7 @@ const TableHeader = ({ data, setData }: Props) => {
   const [sortConfig, setSortConfig] = useState({ key: 'monto', direction: 'desc' });
 
   const handleSort = (key: string) => {
-    let direction = 'asc';
+    let direction: 'asc' | 'desc' = 'asc';
     
     // Si se hace clic en la misma columna, invertimos la dirección
     if (sortConfig.key === key && sortConfig.direction === 'asc') {
@@ -39,7 +39,7 @@ const TableHeader = ({ data, setData }: Props) => {
   };
 
   // Función para renderizar el icono solo si la columna es la activa
-  const renderIcon = (key) => {
+  const renderIcon = (key: string) => {
     if (sortConfig.key !== key) return null;
     return sortConfig.direction === 'asc' ? <MoveUp size={16} /> : <MoveDown size={16} />;
   };
