@@ -1,4 +1,4 @@
-import React, { useState, type ChangeEvent } from "react";
+import { useState, type ChangeEvent } from "react";
 import { MoveDown, MoveUp } from "lucide-react";
 
 interface Transaccion {
@@ -8,6 +8,10 @@ interface Transaccion {
   fecha: string;
   descripcion: string;
 }
+
+interface Data {
+  data: Transaccion[];
+}
 type SortKeys = keyof Transaccion;
 
 const cabecera: { key: SortKeys; label: string }[] = [
@@ -16,46 +20,9 @@ const cabecera: { key: SortKeys; label: string }[] = [
   { key: "fecha", label: "Fecha" },
   { key: "descripcion", label: "Descripción" },
 ];
-const TablaFinanzas: React.FC = () => {
+const TablaFinanzas = ({ data }: Data) => {
   // 1. Datos ficticios iniciales
-  const [datos, setDatos] = useState<Transaccion[]>([
-    {
-      id: 1,
-      monto: 150.5,
-      categoria: "Comida",
-      fecha: "2024-03-20",
-      descripcion: "Cena familiar",
-    },
-    {
-      id: 2,
-      monto: 45.0,
-      categoria: "Transporte",
-      fecha: "2024-03-18",
-      descripcion: "Carga de combustible",
-    },
-    {
-      id: 3,
-      monto: 1200.0,
-      categoria: "Vivienda",
-      fecha: "2024-03-01",
-      descripcion:
-        "aaaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaa Pago de alquiler",
-    },
-    {
-      id: 4,
-      monto: 85.2,
-      categoria: "Servicios",
-      fecha: "2024-03-15",
-      descripcion: "Recibo de luz",
-    },
-    {
-      id: 5,
-      monto: 200.0,
-      categoria: "Comida",
-      fecha: "2024-03-22",
-      descripcion: "Supermercado",
-    },
-  ]);
+  const [datos, setDatos] = useState<Transaccion[]>(data);
 
   // 2. Estado para el control de ordenamiento
   const [sortConfig, setSortConfig] = useState<{
@@ -116,7 +83,7 @@ const TablaFinanzas: React.FC = () => {
 
         {/* Botón para alternar la dirección (Ascendente/Descendente) */}
         <button
-          onClick={() => handleSort(sortConfig.key)}
+          onClick={() => sortConfig.key && handleSort(sortConfig.key)}
           disabled={!sortConfig.key}
           className="p-1.5 bg-slate-800 hover:bg-slate-700 border border-gray-600 rounded-md text-blue-400 transition-colors disabled:opacity-50"
         >
