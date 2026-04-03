@@ -1,11 +1,9 @@
 import { useState } from "react";
 import { Sidebar } from "@/layout/components/Sidebar";
 import { Navbar } from "@/layout/components/Navbar";
-interface Props {
-  children: React.ReactNode;
-}
+import { Outlet } from "react-router-dom";
 
-export const MainLayout = ({ children }: Props) => {
+export const MainLayout = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   return (
     <div className="flex flex-col h-screen overflow-hidden">
@@ -16,7 +14,7 @@ export const MainLayout = ({ children }: Props) => {
           onClose={() => setIsSidebarOpen(false)}
         />
         <main className="flex-1 overflow-y-auto bg-main-bg p-6">
-          {children}
+          <Outlet />
         </main>
       </div>
     </div>

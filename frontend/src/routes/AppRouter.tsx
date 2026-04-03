@@ -1,6 +1,9 @@
 import { Routes, Route } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
+import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
+import { MainLayout } from "@/layout/MainLayout";
+import { Signup } from "@/pages/Signup";
 
 // Importaciones dinámicas (Lazy)
 const DashboardPage = lazy(() =>
@@ -21,17 +24,31 @@ const DeletePage = lazy(() =>
 const NotFoundPage = lazy(() =>
   import("@/pages/NotFoundPage").then((m) => ({ default: m.NotFoundPage })),
 );
+const LoginPage = lazy(() =>
+  import("@/pages/Login").then((m) => ({ default: m.Login })),
+);
 
 export const AppRouter = () => {
   return (
-    <Suspense fallback={<LoadingSpinner/>}>
+    <Suspense fallback={<LoadingSpinner />}>
       <Routes>
-        <Route path="/" element={<DashboardPage />} />
+        {/* Ruta pública: Login (Sin menú lateral) */}
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/signup" element={<Signup />} />
+        {/* 1er Nivel: Protege las rutas (Verifica la Cookie) */}
+        <Route element={<ProtectedRoute />}>
+          {/* 2do Nivel: Aplica el diseño (Menú lateral, Navbar) */}
+          <Route element={<MainLayout />}>
+            {/* 3er Nivel: Las páginas reales */}
+            <Route path="/" element={<DashboardPage />} />
+            <Route path="/movimientos" element={<CashsFlowPage />} />
+            <Route path="/ciclos" element={<CiclesPage />} />
+            <Route path="/amigos" element={<FriendsPage />} />
+            <Route path="/eliminados" element={<DeletePage />} />
+          </Route>
+        </Route>
+
         {/* Ruta comodín para 404 */}
-        <Route path="/movimientos" element={<CashsFlowPage />} />
-        <Route path="/ciclos" element={<CiclesPage />} />
-        <Route path="/amigos" element={<FriendsPage />} />
-        <Route path="/eliminados" element={<DeletePage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </Suspense>

@@ -22,7 +22,7 @@ transactions/: Gestión de ingresos y gastos.
 
 dashboard/: Visualización de datos y gráficos.
 
-src/store/: Gestión de estado global con Zustand.
+src/store/: Gestión de estado global con Zustand, tanStack.
 
 src/hooks/: Hooks personalizados globales (ej. useAuth, useDebounce).
 
