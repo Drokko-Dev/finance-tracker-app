@@ -3,7 +3,6 @@ from datetime import datetime
 
 
 class TransactionCreate(BaseModel):
-    user_id: int
     account_id: int
     category_id: int
     type: str
