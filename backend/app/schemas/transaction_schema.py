@@ -1,4 +1,6 @@
 from pydantic import BaseModel
+from datetime import datetime
+
 
 class TransactionCreate(BaseModel):
     account_id: int
@@ -8,10 +10,20 @@ class TransactionCreate(BaseModel):
     description: str
 
 
-class Transaction(BaseModel):
+class TransactionOg(BaseModel):
     id: int
     amount: float
     description: str
 
     class Config:
         from_attributes = True
+        
+class Transaction(BaseModel):
+    id: int
+    user_id: int       
+    account_id: int    
+    category_id: int    
+    type: str           
+    amount: float
+    description: str
+    created_at: datetime 

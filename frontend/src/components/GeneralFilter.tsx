@@ -69,9 +69,9 @@ export function GeneralFilter<T extends OptionItem>({
   };
 
   return (
-    <div className="relative w-full sm:w-auto">
+    <div className="relative w-full sm:w-64 ">
       {label && (
-        <label className="text-xs font-medium text-text-subtle ml-1">
+        <label className="text-xs font-medium text-text-main">
           {label}
         </label>
       )}
@@ -167,7 +167,7 @@ export const DateInput = ({ label, className, ...props }: DateInputProps) => {
   return (
     <div className="flex flex-col gap-1.5 w-full sm:w-auto">
       {label && (
-        <label className="text-xs font-medium text-text-subtle ml-1">
+        <label className="text-xs font-medium text-text-main ml-1">
           {label}
         </label>
       )}
@@ -175,7 +175,7 @@ export const DateInput = ({ label, className, ...props }: DateInputProps) => {
       <div className="relative group">
         {/* Icono decorativo a la izquierda */}
         <div className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
-          <Calendar className="w-4 h-4 text-text-subtle group-focus-within:text-accent transition-colors" />
+          <Calendar className="w-4 h-4 text-text-main group-focus-within:text-accent transition-colors" />
         </div>
 
         <input
@@ -193,7 +193,15 @@ export const DateInput = ({ label, className, ...props }: DateInputProps) => {
             focus:border-accent/50 focus:ring-1 focus:ring-accent/50
             active:scale-[0.98]
             
-            /* Estilos específicos para el input de fecha (Chrome/Safari/Edge) */
+            /* Asegurar color en los fragmentos de la fecha (Chrome/Safari/Edge) */
+            [&::-webkit-datetime-edit]:text-text-main
+            [&::-webkit-datetime-edit-fields-wrapper]:text-text-main
+            [&::-webkit-datetime-edit-text]:text-text-main
+            [&::-webkit-datetime-edit-month-field]:text-text-main
+            [&::-webkit-datetime-edit-day-field]:text-text-main
+            [&::-webkit-datetime-edit-year-field]:text-text-main
+
+            /* Estilos específicos para el selector (invisible sobre el input) */
             [&::-webkit-calendar-picker-indicator]:absolute
             [&::-webkit-calendar-picker-indicator]:left-0
             [&::-webkit-calendar-picker-indicator]:top-0
