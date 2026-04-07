@@ -6,17 +6,17 @@ interface Props {
 
 export function SearchBar({ onSvgClick, onchangeInput }: Props) {
   return (
-    <div className="relative mt-4 min-w-55">
+    <div className="relative mt-4 min-w-55 text-text-main">
       <input
         onChange={onchangeInput}
         required
         type="text"
         name="text"
         autoComplete="off"
-        className="peer w-full min-w-55 rounded-2xl border-[1.5px] border-[#9e9e9e] bg-transparent p-4 text-base text-white outline-none transition-all duration-150 ease-in-out focus:border-[#1a73e8] valid:border-[#1a73e8]"
+        className="peer w-full min-w-55 rounded-2xl border-[1.5px] border-[#9e9e9e] bg-transparent p-4 text-base text-text-main outline-none transition-all duration-150 ease-in-out focus:border-[#1a73e8] valid:border-[#1a73e8]"
       />
       <label
-        className="pointer-events-none absolute left-3.75 top-4 origin-left translate-y-0 text-[#e8e8e8] transition-all duration-150 ease-in-out 
+        className="pointer-events-none absolute left-3.75 top-4 origin-left translate-y-0 text-text-main transition-all duration-150 ease-in-out 
         peer-focus:-translate-y-[120%] peer-focus:scale-[0.8] peer-focus:bg-main-bg peer-focus:px-1 peer-focus:text-[#2196f3]
         peer-valid:-translate-y-[120%] peer-valid:scale-[0.8] peer-valid:bg-[#212121] peer-valid:px-1 peer-valid:text-[#2196f3]"
       >

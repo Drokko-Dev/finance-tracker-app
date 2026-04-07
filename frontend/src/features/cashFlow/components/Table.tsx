@@ -60,18 +60,18 @@ const TablaFinanzas = ({ data }: Data) => {
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto p-4 bg-transparent text-white rounded-lg shadow-xl">
+    <div className="w-full max-w-4xl mx-auto p-4 bg-transparent text-text-main rounded-lg shadow-xl">
       {/* --- CONTROLES MÓVILES (Solo visible en celulares) --- */}
       <div className="md:hidden w-full flex justify-end items-center mb-4 px-2 gap-2">
-        <label className="text-gray-400 text-sm font-bold">Ordenar por:</label>
+        <label className="text-text-subtle text-sm font-bold">Ordenar por:</label>
         <select
-          className="bg-slate-800 text-white text-sm rounded-md px-3 py-1.5 border border-gray-600 outline-none focus:border-blue-400 transition-colors"
+          className="bg-slate-800 text-text-main text-sm rounded-md px-3 py-1.5 border border-gray-600 outline-none focus:border-blue-400 transition-colors"
           value={sortConfig.key || ""}
           onChange={(e: ChangeEvent<HTMLSelectElement>) =>
             handleSort(e.target.value as keyof Transaccion)
           }
         >
-          <option value="" disabled>
+          <option value="" disabled className="text-text-main">
             Seleccionar...
           </option>
           {cabecera.map((col) => (
