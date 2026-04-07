@@ -129,7 +129,7 @@ const TablaFinanzas = ({ data }: Data) => {
             </span>
 
             {/* Categoría */}
-            <span className="flex-1 min-w-0 w-full text-center md:text-left text-gray-300 text-sm md:text-base block md:inline">
+            <span className="flex-1 min-w-0 w-full text-center md:text-left text-text-main text-sm md:text-base block md:inline">
               <span className="md:hidden font-bold text-gray-500 mr-2">
                 Cat:
               </span>
@@ -137,7 +137,7 @@ const TablaFinanzas = ({ data }: Data) => {
             </span>
 
             {/* Fecha */}
-            <span className="flex-1 min-w-0 w-full text-center md:text-left text-gray-400 text-sm block md:inline">
+            <span className="flex-1 min-w-0 w-full text-center md:text-left text-text-main text-sm block md:inline">
               <span className="md:hidden font-bold text-gray-500 mr-2">
                 Fecha:
               </span>
@@ -145,7 +145,7 @@ const TablaFinanzas = ({ data }: Data) => {
             </span>
 
             {/* Descripción */}
-            <span className="flex-1 min-w-0 w-full text-center md:text-left text-gray-300 leading-relaxed break-all md:wrap-break-word italic md:not-italic block md:inline">
+            <span className="flex-1 min-w-0 w-full text-center md:text-left text-text-main leading-relaxed break-all md:wrap-break-word italic md:not-italic block md:inline">
               {item.descripcion}
             </span>
           </div>
