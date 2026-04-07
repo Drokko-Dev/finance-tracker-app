@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
-import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
+import { ProtectedRoute } from "@/hooks/ProtectedRoute";
 import { MainLayout } from "@/layout/MainLayout";
 import { Signup } from "@/pages/Signup";
 

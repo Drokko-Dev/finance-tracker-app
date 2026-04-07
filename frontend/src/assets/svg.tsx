@@ -48,30 +48,30 @@ export const LogoSVG = ({ className }: Props) => (
     <path
       d="M14 6C14 8.20914 12.2091 10 10 10C7.79086 10 6 8.20914 6 6C6 3.79086 7.79086 2 10 2C12.2091 2 14 3.79086 14 6Z"
       stroke="currentColor"
-      stroke-width="2"
+      strokeWidth="2"
     />
     <path
       d="M18 18C18 20.2091 16.2091 22 14 22C11.7909 22 10 20.2091 10 18C10 15.7909 11.7909 14 14 14C16.2091 14 18 15.7909 18 18Z"
       stroke="currentColor"
-      stroke-width="2"
+      strokeWidth="2"
     />
     <path
       d="M6 18C6 20.2091 7.79086 22 10 22"
       stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
+      strokeWidth="2"
+      strokeLinecap="round"
     />
     <path
       d="M18 6C18 3.79086 16.2091 2 14 2"
       stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
+      strokeWidth="2"
+      strokeLinecap="round"
     />
     <path
       d="M10 10L14 14"
       stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
+      strokeWidth="2"
+      strokeLinecap="round"
     />
   </svg>
 );

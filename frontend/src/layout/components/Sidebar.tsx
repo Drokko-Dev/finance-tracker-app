@@ -1,5 +1,5 @@
 import type { SidebarProps } from "@/types/Sidebar";
-import { Logo } from "./Logo";
+import { Logo } from "./ui/Logo";
 import {
   LayoutDashboard,
   ArrowRightLeft,
@@ -43,10 +43,10 @@ export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
         lg:static lg:translate-x-0 lg:h-full lg:z-0
       `}
       >
-        <div className="p-4 flex flex-col gap-3">
+        <div className="lg:p-4 px-4 py-2 flex flex-col gap-3">
           {/* Botón para cerrar (solo móvil) */}
           <div className="lg:hidden flex items-center justify-between border-b border-border-subtle">
-            <Logo />
+            <Logo onClick={onClose} />
             <button
               onClick={onClose}
               className="cursor-pointer self-end p-2 text-text-subtle hover:text-red-500 transition-all duration-200 hover:scale-[1.02] active:scale-90"
@@ -61,7 +61,12 @@ export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
                 <Link
                   key={link.name}
                   to={link.href}
-                  className={location.pathname === link.href ? activeLinkStyles:normalLinkStyles}
+                  className={
+                    location.pathname === link.href
+                      ? activeLinkStyles
+                      : normalLinkStyles
+                  }
+                  onClick={onClose}
                 >
                   <div className="w-5 h-5 flex items-center justify-center shrink-0">
                     <Icon size={20} strokeWidth={2} />
