@@ -1,7 +1,8 @@
 ## Drop table
 
 DROP TABLE IF EXISTS transactions CASCADE;
-DROP TABLE IF EXISTS category CASCADE;
+DROP TABLE IF EXISTS accounts CASCADE;
+DROP TABLE IF EXISTS users CASCADE;
 
 ## ⚙️ User:
 
