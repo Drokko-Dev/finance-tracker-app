@@ -1,5 +1,6 @@
 import enum
-from sqlalchemy import Column, Integer, Float, String, ForeignKey, DateTime, Enum, relationship
+from sqlalchemy import Column, Integer, Float, String, ForeignKey, DateTime, Enum
+from sqlalchemy.orm import relationship
 from datetime import datetime, timezone
 from app.db.session import Base
 
@@ -20,6 +21,3 @@ class Transaction(Base):
     amount = Column(Integer, nullable=False)
     description = Column(String)
     created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
-    user = relationship("User", back_populates="transactions")
-    account = relationship("Account", back_populates="transactions")
-    category = relationship("Category", back_populates="transactions")

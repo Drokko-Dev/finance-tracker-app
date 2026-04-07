@@ -23,7 +23,6 @@ const fechaFormateada = hoy.toISOString().split("T")[0];
 
 console.log(fechaFormateada);
 
-
 export function CashsFlowPage() {
   const [search, setSearch] = useState<string>("");
   const [date, setDate] = useState<string>("2024-01-01");
@@ -56,12 +55,10 @@ export function CashsFlowPage() {
 
         setData(result);
         const unicas = [...new Set(result.map((t) => t.categoria))];
-        const formatoOpciones: OptionItem[] = unicas.map(
-          (nombre, index) => ({
-            id: index + 1, // Generamos un ID numérico simple
-            name: nombre,
-          }),
-        );
+        const formatoOpciones: OptionItem[] = unicas.map((nombre, index) => ({
+          id: index + 1, // Generamos un ID numérico simple
+          name: nombre,
+        }));
         setCategorias(formatoOpciones);
       } catch (err) {
         // En TS, el error en catch es de tipo 'unknown' por seguridad
@@ -92,10 +89,10 @@ export function CashsFlowPage() {
       {loading ? (
         <LoadingSpinner />
       ) : (
-        <div className="min-h-screen bg-main-bg p-4 md:p-2 font-sans min-w-100 ">
-          <GlassCard className="overflow: visible min-w-95">
+        <div className="min-h-screen bg-main-bg md:p-2 font-sans md:min-w-100 ">
+          <GlassCard className="overflow: visible md:min-w-95">
             <SearchBar onSvgClick={handleClick} onchangeInput={handleChange} />
-            <div className="flex flex-row w-max mt-2 mx-2.5 flex-wrap gap-4">
+            <div className="flex flex-col sm:flex-row gap-4 w-full md:mt-4 md:justify-center">
               <GeneralFilter
                 label="categoria"
                 items={categorias}
