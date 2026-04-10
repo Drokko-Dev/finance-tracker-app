@@ -1,12 +1,13 @@
 import { useState } from "react";
 import apiClient from "../api/apiClient"; // Ajusta la ruta según tu proyecto
 import { Wallet, Mail, Lock, ArrowRight, Loader2 } from "lucide-react";
-
+import { useNavigate } from "react-router-dom";
 export const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -21,7 +22,7 @@ export const Login = () => {
       });
 
       // Si todo sale bien, la cookie ya está guardada. Redirigimos al Dashboard.
-      window.location.href = "/";
+      navigate("/");
     } catch (err: any) {
       // Capturamos el error 401 que configuramos en el backend
       if (err.response?.status === 401) {

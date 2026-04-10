@@ -17,9 +17,9 @@ apiClient.interceptors.response.use(
   (response: AxiosResponse) => response,
 
   (error: AxiosError) => {
+    const isLoginRequest = error.config?.url?.includes("/login");
     // Si el backend responde 401 (cookie expirada o inexistente)
-    if (error.response?.status === 401) {
-      // Ya no hay localStorage que borrar, solo redirigimos
+    if (error.response?.status === 401 && !isLoginRequest) {
       window.location.href = "/login";
     }
 
