@@ -2,11 +2,12 @@ from fastapi import Request, HTTPException, status
 import jwt
 from datetime import datetime, timedelta
 from passlib.context import CryptContext
+from app.core.config import settings
 
 # Configuraciones (En producción, SECRET_KEY debe ir en un archivo .env)
-SECRET_KEY = "tu_clave_super_secreta_para_finanz" 
-ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 60
+SECRET_KEY = settings.SECRET_KEY
+ALGORITHM = settings.ALGORITHM
+ACCESS_TOKEN_EXPIRE_MINUTES = settings.ACCESS_TOKEN_EXPIRE_MINUTES
 
 # Configuración de bcrypt (La que arreglamos antes con la versión 3.2.2)
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
