@@ -9,7 +9,7 @@ import {
 import { Calendar, ChevronDown, Check, Search, CheckSquare, Square } from "lucide-react";
 
 interface OptionItem {
-  id: string | number;
+  id: number;
   name: string;
 }
 
@@ -80,7 +80,7 @@ export function GeneralFilter<T extends OptionItem>({
           <>
             <ListboxButton className="flex items-center gap-2 px-3 py-2 w-full sm:w-64 bg-white/5 border border-border-subtle rounded-xl hover:bg-white/10 transition-all text-sm font-medium text-text-main outline-none group">
               <Calendar className="w-4 h-4 text-text-subtle" />
-              <span className="tracking-tight truncate flex-1 text-left">{getLabel()}</span>
+              <span className="tracking-tight truncate text-lg flex-1 text-left">{getLabel()}</span>
               <ChevronDown className={`w-4 h-4 text-text-subtle transition-transform ${open ? "rotate-180" : ""}`} />
             </ListboxButton>
 
@@ -132,7 +132,7 @@ export function GeneralFilter<T extends OptionItem>({
                         className={({ active, selected: isSelected }) => `
                           relative cursor-pointer select-none py-2 px-4 flex items-center justify-between text-sm
                           ${active ? "bg-white/5 text-text-main" : "text-text-subtle"}
-                          ${isSelected ? "text-white bg-white/2" : ""}
+                          ${isSelected ? "text-green-600 " : "text-accent"}
                         `}
                       >
                         {({ selected: isSelected }) => (
@@ -140,7 +140,7 @@ export function GeneralFilter<T extends OptionItem>({
                             <span className={`truncate ${isSelected ? "font-semibold" : "font-normal"}`}>
                               {item.name}
                             </span>
-                            {isSelected && <Check className="w-4 h-4 text-accent" />}
+                            {isSelected && <Check className="w-4 h-4 text-blue-900" />}
                           </>
                         )}
                       </ListboxOption>
@@ -174,18 +174,14 @@ export const DateInput = ({ label, className, ...props }: DateInputProps) => {
       
       <div className="relative group">
         {/* Icono decorativo a la izquierda */}
-        <div className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
-          <Calendar className="w-4 h-4 text-text-main group-focus-within:text-accent transition-colors" />
-        </div>
-
         <input
           type="date"
           className={`
             /* Reset y Estilos Base */
-            dark scheme-dark
+            
             appearance-none outline-none w-full
             bg-white/5 border border-border-subtle rounded-xl
-            px-10 py-2 text-sm font-medium text-text-main
+            px-10 py-2 ttext-lg font-medium text-text-main
             transition-all duration-200
             
             /* Estados */
