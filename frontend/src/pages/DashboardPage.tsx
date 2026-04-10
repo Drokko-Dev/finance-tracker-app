@@ -10,7 +10,7 @@ const cards = [
     change: "+12.5%",
     isPositive: true,
     color: "#38bdf8", // Tu cian/azul principal
-    icon: <Wallet className="w-5 h-5 text-[var(--color-accent)]" />,
+    icon: <Wallet className="w-5 h-5 text-accent" />,
     glowColor: "rgba(6, 182, 212, 0.15)", // Un resplandor basado en tu acento
   },
   {

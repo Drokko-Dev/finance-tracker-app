@@ -1,20 +1,13 @@
 import { GeneralFilter, DateInput } from "@/components/GeneralFilter";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { SearchBar } from "@/components/ui/SearchBar";
-import { useState, useEffect } from "react";
-import TablaFinanzas from "@/features/cashFlow/components/Table";
+import { useState } from "react";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
-
-interface Transaccion {
-  id: number;
-  monto: number;
-  categoria: string;
-  fecha: string;
-  descripcion: string;
-}
-
+import { useTransactions } from "@/hooks/useTransactions";
+import FinanceTable from "@/features/cashFlow/components/tableElemments/FinanceTable";
+import { categories } from "@/constants/categories";
 interface OptionItem {
-  id: string | number;
+  id: number;
   name: string;
 }
 
@@ -25,68 +18,28 @@ console.log(fechaFormateada);
 
 export function CashsFlowPage() {
   const [search, setSearch] = useState<string>("");
-  const [date, setDate] = useState<string>("2024-01-01");
   const [selected, setSelected] = useState<OptionItem[]>([]);
-  const [data, setData] = useState<Transaccion[]>();
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
-  const [categorias, setCategorias] = useState<OptionItem[]>([]);
+  const selectedIds =
+    selected.length > 0 ? selected.map((obj) => obj.id).join(",") : undefined;
+  const { data, isLoading } = useTransactions({
+    page: 1, 
+    search: search, 
+    category: selectedIds 
+  });
+  const [date, setDate] = useState<string>("2024-01-01");
   const handleChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
     setSearch(event.target.value);
+    console.log(event.target.value);
   };
-  useEffect(() => {
-    // Usamos AbortController para evitar fugas de memoria en el desmontaje
-    const controller = new AbortController();
-
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        const response = await fetch("/exampleData.json", {
-          signal: controller.signal,
-        });
-
-        if (!response.ok) {
-          throw new Error(`Error HTTP: ${response.status}`);
-        }
-
-        // Tipamos el resultado del JSON
-        const result: Transaccion[] = await response.json();
-        console.log(result);
-
-        setData(result);
-        const unicas = [...new Set(result.map((t) => t.categoria))];
-        const formatoOpciones: OptionItem[] = unicas.map((nombre, index) => ({
-          id: index + 1, // Generamos un ID numérico simple
-          name: nombre,
-        }));
-        setCategorias(formatoOpciones);
-      } catch (err) {
-        // En TS, el error en catch es de tipo 'unknown' por seguridad
-        if (err instanceof Error) {
-          if (err.name !== "AbortError") {
-            setError(err.message);
-          }
-        } else {
-          setError("Ocurrió un error desconocido");
-        }
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-
-    // Cleanup: cancela la petición si el componente se destruye
-    return () => controller.abort();
-  }, []);
 
   const handleClick: React.MouseEventHandler<SVGSVGElement> = () => {
     console.log(search);
   };
   console.log(data);
+
   return (
     <>
-      {loading ? (
+      {isLoading ? (
         <LoadingSpinner />
       ) : (
         <div className="min-h-screen bg-main-bg md:p-2 font-sans md:min-w-100 ">
@@ -95,7 +48,7 @@ export function CashsFlowPage() {
             <div className="flex flex-col sm:flex-row gap-4 w-full md:mt-4 md:justify-center">
               <GeneralFilter
                 label="categoria"
-                items={categorias}
+                items={categories}
                 selected={selected}
                 onChange={setSelected}
                 multiple={true}
@@ -114,7 +67,7 @@ export function CashsFlowPage() {
               />
             </div>
 
-            {data && <TablaFinanzas data={data} />}
+            {data && <FinanceTable data={data} />}
           </GlassCard>
         </div>
       )}
