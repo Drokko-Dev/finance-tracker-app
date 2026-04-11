@@ -90,12 +90,12 @@ const FinanceTable = ({ data }: TablaFinanzasProps) => {
               {item.type}
             </span>
             <span className="flex-1 min-w-0 w-full text-center md:text-left font-mono text-green-400 text-lg md:text-base block md:inline">
-              {item.account_id}
+              {item.account.name}
             </span>
 
             <span className="flex-1 min-w-0 w-full text-center md:text-left text-text-main text-sm md:text-base block md:inline">
               <span className="md:hidden font-bold text-gray-500 mr-2"></span>
-              {item.category_id}
+              {item.category.name}
             </span>
 
             <span className="flex-1 min-w-0 w-full text-center md:text-left text-text-main text-sm block md:inline">
