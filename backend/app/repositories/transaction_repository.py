@@ -1,5 +1,5 @@
 from sqlalchemy import or_
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 from app.models.transaction import Transaction
 from app.schemas.transaction_schema import TransactionCreate
 from typing import Optional, List
@@ -19,9 +19,24 @@ def get_transactions(db: Session, user_id: int | None = None, account_id: int | 
         query = query.filter(Transaction.account_id == account_id)
     return query.all()
 
-def get_filtered_transactions(db: Session,page: int, size: int,search: Optional[str],category_ids: List[int] | None, user_id: int | None = None, account_id: int | None = None):
+def get_filtered_transactions(
+    db: Session, 
+    page: int, 
+    size: int, 
+    search: Optional[str], 
+    category_ids: List[int] | None, 
+    user_id: int | None = None, 
+    account_id: int | None = None
+):
     print(f'entro al repository {category_ids}')
-    query = db.query(Transaction)
+    
+    # 1. Iniciamos la query cargando las relaciones account y category
+    query = db.query(Transaction).options(
+        joinedload(Transaction.account),
+        joinedload(Transaction.category)
+    )
+
+    # 2. Aplicamos los filtros
     if user_id:
         query = query.filter(Transaction.user_id == user_id)
     if account_id:
@@ -29,10 +44,13 @@ def get_filtered_transactions(db: Session,page: int, size: int,search: Optional[
     if search:
         query = query.filter(Transaction.description.ilike(f"%{search}%"))
     if category_ids:
-        # Crea una lista de condiciones: [Transaction.category_id == 3, Transaction.category_id == 4]
-        condiciones = [Transaction.category_id == cat_id for cat_id in category_ids]
-        # Aplica el OR entre todas ellas
-        query = query.filter(or_(*condiciones))
+        # Simplifiqué la condición de categorías usando .in_() que es más eficiente
+        query = query.filter(Transaction.category_id.in_(category_ids))
+
+    # 3. Aplicamos paginación (opcional, ya que recibes page y size)
+    # offset = (page - 1) * size
+    # return query.offset(offset).limit(size).all()
+    
     return query.all()
 
 

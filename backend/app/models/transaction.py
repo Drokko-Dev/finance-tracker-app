@@ -28,3 +28,7 @@ class Transaction(Base):
     amount = Column(Integer, nullable=False)
     description = Column(String)
     created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+    
+    #relaciones
+    account = relationship("Account")
+    category = relationship("Category")

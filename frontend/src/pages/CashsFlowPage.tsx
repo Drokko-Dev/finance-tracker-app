@@ -1,11 +1,11 @@
-import { GeneralFilter, DateInput } from "@/components/GeneralFilter";
+import { useState } from "react";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { SearchBar } from "@/components/ui/SearchBar";
-import { useState } from "react";
-import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
-import { useTransactions } from "@/hooks/useTransactions";
-import FinanceTable from "@/features/cashFlow/components/tableElemments/FinanceTable";
 import { categories } from "@/constants/categories";
+import { useTransactions } from "@/hooks/useTransactions";
+import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
+import { GeneralFilter, DateInput } from "@/components/GeneralFilter";
+import FinanceTable from "@/features/cashFlow/components/tableElemments/FinanceTable";
 interface OptionItem {
   id: number;
   name: string;
