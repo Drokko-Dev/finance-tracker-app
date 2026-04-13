@@ -4,6 +4,13 @@ from app.models.transaction import Transaction
 from app.schemas.transaction_schema import TransactionCreate
 from typing import Optional, List
 
+def create(db: Session, data: TransactionCreate, user_id: int):
+    db_transaction = Transaction(user_id=user_id, **data.model_dump())
+    db.add(db_transaction)
+    db.commit()
+    db.refresh(db_transaction)
+    return db_transaction
+
 def get_transactions(db: Session, user_id: int | None = None, account_id: int | None = None):
     query = db.query(Transaction)
     if user_id:
@@ -11,13 +18,6 @@ def get_transactions(db: Session, user_id: int | None = None, account_id: int | 
     if account_id:
         query = query.filter(Transaction.account_id == account_id)
     return query.all()
-
-def create(db: Session, data: TransactionCreate, user_id: int):
-    db_transaction = Transaction(user_id=user_id, **data.model_dump())
-    db.add(db_transaction)
-    db.commit()
-    db.refresh(db_transaction)
-    return db_transaction
 
 def get_filtered_transactions(
     db: Session, 

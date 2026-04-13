@@ -1,39 +1,23 @@
-import { DateSelector } from "@/features/dashboard/components/DateSelector";
+import { FilterDashboard } from "@/features/dashboard/components/FilterDashboard";
 import { MyCards } from "@/features/dashboard/components/MyCards";
 import { TransactionList } from "@/features/dashboard/components/TransactionList";
-import { Wallet, ArrowDownLeft, ArrowUpRight } from "lucide-react";
+import { useDashboardStats } from "@/features/dashboard/hooks/useDashboardStats";
+import { Calendar, Wallet } from "lucide-react";
 
-const cards = [
-  {
-    title: "Balance Total",
-    amount: "24,562",
-    change: "+12.5%",
-    isPositive: true,
-    color: "#38bdf8", // Tu cian/azul principal
-    icon: <Wallet className="w-5 h-5 text-accent" />,
-    glowColor: "rgba(6, 182, 212, 0.15)", // Un resplandor basado en tu acento
-  },
-  {
-    title: "Ingresos",
-    amount: "4,250",
-    change: "+8.2%",
-    isPositive: true,
-    color: "#10b981", // Esmeralda para ingresos
-    icon: <ArrowDownLeft className="w-5 h-5 text-emerald-400" />,
-    glowColor: "rgba(16, 185, 129, 0.1)",
-  },
-  {
-    title: "Gastos",
-    amount: "1,850",
-    change: "-2.1%",
-    isPositive: false,
-    color: "#f43f5e", // Rose para gastos
-    icon: <ArrowUpRight className="w-5 h-5 text-rose-400" />,
-    glowColor: "rgba(244, 63, 94, 0.1)",
-  },
+const months = [
+  { id: 1, name: "Agosto 2023" },
+  { id: 2, name: "Septiembre 2023" },
+  { id: 3, name: "Octubre 2023" },
+];
+
+const accounts = [
+  { id: 1, name: "Banco Chile" },
+  { id: 2, name: "Banco Estado" },
+  { id: 3, name: "Banco Santander" },
 ];
 
 export const DashboardPage = () => {
+  const { cards } = useDashboardStats();
   return (
     <div className="flex flex-col gap-5">
       <header className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
@@ -45,7 +29,16 @@ export const DashboardPage = () => {
             Monitorea tu salud financiera y evolución.
           </p>
         </div>
-        <DateSelector />
+        <div className="flex sm:flex-row flex-col items-center gap-2">
+          <FilterDashboard
+            options={accounts}
+            icon={<Wallet className="w-4 h-4 text-text-subtle" />}
+          />
+          <FilterDashboard
+            options={months}
+            icon={<Calendar className="w-4 h-4 text-text-subtle" />}
+          />
+        </div>
       </header>
       <main className="">
         <MyCards cards={cards} />

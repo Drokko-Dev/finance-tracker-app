@@ -17,7 +17,14 @@ class Transaction(Base):
     user_id = Column(Integer, ForeignKey("users.id"))
     account_id = Column(Integer, ForeignKey("accounts.id"))
     category_id = Column(Integer, ForeignKey("categories.id"))
-    type = Column(Enum(TransactionType), nullable=False)  
+    type = Column(
+        Enum(
+            TransactionType, 
+            # Esto le dice a SQLAlchemy: "Usa el .value ('expense'), no el .name ('EXPENSE')"
+            values_callable=lambda obj: [e.value for e in obj]
+        ), 
+        nullable=False
+    )
     amount = Column(Integer, nullable=False)
     description = Column(String)
     created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))

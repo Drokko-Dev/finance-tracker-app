@@ -1,9 +1,9 @@
 @import "tailwindcss";
 
 @theme {
-  --color-main-bg: #f8fafc; /* Slate 50 */
+  --color-main-bg: #ffffff; /* Slate 50 */
   --color-card-bg: #ffffff;
-  --color-border-subtle: rgba(0, 0, 0, 0.05);
+  --color-border-subtle: rgba(0, 0, 0, 0.1);
   --color-text-main: #0f172a; /* Slate 900 */
   --color-text-subtle: #64748b; /* Slate 500 */
   --color-accent: #38bdf8; /* Cian */
@@ -16,10 +16,8 @@
   color-scheme: dark;
   /* El negro fuerte que te gustó para Navbar y Sidebar */
   --color-card-bg: #0a0a0c;
-
   /* Un gris casi negro para el fondo principal (opcional, para dar profundidad) */
-  --color-main-bg: #0d0d0f;
-
+  --color-main-bg: #09090a;
   --color-text-main: #ffffff;
   --color-text-subtle: #94a3b8;
   --color-border-subtle: rgba(255, 255, 255, 0.08);
@@ -34,6 +32,6 @@
 
 @layer components {
   .active {
-    @apply bg-linear-to-r from-[var(--color-accent)] to-[var(--color-accent-end)] text-white shadow-lg shadow-cyan-500/20;
+    @apply bg-linear-to-r from-accent to-accent-end text-white shadow-lg shadow-cyan-500/20;
   }
 }
