@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from typing import Optional, List
 from app.db.session import get_db 
 from app.services import transaction_service as service
-from app.schemas.transaction_schema import TransactionCreate, Transaction
+from app.schemas.transaction_schema import TransactionCreate, Transaction, TransactionResponse
 from app.core.security import get_current_user_id
 
 router = APIRouter(prefix="/transactions", tags=["transactions"])
@@ -20,7 +20,7 @@ def read_transactions(
     else:
         return service.get_transactions(db, user_id=user_id)
     
-@router.get("/movimientos/", response_model=list[Transaction])
+@router.get("/movimientos/", response_model=list[TransactionResponse])
 def read_filter_transactions(
     user_id: int = Depends(get_current_user_id), 
     account_id: Optional[int] = None, 

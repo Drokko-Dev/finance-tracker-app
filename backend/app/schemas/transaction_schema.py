@@ -1,5 +1,7 @@
 from pydantic import BaseModel
 from datetime import datetime
+from typing import Optional
+
 
 
 class TransactionCreate(BaseModel):
@@ -27,3 +29,30 @@ class Transaction(BaseModel):
     amount: float
     description: str
     created_at: datetime 
+    
+class AccountRead(BaseModel):
+    id: int
+    name: str
+    bank: str
+    class Config:
+        from_attributes = True
+
+class CategoryRead(BaseModel):
+    id: int
+    name: str
+    class Config:
+        from_attributes = True
+
+# 2. Tu esquema de respuesta actualizado
+class TransactionResponse(BaseModel):
+    id: int
+    amount: float
+    description: Optional[str]
+    type: str
+    created_at: datetime
+    # En lugar de solo IDs, enviamos el objeto completo
+    account: AccountRead 
+    category: CategoryRead
+
+    class Config:
+        from_attributes = True
