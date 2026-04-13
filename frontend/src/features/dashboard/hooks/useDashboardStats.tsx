@@ -1,22 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
-import { getSummarizedTransactions, getTransactions } from "@/api/transactions";
+import { getSummarizedTransactions } from "@/api/transactions";
 import { Wallet, ArrowDownLeft, ArrowUpRight } from "lucide-react";
 
 export const useDashboardStats = () => {
-  /* const { data: transactions, isLoading } = useQuery({
-    queryKey: ["SummarizedTransactions"],
-    queryFn: getSummarizedTransactions,
-  }); */
   const { data: transactions, isLoading } = useQuery({
-    queryKey: ["Transactions"],
-    queryFn: getTransactions,
+    queryKey: ["SummarizedTransactions"],
+    queryFn: () => getSummarizedTransactions(1),
   });
 
-  // 2. Calculamos los montos reales (asumiendo que tus transacciones
-  // tienen algún campo como 'type' o si 'amount' es positivo/negativo)
   const totalIncome =
     transactions
-      ?.filter((type) => type.type === "income") // Ajusta esta lógica a tu modelo de BD
+      ?.filter((type) => type.type === "income")
       .reduce((acc, curr) => acc + curr.amount, 0) || 0;
 
   const totalExpense =
@@ -26,7 +20,6 @@ export const useDashboardStats = () => {
 
   const totalBalance = totalIncome - totalExpense;
 
-  // 3. Armamos tu JSON, pero inyectando los montos reales
   const cards = [
     {
       title: "Balance Total",
