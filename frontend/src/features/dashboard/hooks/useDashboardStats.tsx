@@ -1,11 +1,26 @@
 import { useQuery } from "@tanstack/react-query";
 import { getSummarizedTransactions } from "@/api/transactions";
+import { getAccounts } from "@/api/accounts";
 import { Wallet, ArrowDownLeft, ArrowUpRight } from "lucide-react";
+import type { Bank } from "@/types/Accounts";
 
 export const useDashboardStats = () => {
   const { data: transactions, isLoading } = useQuery({
     queryKey: ["SummarizedTransactions"],
     queryFn: () => getSummarizedTransactions(1),
+  });
+
+  const { data: accounts, isLoading: isLoadingAccounts } = useQuery({
+    queryKey: ["Accounts"],
+    queryFn: getAccounts,
+  });
+
+  const bankAccounts: Bank[] = [];
+  accounts?.forEach((account) => {
+    bankAccounts.push({
+      id: account.id,
+      name: account.bank,
+    });
   });
 
   const totalIncome =
@@ -50,5 +65,5 @@ export const useDashboardStats = () => {
     },
   ];
 
-  return { cards, isLoading };
+  return { cards, isLoading, bankAccounts, isLoadingAccounts };
 };

@@ -3,6 +3,7 @@ import { MyCards } from "@/features/dashboard/components/MyCards";
 import { TransactionList } from "@/features/dashboard/components/TransactionList";
 import { useDashboardStats } from "@/features/dashboard/hooks/useDashboardStats";
 import { Calendar, Wallet } from "lucide-react";
+import { useEffect } from "react";
 
 const months = [
   { id: 1, name: "Agosto 2023" },
@@ -10,14 +11,17 @@ const months = [
   { id: 3, name: "Octubre 2023" },
 ];
 
-const accounts = [
+const account = [
   { id: 1, name: "Banco Chile" },
   { id: 2, name: "Banco Estado" },
   { id: 3, name: "Banco Santander" },
 ];
 
 export const DashboardPage = () => {
-  const { cards } = useDashboardStats();
+  const { cards, bankAccounts } = useDashboardStats();
+  useEffect(() => {
+    console.log("Cuentas disponibles:", bankAccounts);
+  }, [bankAccounts]);
   return (
     <div className="flex flex-col gap-5">
       <header className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
@@ -31,7 +35,7 @@ export const DashboardPage = () => {
         </div>
         <div className="flex sm:flex-row flex-col items-center gap-2">
           <FilterDashboard
-            options={accounts}
+            options={bankAccounts}
             icon={<Wallet className="w-4 h-4 text-text-subtle" />}
           />
           <FilterDashboard
