@@ -1,13 +1,18 @@
 import { useQuery } from "@tanstack/react-query";
-import { getSummarizedTransactions } from "@/api/transactions";
+import {
+  getSummarizedTransactions,
+  getYearMonthsTransactions,
+} from "@/api/transactions";
 import { getAccounts } from "@/api/accounts";
 import { Wallet, ArrowDownLeft, ArrowUpRight } from "lucide-react";
 import type { Bank } from "@/types/Accounts";
+import type { YearMonth } from "@/types/transactions";
 
-export const useDashboardStats = () => {
+export const useDashboardStats = (accountId?: number, monthId?: string) => {
   const { data: transactions, isLoading } = useQuery({
-    queryKey: ["SummarizedTransactions"],
-    queryFn: () => getSummarizedTransactions(1),
+    queryKey: ["SummarizedTransactions", accountId, monthId],
+    queryFn: () => getSummarizedTransactions(accountId, monthId),
+    enabled: !!accountId,
   });
 
   const { data: accounts, isLoading: isLoadingAccounts } = useQuery({
@@ -15,11 +20,27 @@ export const useDashboardStats = () => {
     queryFn: getAccounts,
   });
 
+  const { data: yearMonths, isLoading: isLoadingYearMonths } = useQuery({
+    queryKey: ["YearMonths"],
+    queryFn: () => getYearMonthsTransactions(),
+  });
+
   const bankAccounts: Bank[] = [];
   accounts?.forEach((account) => {
     bankAccounts.push({
       id: account.id,
       name: account.bank,
+    });
+  });
+
+  const filterYearMonths: YearMonth[] = [];
+  yearMonths?.forEach(([year, month]) => {
+    const nameMonth = new Date(year, month - 1).toLocaleString("es-ES", {
+      month: "long",
+    });
+    filterYearMonths.push({
+      id: year + "-" + month,
+      name: nameMonth[0].toUpperCase() + nameMonth.slice(1) + " " + year,
     });
   });
 
@@ -65,5 +86,12 @@ export const useDashboardStats = () => {
     },
   ];
 
-  return { cards, isLoading, bankAccounts, isLoadingAccounts };
+  return {
+    cards,
+    isLoading,
+    bankAccounts,
+    isLoadingAccounts,
+    filterYearMonths,
+    isLoadingYearMonths,
+  };
 };

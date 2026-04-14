@@ -9,27 +9,29 @@ import {
 import { ChevronDown, Check } from "lucide-react";
 
 interface FilterOptions {
-  id: number;
+  id: number | string;
   name: string;
 }
 
 export const FilterDashboard = ({
   options,
   icon,
+  value,
+  onChange,
 }: {
   options: FilterOptions[];
   icon: React.ReactNode;
+  value: FilterOptions;
+  onChange: (value: FilterOptions) => void;
 }) => {
-  const [selectedMonth, setSelectedMonth] = useState(options[0]);
-
   return (
     <div className="relative w-full sm:w-auto">
-      <Listbox value={selectedMonth} onChange={setSelectedMonth}>
+      <Listbox value={value} onChange={onChange}>
         {({ open }) => (
           <>
             <ListboxButton className="flex items-center gap-2 px-3 py-2 w-full sm:w-auto bg-white/5 border border-border-subtle rounded-xl hover:bg-white/10 transition-all text-sm font-medium text-text-main cursor-pointer hover:shadow-md hover:-translate-y-0.5 active:scale-95 outline-none group">
               {icon}
-              <span className="tracking-tight">{selectedMonth.name}</span>
+              <span className="tracking-tight">{value.name}</span>
               <ChevronDown
                 className={`w-4 h-4 text-text-subtle transition-transform duration-200 ${open ? "rotate-180" : ""}`}
               />

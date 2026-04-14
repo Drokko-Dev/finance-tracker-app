@@ -9,11 +9,24 @@ export const getTransactions = async (): Promise<Transaction[]> => {
 };
 
 export const getSummarizedTransactions = async (
-  account_id: number,
+  account_id?: number,
+  month_id?: string,
 ): Promise<Transaction[]> => {
   // Ojo aquí: asegúrate de usar la ruta exacta (agregué el "/" final por si acaso)
-  const response = await apiClient.get<Transaction[]>(
-    `/api/v1/transactions?account_id=${account_id}`,
+  const response = await apiClient.get<Transaction[]>(`/api/v1/transactions/`, {
+    params: {
+      account_id: account_id,
+      month_id: month_id,
+    },
+  });
+  return response.data;
+};
+
+export const getYearMonthsTransactions = async (): Promise<
+  [year: number, month: number][]
+> => {
+  const response = await apiClient.get<[number, number][]>(
+    "/api/v1/transactions/year-months/",
   );
   return response.data;
 };
