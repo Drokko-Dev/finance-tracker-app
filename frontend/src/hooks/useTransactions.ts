@@ -1,27 +1,40 @@
-import apiClient from '@/api/apiClient';
-import { useQuery } from '@tanstack/react-query';
+import apiClient from "@/api/apiClient";
+import { useQuery } from "@tanstack/react-query";
 import type { Transaction } from "../types/transactions";
 
 interface query {
   page: number;
   search?: string;
   category?: string;
+  initialDate: Date | undefined;
+  finalDate: Date | undefined;
 }
 
-
-export function useTransactions({page, search, category}:query) {
+export function useTransactions({
+  page,
+  search,
+  category,
+  initialDate, // Viene del estado de tu componente
+  finalDate,
+}: query) {
   return useQuery({
-    // Importante: La caché depende de estos valores
-    queryKey: ['transactionss', { page, search, category: category }],
+    queryKey: ["transactions", { page, search, category, initialDate, finalDate }],
     queryFn: async () => {
-      const { data } = await apiClient.get<Transaction[]>('/api/v1/transactions/movimientos/', {
-        params: { page, search, category},
-        
-      });
-      
+      const { data } = await apiClient.get<Transaction[]>(
+        "/api/v1/transactions/movimientos/",
+        {
+          params: { 
+            page, 
+            search, 
+            category,
+            // Mapeo de nombres y formateo a YYYY-MM-DD
+            start_date: initialDate ? initialDate.toISOString().split('T')[0] : null,
+            end_date: finalDate ? finalDate.toISOString().split('T')[0] : null,
+          },
+        },
+      );
       return data;
     },
-    // Mantener los datos anteriores mientras carga los nuevos (evita parpadeos)
-    placeholderData: (previousData) => previousData, 
+    placeholderData: (previousData) => previousData,
   });
 }
