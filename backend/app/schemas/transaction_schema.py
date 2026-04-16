@@ -1,7 +1,6 @@
-from pydantic import BaseModel
-from datetime import datetime
-from typing import Optional
-
+from pydantic import BaseModel, Field, validator
+from datetime import datetime, date
+from typing import List, Optional
 
 
 class TransactionCreate(BaseModel):
@@ -56,3 +55,35 @@ class TransactionResponse(BaseModel):
 
     class Config:
         from_attributes = True
+        
+# Objeto para agrupar los filtros (DTO)
+class TransactionFilterParams(BaseModel):
+    page: int = Field(1, ge=1)
+    size: int = Field(10, ge=1, le=100)
+    search: Optional[str] = None
+    category: Optional[str] = None
+    start_date: Optional[date] = None
+    end_date: Optional[date] = None
+    sort_by: str = "fecha"
+    order: str = "desc"
+
+    @validator("sort_by")
+    def validate_sort_field(cls, v):
+        allowed = ["monto", "tipo", "cuenta", "categoria", "fecha", "descripcion"]
+        if v not in allowed:
+            raise ValueError(f"Campo de ordenamiento no permitido. Usa: {allowed}")
+        return v
+
+    @validator("order")
+    def validate_order(cls, v):
+        if v.lower() not in ["asc", "desc"]:
+            raise ValueError("El orden debe ser 'asc' o 'desc'")
+        return v.lower()
+
+# Respuesta con Metadatos
+class PaginatedTransactionResponse(BaseModel):
+    items: List[TransactionResponse]
+    total: int
+    page: int
+    size: int
+    pages: int
