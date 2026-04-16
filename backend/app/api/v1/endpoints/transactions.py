@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from typing import Optional, List
 from app.db.session import get_db 
 from app.services import transaction_service as service
-from app.schemas.transaction_schema import TransactionCreate, Transaction, TransactionResponse
+from app.schemas.transaction_schema import TransactionCreate, Transaction, PaginatedTransactionResponse, TransactionFilterParams
 from app.core.security import get_current_user_id
 
 router = APIRouter(prefix="/transactions", tags=["transactions"])
@@ -41,26 +41,23 @@ def get_year_months_transactions(
 ):
     return service.get_year_months(db, user_id=user_id)
 
-@router.get("/movimientos/", response_model=list[TransactionResponse])
+@router.get("/movimientos/", response_model=PaginatedTransactionResponse)
 def read_filter_transactions(
+    params: TransactionFilterParams = Depends(),
     user_id: int = Depends(get_current_user_id), 
     account_id: Optional[int] = None, 
-    db: Session = Depends(get_db),
-    page: int = Query(1, ge=1),
-    size: int = Query(10, ge=1),
-    search: Optional[str] = Query(None),
-    category: str = Query(None)
+    db: Session = Depends(get_db)
 ):
-    print(f'DEBUG categoy {category}')
-    if category:
-        lista_ids = [int(i) for i in category.split(',')]
-        print(f'DEBUG entro al if category {lista_ids}')
-        return service.get_filtered_transactions(db, user_id=user_id, account_id=account_id,category_ids=lista_ids, page=page, size=size, search=search)
-    if account_id is not None:
-        return service.get_filtered_transactions(db, user_id=user_id, account_id=account_id,category_ids=None, page=page, size=size, search=search)
-    else:
-        return service.get_filtered_transactions(db, user_id=user_id,category_ids=None, page=page, size=size, search=search)
-
+    # Convertimos el string de categorías a lista aquí o en el service
+    category_ids = [int(i) for i in params.category.split(',')] if params.category else None
+    
+    return service.get_filtered_transactions(
+        db, 
+        user_id=user_id, 
+        account_id=account_id,
+        category_ids=category_ids,
+        params=params
+    )
 # Corrección 2: Agregamos el guardia al POST
 @router.post("/", response_model=Transaction)
 def create_transaction_endpoint(

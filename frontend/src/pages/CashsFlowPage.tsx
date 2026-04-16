@@ -6,6 +6,7 @@ import { useTransactions } from "@/hooks/useTransactions";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { GeneralFilter, DateInput } from "@/components/GeneralFilter";
 import FinanceTable from "@/features/cashFlow/components/tableElemments/FinanceTable";
+import { Pagination } from "@/features/cashFlow/components/Pagination";
 interface OptionItem {
   id: number;
   name: string;
@@ -19,14 +20,18 @@ console.log(fechaFormateada);
 export function CashsFlowPage() {
   const [search, setSearch] = useState<string>("");
   const [selected, setSelected] = useState<OptionItem[]>([]);
+  const [page, setPage] = useState<number>(1);
+  const [initialdate, setinitialDate] = useState<Date>();
+  const [finaldate, setfinalDate] = useState<Date>();
   const selectedIds =
     selected.length > 0 ? selected.map((obj) => obj.id).join(",") : undefined;
   const { data, isLoading } = useTransactions({
-    page: 1, 
-    search: search, 
-    category: selectedIds 
+    page: page,
+    search: search,
+    category: selectedIds,
+    initialDate: initialdate,
+    finalDate: finaldate
   });
-  const [date, setDate] = useState<string>("2024-01-01");
   const handleChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
     setSearch(event.target.value);
     console.log(event.target.value);
@@ -36,6 +41,10 @@ export function CashsFlowPage() {
     console.log(search);
   };
   console.log(data);
+
+  const onPageChange = (newPage: number) => {
+    setPage(newPage);
+  };
 
   return (
     <>
@@ -55,19 +64,28 @@ export function CashsFlowPage() {
               />
               <DateInput
                 label="Fecha de inicio"
-                value={date}
-                onChange={(e) => setDate(e.target.value)}
+                value={initialdate ? initialdate.toISOString().split("T")[0] : ""}
+                onChange={(e) => setinitialDate(new Date(e.target.value))}
                 min="2020-01-01"
               />
               <DateInput
                 label="Fecha de Fin"
-                value={date}
-                onChange={(e) => setDate(e.target.value)}
+                value={finaldate ? finaldate.toISOString().split("T")[0] : ""}
+                onChange={(e) => setfinalDate(new Date(e.target.value))}
                 max={fechaFormateada}
               />
             </div>
 
-            {data && <FinanceTable data={data} />}
+            {data && <FinanceTable data={data.items} />}
+            {data?.pages > 1 ? (
+              <Pagination
+                currentPage={page}
+                totalPages={data ? data.pages : 0}
+                onPageChange={onPageChange}
+              />
+            ) : (
+              ''
+            )}
           </GlassCard>
         </div>
       )}

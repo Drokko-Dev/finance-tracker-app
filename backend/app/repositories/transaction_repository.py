@@ -1,7 +1,7 @@
-from sqlalchemy import extract, or_
+from sqlalchemy import asc, desc, func, extract, or_
 from sqlalchemy.orm import Session, joinedload
 from app.models.transaction import Transaction
-from app.schemas.transaction_schema import TransactionCreate
+from app.schemas.transaction_schema import TransactionCreate, TransactionFilterParams
 from typing import Optional, List
 
 def create(db: Session, data: TransactionCreate, user_id: int):
@@ -27,36 +27,58 @@ def get_transactions(db: Session, user_id: int | None = None, account_id: int | 
 
 def get_filtered_transactions(
     db: Session, 
-    page: int, 
-    size: int, 
-    search: Optional[str], 
-    category_ids: List[int] | None, 
-    user_id: int | None = None, 
-    account_id: int | None = None
+    user_id: int, 
+    account_id: Optional[int], 
+    category_ids: Optional[List[int]], 
+    params: TransactionFilterParams
 ):
-    print(f'entro al repository {category_ids}')
-    
-    # 1. Iniciamos la query cargando las relaciones account y category
     query = db.query(Transaction).options(
         joinedload(Transaction.account),
         joinedload(Transaction.category)
     )
 
-    # 2. Aplicamos los filtros
+    # --- Aplicar Filtros ---
     if user_id:
         query = query.filter(Transaction.user_id == user_id)
     if account_id:
         query = query.filter(Transaction.account_id == account_id)
-    if search:
-        query = query.filter(Transaction.description.ilike(f"%{search}%"))
     if category_ids:
-        # Simplifiqué la condición de categorías usando .in_() que es más eficiente
         query = query.filter(Transaction.category_id.in_(category_ids))
+    if params.search:
+        query = query.filter(Transaction.description.ilike(f"%{params.search}%"))
+    if params.start_date:
+        query = query.filter(Transaction.created_at >= params.start_date)
+    if params.end_date:
+        query = query.filter(Transaction.created_at <= params.end_date)
 
-    # 3. Aplicamos paginación (opcional, ya que recibes page y size)
-    # offset = (page - 1) * size
-    # return query.offset(offset).limit(size).all()
+    # --- Conteo Total (Antes de paginar) ---
+    total_items = query.count()
+
+    # --- Manejo de Sorting ---
+    sort_map = {
+        "monto": Transaction.amount,
+        "tipo": Transaction.type,
+        "cuenta": Transaction.account_id,
+        "categoria": Transaction.category_id,
+        "fecha": Transaction.created_at,
+        "descripcion": Transaction.description
+    }
     
-    return query.all()
+    column = sort_map.get(params.sort_by, Transaction.created_at)
+    sort_func = asc(column) if params.order == "asc" else desc(column)
+    query = query.order_by(sort_func)
+
+    # --- Aplicar Paginación ---
+    offset = (params.page - 1) * params.size
+    items = query.offset(offset).limit(params.size).all()
+
+    # --- Retorno con Metadatos ---
+    return {
+        "items": items,
+        "total": total_items,
+        "page": params.page,
+        "size": params.size,
+        "pages": (total_items + params.size - 1) // params.size
+    }
 
 
