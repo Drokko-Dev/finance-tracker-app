@@ -62,6 +62,20 @@ export function CashsFlowPage() {
                 onChange={setSelected}
                 multiple={true}
               />
+              <GeneralFilter
+                label="cuentas"
+                items={categories}
+                selected={selected}
+                onChange={setSelected}
+                multiple={true}
+              />
+              <GeneralFilter
+                label="tipo"
+                items={categories}
+                selected={selected}
+                onChange={setSelected}
+                multiple={true}
+              />
               <DateInput
                 label="Fecha de inicio"
                 value={initialdate ? initialdate.toISOString().split("T")[0] : ""}
