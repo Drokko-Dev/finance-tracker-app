@@ -89,7 +89,7 @@ const FinanceTable = ({ data, onSort, sortConfig }: FinanceTableProps) => {
             className="w-full flex flex-col md:flex-row px-6 py-4 md:px-8 items-start border border-gray-800 md:border-0 md:border-b hover:bg-slate-800 transition-colors rounded-lg md:rounded-none gap-2 md:gap-4"
           >
             <span className="flex-1 min-w-0 w-full text-center md:text-left font-mono text-green-400 text-lg md:text-base block md:inline">
-              ${item.amount.toFixed(2)}
+              ${item.amount}
             </span>
             <span className="flex-1 min-w-0 w-full text-center md:text-left font-mono text-green-400 text-lg md:text-base block md:inline">
               {item.type}
