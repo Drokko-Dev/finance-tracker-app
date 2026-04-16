@@ -13,12 +13,15 @@ router = APIRouter(prefix="/transactions", tags=["transactions"])
 def read_transactions(
     user_id: int = Depends(get_current_user_id), 
     account_id: Optional[int] = None, 
+    month_id: Optional[str] = None,
     db: Session = Depends(get_db)
 ):
-    if account_id is not None:
-        return service.get_transactions(db, user_id=user_id, account_id=account_id)
-    else:
-        return service.get_transactions(db, user_id=user_id)
+    return service.get_transactions(
+        db=db, 
+        user_id=user_id, 
+        account_id=account_id, 
+        month_id=month_id
+    )
 
 @router.get("/summarized/", response_model=list[Transaction])
 def dashboard_summarized_transactions(
@@ -31,6 +34,13 @@ def dashboard_summarized_transactions(
     else:
         return service.get_transactions(db, user_id=user_id)
     
+@router.get("/year-months/", response_model=list[tuple[int, int]])
+def get_year_months_transactions(
+    user_id: int = Depends(get_current_user_id), 
+    db: Session = Depends(get_db),
+):
+    return service.get_year_months(db, user_id=user_id)
+
 @router.get("/movimientos/", response_model=PaginatedTransactionResponse)
 def read_filter_transactions(
     params: TransactionFilterParams = Depends(),

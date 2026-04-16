@@ -1,4 +1,4 @@
-from sqlalchemy import asc, desc, func
+from sqlalchemy import asc, desc, func, extract, or_
 from sqlalchemy.orm import Session, joinedload
 from app.models.transaction import Transaction
 from app.schemas.transaction_schema import TransactionCreate, TransactionFilterParams
@@ -11,12 +11,18 @@ def create(db: Session, data: TransactionCreate, user_id: int):
     db.refresh(db_transaction)
     return db_transaction
 
-def get_transactions(db: Session, user_id: int | None = None, account_id: int | None = None):
+def get_transactions(db: Session, user_id: int | None = None, account_id: int | None = None, month_id: str | None = None):
     query = db.query(Transaction)
     if user_id:
         query = query.filter(Transaction.user_id == user_id)
     if account_id:
         query = query.filter(Transaction.account_id == account_id)
+    if month_id:
+        year_str, month_str = month_id.split('-')
+        query = query.filter(
+            extract('year', Transaction.created_at) == int(year_str),
+            extract('month', Transaction.created_at) == int(month_str)
+        )
     return query.all()
 
 def get_filtered_transactions(
