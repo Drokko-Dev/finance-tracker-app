@@ -16,3 +16,8 @@ export interface TransactionCreate {
   category_id: number;
   account_id: number;
 }
+
+export interface YearMonth {
+  id: string;
+  name: string;
+}
