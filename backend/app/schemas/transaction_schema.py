@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel, Field, field_validator
 from datetime import datetime, date
 from typing import List, Optional
 
@@ -64,17 +64,17 @@ class TransactionFilterParams(BaseModel):
     category: Optional[str] = None
     start_date: Optional[date] = None
     end_date: Optional[date] = None
-    sort_by: str = "fecha"
+    sort_by: str = "created_at"
     order: str = "desc"
 
-    @validator("sort_by")
+    @field_validator("sort_by")
     def validate_sort_field(cls, v):
-        allowed = ["monto", "tipo", "cuenta", "categoria", "fecha", "descripcion"]
+        allowed = ["amount", "type", "account_id", "category_id", "created_at", "description"]
         if v not in allowed:
             raise ValueError(f"Campo de ordenamiento no permitido. Usa: {allowed}")
         return v
 
-    @validator("order")
+    @field_validator("order")
     def validate_order(cls, v):
         if v.lower() not in ["asc", "desc"]:
             raise ValueError("El orden debe ser 'asc' o 'desc'")

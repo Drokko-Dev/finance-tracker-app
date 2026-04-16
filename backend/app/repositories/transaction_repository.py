@@ -56,12 +56,12 @@ def get_filtered_transactions(
 
     # --- Manejo de Sorting ---
     sort_map = {
-        "monto": Transaction.amount,
-        "tipo": Transaction.type,
-        "cuenta": Transaction.account_id,
-        "categoria": Transaction.category_id,
-        "fecha": Transaction.created_at,
-        "descripcion": Transaction.description
+        "amount": Transaction.amount,
+        "type": Transaction.type,
+        "account_id": Transaction.account_id,
+        "category_id": Transaction.category_id,
+        "created_at": Transaction.created_at,
+        "description": Transaction.description
     }
     
     column = sort_map.get(params.sort_by, Transaction.created_at)
