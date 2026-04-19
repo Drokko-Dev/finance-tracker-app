@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getTransactions } from "@/api/transactions"; // La ruta de tu archivo
+import { getTransactions, getSummarizedTransactions } from "@/api/transactions"; // La ruta de tu archivo
 
 // 1. Ya no necesitamos la interface TransactionListProps ni recibir el userId
 export const TransactionList = () => {
@@ -9,9 +9,9 @@ export const TransactionList = () => {
     isError,
   } = useQuery({
     // 2. La caché ahora es global para el usuario logueado en esta sesión
-    queryKey: ["transactions"],
+    queryKey: ["SummarizedTransactions"],
     // 3. Llamamos a la función sin parámetros (el backend leerá la cookie)
-    queryFn: getTransactions,
+    queryFn: () => getSummarizedTransactions(),
   });
 
   if (isLoading) return <p>Cargando transacciones de Finanz...</p>;
