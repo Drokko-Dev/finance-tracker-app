@@ -6,11 +6,11 @@ import { CABECERA_TABLA } from "./constants";
 import type { SortKeys } from "./tableTypes";
 import type { Transaction } from "@/types/transactions";
 
-// Definimos lo que el componente necesita recibir ahora
+
 interface FinanceTableProps {
-  data: Transaction[]; // La data que ya viene filtrada y ordenada del backend
-  onSort: (key: string) => void; // Función para cambiar el sortBy/order en el padre
-  sortConfig: { key: string; direction: "asc" | "desc" | null }; // Estado visual
+  data: Transaction[]; 
+  onSort: (key: string) => void; 
+  sortConfig: { key: string; direction: "asc" | "desc" | null }; 
 }
 
 const formatter = (rawDate: string) => {
@@ -18,10 +18,7 @@ const formatter = (rawDate: string) => {
   const formatted = DateFormatter.format(dateObj).replace(/\//g, "-");
   return formatted;
 };
-
 const FinanceTable = ({ data, onSort, sortConfig }: FinanceTableProps) => {
-  // Nota: Ya no usamos useSortableData(data) aquí dentro.
-  // La lógica reside en el componente donde se llama a useTransactions.
 
   return (
     <div className="w-full max-w-4xl mx-auto bg-transparent text-text-main rounded-lg shadow-xl">
