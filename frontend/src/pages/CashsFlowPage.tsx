@@ -7,6 +7,7 @@ import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { GeneralFilter, DateInput } from "@/components/GeneralFilter";
 import FinanceTable from "@/features/cashFlow/components/tableElemments/FinanceTable";
 import { Pagination } from "@/features/cashFlow/components/Pagination";
+import { useSortableData } from "@/features/cashFlow/components/tableElemments/useSortableData";
 interface OptionItem {
   id: number;
   name: string;
@@ -18,8 +19,14 @@ const fechaFormateada = hoy.toISOString().split("T")[0];
 console.log(fechaFormateada);
 
 export function CashsFlowPage() {
-  const [search, setSearch] = useState<string>("");
+  const { sortBy, order, handleSort, sortConfig } = useSortableData(
+    "created_at",
+    "asc",
+  );
+  const [search, setSearch] = useState<string | undefined>();
   const [selected, setSelected] = useState<OptionItem[]>([]);
+  const [type, setType] = useState();
+  const [account, setAccount] = useState();
   const [page, setPage] = useState<number>(1);
   const [initialdate, setinitialDate] = useState<Date>();
   const [finaldate, setfinalDate] = useState<Date>();
@@ -29,8 +36,12 @@ export function CashsFlowPage() {
     page: page,
     search: search,
     category: selectedIds,
+    type: type,
+    account: account,
     initialDate: initialdate,
-    finalDate: finaldate
+    finalDate: finaldate,
+    sortBy: sortBy,
+    order: order,
   });
   const handleChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
     setSearch(event.target.value);
@@ -55,28 +66,52 @@ export function CashsFlowPage() {
           <GlassCard className="overflow: visible md:min-w-95">
             <SearchBar onSvgClick={handleClick} onchangeInput={handleChange} />
             <div className="flex flex-col sm:flex-row gap-4 w-full md:mt-4 md:justify-center">
-              <GeneralFilter
-                label="categoria"
-                items={categories}
-                selected={selected}
-                onChange={setSelected}
-                multiple={true}
-              />
-              <DateInput
-                label="Fecha de inicio"
-                value={initialdate ? initialdate.toISOString().split("T")[0] : ""}
-                onChange={(e) => setinitialDate(new Date(e.target.value))}
-                min="2020-01-01"
-              />
-              <DateInput
-                label="Fecha de Fin"
-                value={finaldate ? finaldate.toISOString().split("T")[0] : ""}
-                onChange={(e) => setfinalDate(new Date(e.target.value))}
-                max={fechaFormateada}
-              />
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <GeneralFilter
+                  label="categoria"
+                  items={categories}
+                  selected={selected}
+                  onChange={setSelected}
+                  multiple={true}
+                />
+                <GeneralFilter
+                  label="cuentas"
+                  items={categories}
+                  selected={selected}
+                  onChange={setSelected}
+                  multiple={true}
+                />
+                <GeneralFilter
+                  label="tipo"
+                  items={categories}
+                  selected={selected}
+                  onChange={setSelected}
+                  multiple={true}
+                />
+                <DateInput
+                  label="Fecha de inicio"
+                  value={
+                    initialdate ? initialdate.toISOString().split("T")[0] : ""
+                  }
+                  onChange={(e) => setinitialDate(new Date(e.target.value))}
+                  min="2020-01-01"
+                />
+                <DateInput
+                  label="Fecha de Fin"
+                  value={finaldate ? finaldate.toISOString().split("T")[0] : ""}
+                  onChange={(e) => setfinalDate(new Date(e.target.value))}
+                  max={fechaFormateada}
+                />
+              </div>
             </div>
 
-            {data && <FinanceTable data={data.items} />}
+            {data && (
+              <FinanceTable
+                data={data?.items || []}
+                onSort={handleSort}
+                sortConfig={sortConfig}
+              />
+            )}
             {data?.pages > 1 ? (
               <Pagination
                 currentPage={page}
@@ -84,7 +119,7 @@ export function CashsFlowPage() {
                 onPageChange={onPageChange}
               />
             ) : (
-              ''
+              ""
             )}
           </GlassCard>
         </div>
