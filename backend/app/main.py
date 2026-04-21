@@ -5,7 +5,7 @@ from app.db.session import engine, Base
 # Importamos los modelos para que SQLAlchemy los reconozca al crear las tablas
 from app.models import Base
 # Importar routers
-from app.api.v1.endpoints import transactions, users, account, auth
+from app.api.v1.endpoints import transactions, users, account, auth, categories
 
 # Crear tablas (Solo para desarrollo inicial)
 Base.metadata.create_all(bind=engine)
@@ -26,6 +26,7 @@ app.include_router(auth.router, prefix="/api/v1", tags=["Auth"])
 app.include_router(transactions.router, prefix="/api/v1", tags=["Transactions"])
 app.include_router(users.router, prefix="/api/v1", tags=["Users"])
 app.include_router(account.router, prefix="/api/v1", tags=["Accounts"])
+app.include_router(categories.router, prefix="/api/v1", tags=["Categories"])
 
 @app.get("/", tags=["Root"])
 def root():
