@@ -6,11 +6,16 @@ import { CABECERA_TABLA } from "./constants";
 import type { SortKeys } from "./tableTypes";
 import type { Transaction } from "@/types/transactions";
 
-// Definimos lo que el componente necesita recibir ahora
+
+const COLORS = {
+  saving: 'text-yellow-400',
+  income: 'text-green-400',
+  expense: 'text-red-400'
+}
 interface FinanceTableProps {
-  data: Transaction[]; // La data que ya viene filtrada y ordenada del backend
-  onSort: (key: string) => void; // Función para cambiar el sortBy/order en el padre
-  sortConfig: { key: string; direction: "asc" | "desc" | null }; // Estado visual
+  data: Transaction[]; 
+  onSort: (key: string) => void; 
+  sortConfig: { key: string; direction: "asc" | "desc" | null }; 
 }
 
 const formatter = (rawDate: string) => {
@@ -18,13 +23,10 @@ const formatter = (rawDate: string) => {
   const formatted = DateFormatter.format(dateObj).replace(/\//g, "-");
   return formatted;
 };
-
 const FinanceTable = ({ data, onSort, sortConfig }: FinanceTableProps) => {
-  // Nota: Ya no usamos useSortableData(data) aquí dentro.
-  // La lógica reside en el componente donde se llama a useTransactions.
 
   return (
-    <div className="w-full max-w-4xl mx-auto bg-transparent text-text-main rounded-lg shadow-xl">
+    <div className="w-full  mx-auto bg-transparent text-text-main rounded-lg shadow-xl">
       {/* --- CONTROLES MÓVILES --- */}
       <div className="md:hidden w-full flex justify-end items-center mb-4 px-2 gap-2">
         <label className="text-text-subtle text-sm font-bold">
@@ -80,7 +82,6 @@ const FinanceTable = ({ data, onSort, sortConfig }: FinanceTableProps) => {
           </div>
         ))}
       </div>
-
       {/* --- CUERPO DE LA TABLA --- */}
       <div className="w-full mt-2 flex flex-col gap-4 md:gap-0">
         {data.map((item) => (
@@ -88,11 +89,8 @@ const FinanceTable = ({ data, onSort, sortConfig }: FinanceTableProps) => {
             key={item.id}
             className="w-full flex flex-col md:flex-row px-6 py-4 md:px-8 items-start border border-gray-800 md:border-0 md:border-b hover:bg-slate-800 transition-colors rounded-lg md:rounded-none gap-2 md:gap-4"
           >
-            <span className="flex-1 min-w-0 w-full text-center md:text-left font-mono text-green-400 text-lg md:text-base block md:inline">
+            <span className={`flex-1 min-w-0 w-full text-center md:text-left font-mono text-lg md:text-base block md:inline ${COLORS[item.type]}`}>
               ${item.amount}
-            </span>
-            <span className="flex-1 min-w-0 w-full text-center md:text-left font-mono text-green-400 text-lg md:text-base block md:inline">
-              {item.type}
             </span>
             <span className="flex-1 min-w-0 w-full text-center md:text-left font-mono text-green-400 text-lg md:text-base block md:inline">
               {item.account.name}

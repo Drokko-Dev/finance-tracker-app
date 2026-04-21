@@ -8,6 +8,7 @@ import { GeneralFilter, DateInput } from "@/components/GeneralFilter";
 import FinanceTable from "@/features/cashFlow/components/tableElemments/FinanceTable";
 import { Pagination } from "@/features/cashFlow/components/Pagination";
 import { useSortableData } from "@/features/cashFlow/components/tableElemments/useSortableData";
+import { useCategories } from "@/hooks/useCategories";
 interface OptionItem {
   id: number;
   name: string;
@@ -43,6 +44,7 @@ export function CashsFlowPage() {
     sortBy: sortBy,
     order: order,
   });
+  const {data: categories} = useCategories()
   const handleChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
     setSearch(event.target.value);
     console.log(event.target.value);
@@ -51,7 +53,7 @@ export function CashsFlowPage() {
   const handleClick: React.MouseEventHandler<SVGSVGElement> = () => {
     console.log(search);
   };
-  console.log(data);
+  console.log(data, categories);
 
   const onPageChange = (newPage: number) => {
     setPage(newPage);
@@ -67,27 +69,15 @@ export function CashsFlowPage() {
             <SearchBar onSvgClick={handleClick} onchangeInput={handleChange} />
             <div className="flex flex-col sm:flex-row gap-4 w-full md:mt-4 md:justify-center">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <GeneralFilter
+                
+                {categories? <GeneralFilter
                   label="categoria"
-                  items={categories}
+                  items={categories.data}
                   selected={selected}
                   onChange={setSelected}
                   multiple={true}
-                />
-                <GeneralFilter
-                  label="cuentas"
-                  items={categories}
-                  selected={selected}
-                  onChange={setSelected}
-                  multiple={true}
-                />
-                <GeneralFilter
-                  label="tipo"
-                  items={categories}
-                  selected={selected}
-                  onChange={setSelected}
-                  multiple={true}
-                />
+                />: ''}
+                
                 <DateInput
                   label="Fecha de inicio"
                   value={
