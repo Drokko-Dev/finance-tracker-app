@@ -6,30 +6,46 @@ interface query {
   page: number;
   search?: string;
   category?: string;
-  initialDate: Date | undefined;
-  finalDate: Date | undefined;
+  type?: string | undefined;
+  account?: string | undefined;
+  initialDate?: Date | undefined;
+  finalDate?: Date | undefined;
+  sortBy?: string;
+  order?: string
 }
 
 export function useTransactions({
   page,
   search,
   category,
-  initialDate, // Viene del estado de tu componente
+  type,
+  account,
+  initialDate,
   finalDate,
+  sortBy,
+  order,
 }: query) {
   return useQuery({
-    queryKey: ["transactions", { page, search, category, initialDate, finalDate }],
+    queryKey: [
+      "transactions",
+      { page, search, category, initialDate, finalDate, sortBy,  order},
+    ],
     queryFn: async () => {
       const { data } = await apiClient.get<Transaction[]>(
         "/api/v1/transactions/movimientos/",
         {
-          params: { 
-            page, 
-            search, 
+          params: {
+            page,
+            search,
             category,
-            // Mapeo de nombres y formateo a YYYY-MM-DD
-            start_date: initialDate ? initialDate.toISOString().split('T')[0] : null,
-            end_date: finalDate ? finalDate.toISOString().split('T')[0] : null,
+            type,
+            account,
+            sort_by: sortBy,
+            order: order,
+            start_date: initialDate
+              ? initialDate.toISOString().split("T")[0]
+              : null,
+            end_date: finalDate ? finalDate.toISOString().split("T")[0] : null,
           },
         },
       );

@@ -78,9 +78,9 @@ export function GeneralFilter<T extends OptionItem>({
       <Listbox value={selected} onChange={handleChange} multiple={multiple as any}>
         {({ open }) => (
           <>
-            <ListboxButton className="flex items-center gap-2 px-3 py-2 w-full sm:w-64 bg-white/5 border border-border-subtle rounded-xl hover:bg-white/10 transition-all text-sm font-medium text-text-main outline-none group">
+            <ListboxButton className="flex items-center gap-2 px-3 py-2 w-full sm:w-40 sm:h-8 bg-white/5 border border-border-subtle rounded-xl hover:bg-white/10 transition-all text-sm font-medium text-text-main outline-none group">
               <Calendar className="w-4 h-4 text-text-subtle" />
-              <span className="tracking-tight truncate text-lg flex-1 text-left">{getLabel()}</span>
+              <span className="tracking-tight truncate text-sm flex-1 text-left">{getLabel()}</span>
               <ChevronDown className={`w-4 h-4 text-text-subtle transition-transform ${open ? "rotate-180" : ""}`} />
             </ListboxButton>
 
@@ -165,9 +165,9 @@ interface DateInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 
 export const DateInput = ({ label, className, ...props }: DateInputProps) => {
   return (
-    <div className="flex flex-col gap-1.5 w-full sm:w-auto">
+    <div className="flex flex-col gap-1.5 w-full sm:w-40">
       {label && (
-        <label className="text-xs font-medium text-text-main ml-1">
+        <label className="text-xs font-medium text-text-main">
           {label}
         </label>
       )}
@@ -181,7 +181,7 @@ export const DateInput = ({ label, className, ...props }: DateInputProps) => {
             
             appearance-none outline-none w-full
             bg-white/5 border border-border-subtle rounded-xl
-            px-10 py-2 ttext-lg font-medium text-text-main
+            px-10 py-2 text-xs font-medium text-text-main
             transition-all duration-200
             
             /* Estados */

@@ -2,22 +2,31 @@
 import { type ChangeEvent } from "react";
 import { MoveDown, MoveUp } from "lucide-react";
 import { DateFormatter } from "@/constants/date_formatter";
-// Importaciones locales
-import { useSortableData } from "./useSortableData";
 import { CABECERA_TABLA } from "./constants";
-import type { TablaFinanzasProps, SortKeys } from "./tableTypes";
+import type { SortKeys } from "./tableTypes";
+import type { Transaction } from "@/types/transactions";
+
+
+const COLORS = {
+  saving: 'text-yellow-400',
+  income: 'text-green-400',
+  expense: 'text-red-400'
+}
+interface FinanceTableProps {
+  data: Transaction[]; 
+  onSort: (key: string) => void; 
+  sortConfig: { key: string; direction: "asc" | "desc" | null }; 
+}
 
 const formatter = (rawDate: string) => {
   const dateObj = new Date(rawDate);
   const formatted = DateFormatter.format(dateObj).replace(/\//g, "-");
   return formatted;
 };
-const FinanceTable = ({ data }: TablaFinanzasProps) => {
-  // Integramos la lógica a través del Custom Hook
-  const { datos, sortConfig, handleSort } = useSortableData(data);
+const FinanceTable = ({ data, onSort, sortConfig }: FinanceTableProps) => {
 
   return (
-    <div className="w-full max-w-4xl mx-auto bg-transparent text-text-main rounded-lg shadow-xl">
+    <div className="w-full  mx-auto bg-transparent text-text-main rounded-lg shadow-xl">
       {/* --- CONTROLES MÓVILES --- */}
       <div className="md:hidden w-full flex justify-end items-center mb-4 px-2 gap-2">
         <label className="text-text-subtle text-sm font-bold">
@@ -27,7 +36,7 @@ const FinanceTable = ({ data }: TablaFinanzasProps) => {
           className="bg-slate-800 text-text-main text-sm rounded-md px-3 py-1.5 border border-gray-600 outline-none focus:border-blue-400 transition-colors"
           value={sortConfig.key || ""}
           onChange={(e: ChangeEvent<HTMLSelectElement>) =>
-            handleSort(e.target.value as SortKeys)
+            onSort(e.target.value as SortKeys)
           }
         >
           <option value="" disabled className="text-text-main">
@@ -41,7 +50,7 @@ const FinanceTable = ({ data }: TablaFinanzasProps) => {
         </select>
 
         <button
-          onClick={() => sortConfig.key && handleSort(sortConfig.key)}
+          onClick={() => sortConfig.key && onSort(sortConfig.key)}
           disabled={!sortConfig.key}
           className="p-1.5 bg-slate-800 hover:bg-slate-700 border border-gray-600 rounded-md text-blue-400 transition-colors disabled:opacity-50"
         >
@@ -58,8 +67,7 @@ const FinanceTable = ({ data }: TablaFinanzasProps) => {
         {CABECERA_TABLA.map((col) => (
           <div
             key={col.key}
-            onClick={() => handleSort(col.key)}
-            // Cambiamos la justificación para que todas empiecen a la izquierda (justify-start) y coincidan con el md:text-left del cuerpo
+            onClick={() => onSort(col.key)}
             className="flex items-center gap-2 cursor-pointer hover:text-blue-400 transition-all duration-200 select-none flex-1 justify-start"
           >
             {col.label}
@@ -74,27 +82,21 @@ const FinanceTable = ({ data }: TablaFinanzasProps) => {
           </div>
         ))}
       </div>
-
       {/* --- CUERPO DE LA TABLA --- */}
       <div className="w-full mt-2 flex flex-col gap-4 md:gap-0">
-        {datos.map((item) => (
+        {data.map((item) => (
           <div
             key={item.id}
-            // Se eliminó 'justify-between' ya que usamos flex-1 y gap-4
             className="w-full flex flex-col md:flex-row px-6 py-4 md:px-8 items-start border border-gray-800 md:border-0 md:border-b hover:bg-slate-800 transition-colors rounded-lg md:rounded-none gap-2 md:gap-4"
           >
-            <span className="flex-1 min-w-0 w-full text-center md:text-left font-mono text-green-400 text-lg md:text-base block md:inline">
-              ${item.amount.toFixed(2)}
-            </span>
-            <span className="flex-1 min-w-0 w-full text-center md:text-left font-mono text-green-400 text-lg md:text-base block md:inline">
-              {item.type}
+            <span className={`flex-1 min-w-0 w-full text-center md:text-left font-mono text-lg md:text-base block md:inline ${COLORS[item.type]}`}>
+              ${item.amount}
             </span>
             <span className="flex-1 min-w-0 w-full text-center md:text-left font-mono text-green-400 text-lg md:text-base block md:inline">
               {item.account.name}
             </span>
 
             <span className="flex-1 min-w-0 w-full text-center md:text-left text-text-main text-sm md:text-base block md:inline">
-              <span className="md:hidden font-bold text-gray-500 mr-2"></span>
               {item.category.name}
             </span>
 
@@ -105,8 +107,7 @@ const FinanceTable = ({ data }: TablaFinanzasProps) => {
               {formatter(item.created_at)}
             </span>
 
-            {/* Corregí md:wrap-break-word a md:break-words que es la clase válida de Tailwind */}
-            <span className="flex-1 min-w-0 w-full text-center md:text-left text-text-main leading-relaxed break-all md:wrap-break-word italic md:not-italic block md:inline">
+            <span className="flex-1 min-w-0 w-full text-center md:text-left text-text-main leading-relaxed break-all md:break-words italic md:not-italic block md:inline">
               {item.description}
             </span>
           </div>
