@@ -1,5 +1,9 @@
 import apiClient from "./apiClient";
-import type { Transaction, TransactionCreate } from "../types/transactions";
+import type {
+  DashboardResponse,
+  Transaction,
+  TransactionCreate,
+} from "../types/transactions";
 
 // Ya no pedimos userId como parámetro
 export const getTransactions = async (): Promise<Transaction[]> => {
@@ -11,14 +15,13 @@ export const getTransactions = async (): Promise<Transaction[]> => {
 export const getSummarizedTransactions = async (
   account_id?: number,
   month_id?: string,
-): Promise<Transaction[]> => {
-  // Ojo aquí: asegúrate de usar la ruta exacta (agregué el "/" final por si acaso)
-  const response = await apiClient.get<Transaction[]>(`/api/v1/transactions/`, {
-    params: {
-      account_id: account_id,
-      month_id: month_id,
+): Promise<DashboardResponse> => {
+  const response = await apiClient.get<DashboardResponse>(
+    `/api/v1/transactions/summarized/`,
+    {
+      params: { account_id, month_id },
     },
-  });
+  );
   return response.data;
 };
 

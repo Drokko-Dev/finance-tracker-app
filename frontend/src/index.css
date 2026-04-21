@@ -8,6 +8,7 @@
   --color-text-subtle: #64748b; /* Slate 500 */
   --color-accent: #38bdf8; /* Cian */
   --color-accent-end: #6366f1; /* Indigo */
+  --color-principal: #06b6d4;
   --font-sans:
     "Bricolage Grotesque", "Plus Jakarta Sans", "Inter", system-ui, sans-serif;
 }
@@ -19,8 +20,9 @@
   /* Un gris casi negro para el fondo principal (opcional, para dar profundidad) */
   --color-main-bg: #09090a;
   --color-text-main: #ffffff;
-  --color-text-subtle: #94a3b8;
+  --color-text-subtle: #94a3b8; /* #94a3b8 */ /* #808ea1 */
   --color-border-subtle: rgba(255, 255, 255, 0.08);
+  --color-principal: #06b6d4; /* Cian */
 }
 
 @layer base {
