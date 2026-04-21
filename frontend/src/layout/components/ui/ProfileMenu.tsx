@@ -97,19 +97,22 @@ export const UserProfileMenu = () => {
             href="#"
             className="flex items-center gap-2.5 px-4 py-2 text-sm font-medium text-[var(--color-text-subtle)] hover:text-[var(--color-text-main)] hover:bg-[var(--color-border-subtle)] transition-colors"
           >
-            <User className="w-4 h-4" /> Mi Perfil
+            <User className="w-4 h-4" />
+            <span className="-translate-y-[-1px]">Mi Perfil</span>
           </a>
           <a
             href="#"
             className="flex items-center gap-2.5 px-4 py-2 text-sm font-medium text-[var(--color-text-subtle)] hover:text-[var(--color-text-main)] hover:bg-[var(--color-border-subtle)] transition-colors"
           >
-            <Settings className="w-4 h-4" /> Configuración
+            <Settings className="w-4 h-4" />
+            <span className="-translate-y-[-1px]">Configuración</span>
           </a>
           <a
             href="#"
             className="flex items-center gap-2.5 px-4 py-2 text-sm font-medium text-[var(--color-text-subtle)] hover:text-[var(--color-text-main)] hover:bg-[var(--color-border-subtle)] transition-colors"
           >
-            <Receipt className="w-4 h-4" /> Facturación
+            <Receipt className="w-4 h-4" />
+            <span className="-translate-y-[-1px]">Facturación</span>
           </a>
 
           <div className="h-px w-full bg-[var(--color-border-subtle)] my-1.5"></div>

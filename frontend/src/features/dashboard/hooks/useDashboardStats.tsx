@@ -12,8 +12,11 @@ export const useDashboardStats = (accountId?: number, monthId?: string) => {
   const { data: transactions, isLoading } = useQuery({
     queryKey: ["SummarizedTransactions", accountId, monthId],
     queryFn: () => getSummarizedTransactions(accountId, monthId),
-    enabled: !!accountId,
   });
+
+  const totalIncome = transactions?.total_income || 0;
+  const totalExpense = transactions?.total_expense || 0;
+  const totalBalance = transactions?.total_balance || 0;
 
   const { data: accounts, isLoading: isLoadingAccounts } = useQuery({
     queryKey: ["Accounts"],
@@ -43,18 +46,6 @@ export const useDashboardStats = (accountId?: number, monthId?: string) => {
       name: nameMonth[0].toUpperCase() + nameMonth.slice(1) + " " + year,
     });
   });
-
-  const totalIncome =
-    transactions
-      ?.filter((type) => type.type === "income")
-      .reduce((acc, curr) => acc + curr.amount, 0) || 0;
-
-  const totalExpense =
-    transactions
-      ?.filter((type) => type.type === "expense")
-      .reduce((acc, curr) => acc + Math.abs(curr.amount), 0) || 0;
-
-  const totalBalance = totalIncome - totalExpense;
 
   const cards = [
     {
