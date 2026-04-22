@@ -9,6 +9,8 @@ import FinanceTable from "@/features/cashFlow/components/tableElemments/FinanceT
 import { Pagination } from "@/features/cashFlow/components/Pagination";
 import { useSortableData } from "@/features/cashFlow/components/tableElemments/useSortableData";
 import { useCategories } from "@/hooks/useCategories";
+import { useAccount } from "@/hooks/useAccount";
+import useDebounce from "@/hooks/useDebounce";
 interface OptionItem {
   id: number;
   name: string;
@@ -24,7 +26,9 @@ export function CashsFlowPage() {
     "created_at",
     "asc",
   );
+  const [filter, setFilter] = useState(false);
   const [search, setSearch] = useState<string | undefined>();
+  const debouncedSearchTerm = useDebounce(search, 600);
   const [selected, setSelected] = useState<OptionItem[]>([]);
   const [type, setType] = useState();
   const [account, setAccount] = useState();
@@ -35,7 +39,7 @@ export function CashsFlowPage() {
     selected.length > 0 ? selected.map((obj) => obj.id).join(",") : undefined;
   const { data, isLoading } = useTransactions({
     page: page,
-    search: search,
+    search: debouncedSearchTerm,
     category: selectedIds,
     type: type,
     account: account,
@@ -44,7 +48,8 @@ export function CashsFlowPage() {
     sortBy: sortBy,
     order: order,
   });
-  const {data: categories} = useCategories()
+  const { data: categories } = useCategories();
+  const { data: banks } = useAccount();
   const handleChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
     setSearch(event.target.value);
     console.log(event.target.value);
@@ -58,7 +63,7 @@ export function CashsFlowPage() {
   const onPageChange = (newPage: number) => {
     setPage(newPage);
   };
-
+  console.log(banks);
   return (
     <>
       {isLoading ? (
@@ -67,33 +72,42 @@ export function CashsFlowPage() {
         <div className="min-h-screen bg-main-bg md:p-2 font-sans md:min-w-100 ">
           <GlassCard className="overflow: visible md:min-w-95">
             <SearchBar onSvgClick={handleClick} onchangeInput={handleChange} />
-            <div className="flex flex-col sm:flex-row gap-4 w-full md:mt-4 md:justify-center">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                
-                {categories? <GeneralFilter
-                  label="categoria"
-                  items={categories.data}
-                  selected={selected}
-                  onChange={setSelected}
-                  multiple={true}
-                />: ''}
-                
-                <DateInput
-                  label="Fecha de inicio"
-                  value={
-                    initialdate ? initialdate.toISOString().split("T")[0] : ""
-                  }
-                  onChange={(e) => setinitialDate(new Date(e.target.value))}
-                  min="2020-01-01"
-                />
-                <DateInput
-                  label="Fecha de Fin"
-                  value={finaldate ? finaldate.toISOString().split("T")[0] : ""}
-                  onChange={(e) => setfinalDate(new Date(e.target.value))}
-                  max={fechaFormateada}
-                />
+            {filter ? (
+              <div className="flex flex-col sm:flex-row gap-4 w-full md:mt-4 md:justify-center">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {categories ? (
+                    <GeneralFilter
+                      label="categoria"
+                      items={categories.data}
+                      selected={selected}
+                      onChange={setSelected}
+                      multiple={true}
+                    />
+                  ) : (
+                    ""
+                  )}
+
+                  <DateInput
+                    label="Fecha de inicio"
+                    value={
+                      initialdate ? initialdate.toISOString().split("T")[0] : ""
+                    }
+                    onChange={(e) => setinitialDate(new Date(e.target.value))}
+                    min="2020-01-01"
+                  />
+                  <DateInput
+                    label="Fecha de Fin"
+                    value={
+                      finaldate ? finaldate.toISOString().split("T")[0] : ""
+                    }
+                    onChange={(e) => setfinalDate(new Date(e.target.value))}
+                    max={fechaFormateada}
+                  />
+                </div>
               </div>
-            </div>
+            ) : (
+              ""
+            )}
 
             {data && (
               <FinanceTable
