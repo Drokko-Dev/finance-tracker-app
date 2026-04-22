@@ -33,7 +33,6 @@ class DashboardSummaryResponse(BaseModel):
     total_income: float
     total_expense: float
     total_balance: float
-    transactions: List[Transaction]
     
 class AccountRead(BaseModel):
     id: int

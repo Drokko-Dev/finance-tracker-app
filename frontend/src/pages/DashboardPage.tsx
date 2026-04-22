@@ -5,6 +5,7 @@ import { Calendar, Wallet, Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import type { Bank } from "@/types/Accounts";
 import { WealthEvolutionChart } from "@/features/dashboard/components/WealthEvolutionCharts";
+import { RecentTransactions } from "@/features/dashboard/components/RecentTransactions";
 
 interface FilterOptions {
   id: number | string;
@@ -37,25 +38,10 @@ export const DashboardPage = () => {
     { id: "ALL", name: "Año Mes" },
     ...filterYearMonths,
   ];
-  const pruebaMeses = [
-    { id: "ALL", name: "Cuentas Bancarias" },
-    { id: "2024-01", name: "Enero 2024" },
-    { id: "2024-02", name: "Febrero 2024" },
-    { id: "2024-03", name: "Marzo 2024" },
-    { id: "2024-04", name: "Abril 2024" },
-    { id: "2024-05", name: "Mayo 2024" },
-    { id: "2024-06", name: "Junio 2024" },
-    { id: "2024-07", name: "Julio 2024" },
-    { id: "2024-08", name: "Agosto 2024" },
-    { id: "2024-09", name: "Septiembre 2024" },
-    { id: "2024-10", name: "Octubre 2024" },
-    { id: "2024-11", name: "Noviembre 2024" },
-    { id: "2024-12", name: "Diciembre 2024" },
-  ];
 
   useEffect(() => {
     if (bankAccounts.length > 0 && !selectedAccount) {
-      setSelectedAccount(accountOptions[0]); // Selecciona "Santander" por defecto
+      setSelectedAccount(accountOptions[0]);
     }
     if (filterYearMonths && filterYearMonths.length > 0 && !selectedMonth) {
       setSelectedMonth(filterYearMonths[0]);
@@ -74,39 +60,30 @@ export const DashboardPage = () => {
           </p>
         </div>
         <div className="flex sm:flex-row flex-col items-center gap-2">
-          {/* 2. LA MAGIA: Condicionamos el renderizado del filtro */}
           {isLoadingAccounts ? (
-            // Mientras carga, mostramos un pequeño texto o spinner para que no salte la pantalla
-            <div className="flex items-center gap-2 px-3 py-2 text-sm text-[var(--color-text-subtle)]">
+            <div className="flex items-center gap-2 px-3 py-2 text-sm text-text-subtle">
               <Loader2 className="w-4 h-4 animate-spin" />
               Cargando cuentas...
             </div>
           ) : selectedAccount ? (
-            // Cuando termina de cargar Y tiene cuentas, dibujamos el filtro REAL
             <FilterDashboard
               options={accountOptions}
-              icon={
-                <Wallet className="w-4 h-4 text-[var(--color-text-subtle)]" />
-              }
-              value={selectedAccount} // <- Le pasamos el valor
-              onChange={(opcion) => setSelectedAccount(opcion as Bank)} // <- Le pasamos la función para cambiarlo
+              icon={<Wallet className="w-4 h-4 text-text-subtle" />}
+              value={selectedAccount}
+              onChange={(opcion) => setSelectedAccount(opcion as Bank)}
             />
           ) : null}{" "}
           {isLoadingYearMonths ? (
-            // Mientras carga, mostramos un pequeño texto o spinner para que no salte la pantalla
-            <div className="flex items-center gap-2 px-3 py-2 text-sm text-[var(--color-text-subtle)]">
+            <div className="flex items-center gap-2 px-3 py-2 text-sm text-text-subtle">
               <Loader2 className="w-4 h-4 animate-spin" />
               Cargando meses...
             </div>
           ) : selectedMonth ? (
-            // Cuando termina de cargar Y tiene cuentas, dibujamos el filtro REAL
             <FilterDashboard
               options={yearMonthOptions}
-              icon={
-                <Calendar className="w-4 h-4 text-[var(--color-text-subtle)]" />
-              }
-              value={selectedMonth} // <- Le pasamos el valor
-              onChange={setSelectedMonth} // <- Le pasamos la función para cambiarlo
+              icon={<Calendar className="w-4 h-4 text-text-subtle" />}
+              value={selectedMonth}
+              onChange={setSelectedMonth}
             />
           ) : null}{" "}
         </div>
@@ -117,6 +94,7 @@ export const DashboardPage = () => {
           accountId={accountIdToSend}
           monthId={yearMonthIdToSend}
         />
+        <RecentTransactions />
       </main>
     </div>
   );
