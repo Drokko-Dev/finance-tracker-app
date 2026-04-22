@@ -86,7 +86,7 @@ export const Pagination: React.FC<PaginationProps> = ({
       {currentPage > 3 && (
         <button
           onClick={() => onPageChange(1)}
-          className="flex items-center justify-center w-10 h-10 text-gray-400 bg-[#4b3133] hover:bg-[#5c3c3f] transition-colors border-r border-gray-700"
+          className="flex items-center justify-center w-10 h-10 text-gray-400 bg-[#4b3133] hover:bg-[#5c3c3f] transition-colors border-r border-gray-700 cursor-pointer"
           title="Primera página"
         >
           1
@@ -97,7 +97,7 @@ export const Pagination: React.FC<PaginationProps> = ({
       <button
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
-        className="flex items-center justify-center w-10 h-10 text-white bg-[#c94b4e] disabled:opacity-50 hover:bg-[#d95659] transition-colors border-l border-gray-700"
+        className="flex items-center justify-center w-10 h-10 text-white bg-[#c94b4e] disabled:opacity-50 hover:bg-[#d95659] transition-colors border-l border-gray-700 cursor-pointer"
         title="Página anterior"
       >
         <svg
@@ -126,7 +126,7 @@ export const Pagination: React.FC<PaginationProps> = ({
         <button
           key={page}
           onClick={() => onPageChange(page)}
-          className={`flex items-center justify-center w-10 h-10 border-l border-gray-700 transition-colors ${
+          className={`flex items-center justify-center w-10 h-10 border-l border-gray-700 transition-colors cursor-pointer ${
             currentPage === page
               ? "bg-[#1c1d21] text-white" // Color activo
               : "text-gray-300 hover:bg-[#383a40]"
@@ -144,7 +144,7 @@ export const Pagination: React.FC<PaginationProps> = ({
       {currentPage < totalPages - 2 && (
         <button
           onClick={() => onPageChange(totalPages)}
-          className="flex items-center justify-center w-10 h-10 text-white bg-[#c94b4e] hover:bg-[#d95659] transition-colors border-l border-gray-700"
+          className="flex items-center justify-center w-10 h-10 text-white bg-[#c94b4e] hover:bg-[#d95659] transition-colors border-l border-gray-700 cursor-pointer"
           title="Última página"
         >
           {totalPages}
