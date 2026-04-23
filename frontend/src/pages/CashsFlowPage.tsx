@@ -10,15 +10,11 @@ import { useSortableData } from "@/features/cashFlow/components/tableElemments/u
 import { useCategories } from "@/hooks/useCategories";
 import { useAccount } from "@/hooks/useAccount";
 import useDebounce from "@/hooks/useDebounce";
-interface OptionItem {
-  id: number;
-  name: string;
-}
+import type { OptionItem } from "@/types/Category";
 
 const hoy = new Date(Date.now());
 const fechaFormateada = hoy.toISOString().split("T")[0];
 
-console.log(fechaFormateada);
 
 export function CashsFlowPage() {
   const { sortBy, order, handleSort, sortConfig } = useSortableData(
@@ -57,7 +53,7 @@ export function CashsFlowPage() {
   const handleClick: React.MouseEventHandler<SVGSVGElement> = () => {
     console.log(search);
   };
-  console.log(data, categories);
+  console.log(data);
 
   const onPageChange = (newPage: number) => {
     setPage(newPage);
@@ -115,7 +111,7 @@ export function CashsFlowPage() {
                 sortConfig={sortConfig}
               />
             )}
-            {data?.pages > 1 ? (
+            {data?.pages != null ? (
               <Pagination
                 currentPage={page}
                 totalPages={data ? data.pages : 0}

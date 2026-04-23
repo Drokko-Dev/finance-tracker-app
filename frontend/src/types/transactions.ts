@@ -1,11 +1,22 @@
+import type { Account } from "./Accounts";
+import type { OptionItem } from "./Category";
+
 export interface Transaction {
   id: number;
   amount: number;
   description: string;
   type: "expense" | "income" | "saving";
-  category_id: number;
-  account_id: number;
+  category: OptionItem;
+  account: Account;
   created_at: string;
+}
+
+export interface dataTransaction {
+  items: Transaction[];
+  page: number;
+  pages: number | null;
+  size: number;
+  total: number; 
 }
 
 export interface TransactionCreate {
