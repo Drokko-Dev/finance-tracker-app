@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "ignoreDeprecations": "6.0",
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
     "target": "ES2020", // por defecto estaba en 2023, pero es mejor bajar un poco para mejorar la compatibilidad con navegadores más antiguos
     "useDefineForClassFields": true,
