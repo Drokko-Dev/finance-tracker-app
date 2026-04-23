@@ -10,7 +10,6 @@ from app.core.security import get_current_user_id
 
 router = APIRouter(prefix="/transactions", tags=["transactions"])
 
-# Corrección 1: Cambiamos "/transactions" por "/"
 @router.get("/", response_model=list[Transaction])
 def read_transactions(
     user_id: int = Depends(get_current_user_id), 

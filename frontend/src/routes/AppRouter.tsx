@@ -30,7 +30,9 @@ const LoginPage = lazy(() =>
 
 export const AppRouter = () => {
   return (
-    <Suspense fallback={<LoadingSpinner />}>
+    <Suspense
+      fallback={<LoadingSpinner fullScreen message="Preparando tu panel..." />}
+    >
       <Routes>
         {/* Ruta pública: Login (Sin menú lateral) */}
         <Route path="/login" element={<LoginPage />} />

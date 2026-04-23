@@ -1,4 +1,4 @@
-import { useState, Fragment } from "react";
+import { Fragment } from "react";
 import {
   Listbox,
   ListboxButton,
@@ -29,7 +29,7 @@ export const FilterDashboard = ({
       <Listbox value={value} onChange={onChange}>
         {({ open }) => (
           <>
-            <ListboxButton className="flex items-center gap-2 px-3 py-2 w-full sm:w-auto bg-white/5 border border-border-subtle rounded-xl hover:bg-white/10 transition-all text-sm font-medium text-text-main cursor-pointer hover:shadow-md hover:-translate-y-0.5 active:scale-95 outline-none group">
+            <ListboxButton className="flex items-center gap-2 px-3 py-2 w-full sm:w-auto bg-card-bg border border-border-subtle rounded-xl hover:bg-white/10 transition-all text-sm font-medium text-text-main cursor-pointer hover:shadow-md hover:-translate-y-0.5 active:scale-95 outline-none group shadow-sm">
               {icon}
               <span className="tracking-tight">{value.name}</span>
               <ChevronDown
@@ -46,7 +46,7 @@ export const FilterDashboard = ({
               leaveFrom="transform opacity-100 scale-100"
               leaveTo="transform opacity-0 scale-95"
             >
-              <ListboxOptions className="absolute right-0 z-50 mt-2 w-origin-top-right origin-top-right origin-top-right origin-top-right bg-card-bg border border-border-subtle rounded-xl shadow-2xl overflow-hidden focus:outline-none py-1">
+              <ListboxOptions className="absolute right-0 z-50 mt-2 w-origin-top-right origin-top-right bg-card-bg border border-border-subtle rounded-xl shadow-2xl overflow-hidden focus:outline-none py-1">
                 {/* 1. PARTE SUPERIOR FIJA: "Seleccionar Todo" standalone. 
                      No necesita sticky, ya que es el primer elemento en un contenedor fijo.
                      Pero aún necesita un fondo sólido para ocaciones en que los scroll pasaran.
