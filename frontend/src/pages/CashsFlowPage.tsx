@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { SearchBar } from "@/components/ui/SearchBar";
-import { categories } from "@/constants/categories";
 import { useTransactions } from "@/hooks/useTransactions";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { GeneralFilter, DateInput } from "@/components/GeneralFilter";
