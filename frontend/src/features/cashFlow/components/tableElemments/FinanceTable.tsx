@@ -28,12 +28,12 @@ const FinanceTable = ({ data, onSort, sortConfig }: FinanceTableProps) => {
   return (
     <div className="w-full  mx-auto bg-transparent text-text-main rounded-lg shadow-xl">
       {/* --- CONTROLES MÓVILES --- */}
-      <div className="md:hidden w-full flex justify-end items-center mb-4 px-2 gap-2">
+      <div className="md:hidden w-full flex justify-end items-center mb-4 px-2 gap-2 pt-6">
         <label className="text-text-subtle text-sm font-bold">
           Ordenar por:
         </label>
         <select
-          className="bg-slate-800 text-text-main text-sm rounded-md px-3 py-1.5 border border-gray-600 outline-none focus:border-blue-400 transition-colors"
+          className="bg-main-bg text-text-main text-sm rounded-md px-3 py-1.5 border border-gray-600 outline-none focus:border-blue-400 transition-colors"
           value={sortConfig.key || ""}
           onChange={(e: ChangeEvent<HTMLSelectElement>) =>
             onSort(e.target.value as SortKeys)
@@ -52,7 +52,7 @@ const FinanceTable = ({ data, onSort, sortConfig }: FinanceTableProps) => {
         <button
           onClick={() => sortConfig.key && onSort(sortConfig.key)}
           disabled={!sortConfig.key}
-          className="p-1.5 bg-slate-800 hover:bg-slate-700 border border-gray-600 rounded-md text-blue-400 transition-colors disabled:opacity-50"
+          className="p-1.5 bg-main-bg hover:bg-hover border border-gray-600 rounded-md text-blue-600 transition-colors disabled:opacity-50"
         >
           {sortConfig.direction === "asc" ? (
             <MoveUp size={16} />
@@ -87,7 +87,7 @@ const FinanceTable = ({ data, onSort, sortConfig }: FinanceTableProps) => {
         {data.map((item) => (
           <div
             key={item.id}
-            className="w-full flex flex-col md:flex-row px-6 py-4 md:px-8 items-start border border-gray-800 md:border-0 md:border-b hover:bg-slate-800 transition-colors rounded-lg md:rounded-none gap-2 md:gap-4"
+            className="w-full flex flex-col md:flex-row px-6 py-4 md:px-8 items-start border border-gray-800 md:border-0 md:border-b hover:bg-hover transition-colors rounded-lg md:rounded-none gap-2 md:gap-4"
           >
             <span className={`flex-1 min-w-0 w-full text-center md:text-left font-mono text-lg md:text-base block md:inline ${COLORS[item.type]}`}>
               ${item.amount}

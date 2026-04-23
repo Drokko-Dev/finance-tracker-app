@@ -12,6 +12,7 @@
   --color-expense: #dc2626; /* Rojo 600: Fuerte y alerta, excelente contraste */
   --color-income: #059669;
   --color-hover-movement: rgba(0, 0, 0, 0.04);
+  --color-hover: #d6d6ff;
   --font-sans:
     "Bricolage Grotesque", "Plus Jakarta Sans", "Inter", system-ui, sans-serif;
 }
@@ -29,6 +30,7 @@
   --color-expense: #ef4444; /* Rojo */
   --color-income: #13d192;
   --color-hover-movement: rgba(255, 255, 255, 0.04);
+  --color-hover: #1E293B;
 }
 
 @layer base {
