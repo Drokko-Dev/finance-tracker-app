@@ -58,7 +58,6 @@ export function CashsFlowPage() {
   const onPageChange = (newPage: number) => {
     setPage(newPage);
   };
-  console.log(banks);
   return (
     <>
       {isLoading ? (
