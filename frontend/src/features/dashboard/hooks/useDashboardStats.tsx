@@ -17,6 +17,12 @@ export const useDashboardStats = (accountId?: number, monthId?: string) => {
   const totalIncome = transactions?.total_income || 0;
   const totalExpense = transactions?.total_expense || 0;
   const totalBalance = transactions?.total_balance || 0;
+  const percentExpense =
+    totalIncome > 0
+      ? Number(((totalExpense / totalIncome) * 100).toFixed(1))
+      : totalExpense > 0
+        ? 100
+        : 0;
 
   const recentTransactions =
     transactions?.recent_transactions?.map((t: any) => ({
@@ -107,5 +113,6 @@ export const useDashboardStats = (accountId?: number, monthId?: string) => {
     isLoadingYearMonths,
     recentTransactions,
     categories_expense,
+    percentExpense,
   };
 };

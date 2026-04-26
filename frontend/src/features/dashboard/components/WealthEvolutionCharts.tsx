@@ -31,7 +31,7 @@ export const WealthEvolutionChart = ({
   accountId,
   monthId,
 }: WealthEvolutionChartProps) => {
-  const [period, setPeriod] = useState("1Y");
+  const [period, setPeriod] = useState("1M");
   const periodOptions = ["1M", "3M", "1Y"];
 
   const { data: chartData = [], isLoading } = useQuery<EvolutionPoint[]>({

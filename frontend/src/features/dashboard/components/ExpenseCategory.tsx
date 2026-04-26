@@ -1,6 +1,12 @@
 import React, { useMemo } from "react";
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
-import { ShieldCheck } from "lucide-react";
+import {
+  ShieldCheck,
+  AlertTriangle,
+  AlertOctagon,
+  Info,
+  AlertCircle,
+} from "lucide-react";
 // 👇 Importa tu configuración desde donde la tengas guardada
 import { categoryConfig } from "@/assets/categoryConfig";
 
@@ -42,26 +48,25 @@ const CustomTooltip = ({ active, payload }: any) => {
   return null;
 };
 
-export const ExpenseCategory = ({ data }: { data: CategoryExpense[] }) => {
+export const ExpenseCategory = ({
+  data,
+  percentExpense,
+}: {
+  data: CategoryExpense[];
+  percentExpense: number;
+}) => {
   // Procesamos los datos para calcular porcentajes y asignar colores
   const { processedData, totalAmount } = useMemo(() => {
     if (!data || data.length === 0)
       return { processedData: [], totalAmount: 0 };
 
     const total = data.reduce((acc, curr) => acc + curr.total_amount, 0);
-
     const processed = data.map((item) => {
-      // Buscamos la config de la categoría (o usamos "Otros" si no existe)
       const config =
         categoryConfig[item.category_name] || categoryConfig["Otros"];
 
-      // Convertimos el "text-orange-400" a "bg-orange-400" para el punto de la leyenda
       const bgClass = config.color.replace("text-", "bg-");
-
-      // Obtenemos el hex para Recharts
       const hexColor = tailwindToHex[config.color] || "#94a3b8";
-
-      // Calculamos el porcentaje
       const percentage = Math.round((item.total_amount / total) * 100);
 
       return {
@@ -71,13 +76,64 @@ export const ExpenseCategory = ({ data }: { data: CategoryExpense[] }) => {
         hexColor,
       };
     });
-
-    // Ordenamos de mayor a menor gasto para que el gráfico se vea mejor
     processed.sort((a, b) => b.total_amount - a.total_amount);
 
     return { processedData: processed, totalAmount: total };
   }, [data]);
 
+  const getHealthStatus = (percent: number) => {
+    if (percent >= 100) {
+      return {
+        title: "Alerta Crítica",
+        message: `Tus gastos (${percent}%) superan o igualan tus ingresos. ¡Cuidado con las deudas!`,
+        icon: AlertOctagon,
+        color: "text-rose-500",
+        bg: "bg-rose-500/10",
+        border: "border-rose-500/20",
+      };
+    }
+    if (percent >= 80) {
+      return {
+        title: "Riesgo Alto", // Lo diferenciamos del nivel de 100%
+        message: `Tus gastos (${percent}%) se acercan peligrosamente a tus ingresos. ¡Modera tus compras!`,
+        icon: AlertCircle,
+        color: "text-orange-500",
+        bg: "bg-orange-500/10",
+        border: "border-orange-500/20",
+      };
+    }
+    if (percent >= 50) {
+      return {
+        title: "Presupuesto Ajustado",
+        message: `Estás gastando el ${percent}% de tus ingresos. Intenta reducir gastos no esenciales.`,
+        icon: AlertTriangle,
+        color: "text-amber-500",
+        bg: "bg-amber-500/10",
+        border: "border-amber-500/20",
+      };
+    }
+    if (percent >= 30) {
+      return {
+        title: "Salud Financiera Estable",
+        message: `Tus gastos (${percent}%) están bajo control. ¡Buen margen para ahorrar!`,
+        icon: Info,
+        color: "text-blue-500",
+        bg: "bg-blue-500/10",
+        border: "border-blue-500/20",
+      };
+    }
+    // De 0 a 29.9%
+    return {
+      title: "Salud Financiera Excelente",
+      message: `¡Increíble! Gastas solo el ${percent}% de lo que ganas. Nivel maestro ahorrador.`,
+      icon: ShieldCheck,
+      color: "text-emerald-500",
+      bg: "bg-emerald-500/10",
+      border: "border-emerald-500/20",
+    };
+  };
+
+  const health = getHealthStatus(percentExpense);
   return (
     <div className="bg-card-bg border border-border-subtle rounded-3xl p-6 w-full flex flex-col shadow-xl">
       <h2 className="text-lg font-bold text-text-main tracking-tight mb-6">
@@ -120,7 +176,7 @@ export const ExpenseCategory = ({ data }: { data: CategoryExpense[] }) => {
       </div>
 
       {/* --- LEYENDA DINÁMICA --- */}
-      <div className="flex flex-col gap-3 mt-8">
+      <div className="flex flex-col gap-3 mt-8 max-h-[220px] overflow-y-auto pr-2 custom-scrollbar">
         {processedData.map((item) => (
           <div
             key={item.category_name}
@@ -145,18 +201,21 @@ export const ExpenseCategory = ({ data }: { data: CategoryExpense[] }) => {
         ))}
       </div>
 
-      {/* --- TARJETA DE SALUD FINANCIERA --- */}
-      <div className="rounded-2xl bg-principal/5 border border-principal/10 p-5 mt-8 flex gap-4">
-        <div className="flex-shrink-0 w-11 h-11 rounded-full bg-principal/10 flex items-center justify-center">
-          <ShieldCheck className="w-5 h-5 text-principal" />
+      {/* --- TARJETA DE SALUD FINANCIERA DINÁMICA --- */}
+      <div
+        className={`rounded-2xl border p-5 mt-8 flex gap-4 ${health.bg} ${health.border}`}
+      >
+        <div
+          className={`flex-shrink-0 w-11 h-11 rounded-full flex items-center justify-center bg-card-bg shadow-sm border ${health.border}`}
+        >
+          <health.icon className={`w-5 h-5 ${health.color}`} />
         </div>
         <div className="flex-1 flex flex-col">
           <span className="font-bold text-text-main text-[15px] tracking-tight">
-            Salud Financiera Excelente
+            {health.title}
           </span>
           <p className="text-sm text-text-subtle mt-1 leading-relaxed">
-            Tus gastos representan menos del 50% de tus ingresos este mes.
-            ¡Sigue así!
+            {health.message}
           </p>
         </div>
       </div>
