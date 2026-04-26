@@ -1,6 +1,6 @@
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, Field, field_validator, computed_field
 from datetime import datetime, date
-from typing import List, Optional
+from typing import List, Optional, Any
 
 
 class TransactionCreate(BaseModel):
@@ -57,6 +57,13 @@ class TransactionResponse(BaseModel):
     # En lugar de solo IDs, enviamos el objeto completo
     account: AccountRead 
     category: CategoryRead
+    debt: bool 
+
+    @field_validator("debt", mode="before")
+    @classmethod
+    def convert_debt_to_bool(cls, v: Any) -> bool:
+        # Si v es el objeto TransactionDebt, devolvemos True, si es None, False
+        return v is not None
 
     class Config:
         from_attributes = True

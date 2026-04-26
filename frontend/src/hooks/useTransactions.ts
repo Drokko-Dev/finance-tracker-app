@@ -1,6 +1,6 @@
 import apiClient from "@/api/apiClient";
 import { useQuery } from "@tanstack/react-query";
-import type { Transaction } from "../types/transactions";
+import type { dataTransaction } from "../types/transactions";
 
 interface query {
   page: number;
@@ -11,7 +11,7 @@ interface query {
   initialDate?: Date | undefined;
   finalDate?: Date | undefined;
   sortBy?: string;
-  order?: string
+  order?: "asc" | "desc" | null;
 }
 
 export function useTransactions({
@@ -31,7 +31,7 @@ export function useTransactions({
       { page, search, category, initialDate, finalDate, sortBy,  order},
     ],
     queryFn: async () => {
-      const { data } = await apiClient.get<Transaction[]>(
+      const { data } = await apiClient.get<dataTransaction>(
         "/api/v1/transactions/movimientos/",
         {
           params: {
