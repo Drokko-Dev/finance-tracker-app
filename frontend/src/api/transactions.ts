@@ -15,11 +15,12 @@ export const getTransactions = async (): Promise<Transaction[]> => {
 export const getSummarizedTransactions = async (
   account_id?: number,
   month_id?: string,
+  limit: number = 5,
 ): Promise<DashboardResponse> => {
   const response = await apiClient.get<DashboardResponse>(
     `/api/v1/transactions/summarized/`,
     {
-      params: { account_id, month_id },
+      params: { account_id, month_id, limit },
     },
   );
   return response.data;

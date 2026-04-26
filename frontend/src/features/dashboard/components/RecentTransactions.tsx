@@ -1,6 +1,9 @@
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { categoryConfig } from "@/features/dashboard/assets/categoryConfig";
+import { useDashboardStats } from "@/features/dashboard/hooks/useDashboardStats";
+import type { WealthEvolutionChartProps } from "@/types/wealthEvolution";
+import { useEffect } from "react";
 
 export interface Transaction {
   id: string;
@@ -61,9 +64,20 @@ const recentTransactions: Transaction[] = [
   }, // El ahorro sale de la cuenta, por eso es negativo
 ];
 
-export const RecentTransactions = () => {
+export const RecentTransactions = ({
+  accountId,
+  monthId,
+}: WealthEvolutionChartProps) => {
   // Tomamos solo las últimas 5
-  const displayTransactions = recentTransactions.slice(0, 5);
+  /* const displayTransactions = recentTransactions.slice(0, 5); */
+  const { recentTransactions, categories_expense } = useDashboardStats(
+    accountId,
+    monthId,
+  );
+  useEffect(() => {
+    console.log("Transacciones recientes actualizadas:", recentTransactions);
+    console.log("Resumen por categoría:", categories_expense);
+  }, [recentTransactions, categories_expense]);
 
   return (
     <div className=" bg-card-bg border border-border-subtle rounded-2xl p-6 w-full max-w-2xl text-white font-sans shadow-lg">
@@ -83,7 +97,7 @@ export const RecentTransactions = () => {
 
       {/* LISTA */}
       <div className="flex flex-col gap-3">
-        {displayTransactions.map((tx) => {
+        {recentTransactions.map((tx) => {
           // Buscamos la configuración visual de la categoría (si no existe, usamos 'Otros')
           const config = categoryConfig[tx.category] || categoryConfig["Otros"];
           const Icon = config.icon;

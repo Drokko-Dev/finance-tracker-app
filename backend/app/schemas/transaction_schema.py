@@ -29,10 +29,21 @@ class Transaction(BaseModel):
     description: str
     created_at: datetime 
 
+class RecentTransactionOut(BaseModel):
+    id: int
+    description: str
+    category_name: str  
+    account_name: str    
+    amount: float
+    type: str
+    created_at: datetime
+
 class DashboardSummaryResponse(BaseModel):
     total_income: float
     total_expense: float
     total_balance: float
+    recent_transactions: List[RecentTransactionOut]
+    category_summary: List[dict]
     
 class AccountRead(BaseModel):
     id: int

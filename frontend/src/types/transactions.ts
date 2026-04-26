@@ -22,11 +22,22 @@ export interface YearMonth {
   name: string;
 }
 
+export interface RecentTransactionOut {
+  id: number;
+  description: string;
+  category_name: string;
+  account_name: string;
+  amount: number;
+  type: "expense" | "income" | "saving";
+  created_at: string;
+}
+
 export interface DashboardResponse {
   total_income: number;
   total_expense: number;
   total_balance: number;
-  transactions: Transaction[];
+  recent_transactions: RecentTransactionOut[];
+  category_summary: { category_name: string; total_amount: number }[];
 }
 
 export interface EvolutionPoint {

@@ -71,6 +71,7 @@ export const DashboardPage = () => {
               icon={<Wallet className="w-4 h-4 text-text-subtle" />}
               value={selectedAccount}
               onChange={(opcion) => setSelectedAccount(opcion as Bank)}
+              allOptionLabel="Cuentas Bancarias"
             />
           ) : null}{" "}
           {isLoadingYearMonths ? (
@@ -84,6 +85,7 @@ export const DashboardPage = () => {
               icon={<Calendar className="w-4 h-4 text-text-subtle" />}
               value={selectedMonth}
               onChange={setSelectedMonth}
+              allOptionLabel="Meses"
             />
           ) : null}{" "}
         </div>
@@ -94,7 +96,10 @@ export const DashboardPage = () => {
           accountId={accountIdToSend}
           monthId={yearMonthIdToSend}
         />
-        <RecentTransactions />
+        <RecentTransactions
+          accountId={accountIdToSend}
+          monthId={yearMonthIdToSend}
+        />
       </main>
     </div>
   );

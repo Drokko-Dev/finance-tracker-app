@@ -11,12 +11,30 @@ import type { YearMonth } from "@/types/transactions";
 export const useDashboardStats = (accountId?: number, monthId?: string) => {
   const { data: transactions, isLoading } = useQuery({
     queryKey: ["SummarizedTransactions", accountId, monthId],
-    queryFn: () => getSummarizedTransactions(accountId, monthId),
+    queryFn: () => getSummarizedTransactions(accountId, monthId, 5),
   });
 
   const totalIncome = transactions?.total_income || 0;
   const totalExpense = transactions?.total_expense || 0;
   const totalBalance = transactions?.total_balance || 0;
+
+  const recentTransactions =
+    transactions?.recent_transactions?.map((t: any) => ({
+      id: t.id.toString(),
+      title: t.description,
+      category: t.category_name,
+      date: new Date(t.created_at).toLocaleDateString("es-CL", {
+        day: "2-digit",
+        month: "short",
+        hour: "2-digit",
+        minute: "2-digit",
+      }),
+      accountName: t.account_name,
+      amount: t.type === "expense" ? -Math.abs(t.amount) : t.amount,
+      type: t.type,
+    })) || [];
+
+  const categories_expense = transactions?.category_summary;
 
   const { data: accounts, isLoading: isLoadingAccounts } = useQuery({
     queryKey: ["Accounts"],
@@ -52,6 +70,7 @@ export const useDashboardStats = (accountId?: number, monthId?: string) => {
       title: "Balance Total",
       amount: totalBalance.toLocaleString("en-ES"), // Para que ponga las comitas (ej. 24,562)
       change: "+5.0%", // Esto podrías calcularlo después comparando meses
+      subtitle: "Ingresos - gasto neto",
       isPositive: totalBalance >= 0,
       color: "#38bdf8",
       icon: <Wallet className="w-5 h-5 text-accent" />,
@@ -60,6 +79,7 @@ export const useDashboardStats = (accountId?: number, monthId?: string) => {
     {
       title: "Ingresos",
       amount: totalIncome.toLocaleString("en-ES"),
+      subtitle: "Solo ingresos reales",
       change: "+2.0%",
       isPositive: true,
       color: "#10b981",
@@ -69,6 +89,7 @@ export const useDashboardStats = (accountId?: number, monthId?: string) => {
     {
       title: "Gastos",
       amount: totalExpense.toLocaleString("en-ES"),
+      subtitle: "Gasto neto este mes",
       change: "-2.0%",
       isPositive: false,
       color: "#f43f5e",
@@ -84,5 +105,7 @@ export const useDashboardStats = (accountId?: number, monthId?: string) => {
     isLoadingAccounts,
     filterYearMonths,
     isLoadingYearMonths,
+    recentTransactions,
+    categories_expense,
   };
 };

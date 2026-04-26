@@ -17,10 +17,13 @@ def get_transactions(
     db: Session, 
     user_id: int, 
     account_id: int | None = None, 
-    start_date: datetime | None = None, # 👈 Reemplaza a month_id
+    start_date: datetime | None = None, 
     end_date: datetime | None = None
 ):
-    query = db.query(Transaction).filter(Transaction.user_id == user_id)
+    query = db.query(Transaction).options(
+        joinedload(Transaction.category),
+        joinedload(Transaction.account)
+    ).filter(Transaction.user_id == user_id)
     
     if account_id:
         query = query.filter(Transaction.account_id == account_id)
