@@ -4,7 +4,7 @@ import React from "react";
 export interface CardData {
   title: string;
   amount: string;
-  subtitle?: string; // Mantenemos el subtítulo
+  subtitle?: string;
   icon: React.ReactNode;
   color: string;
   glowColor: string;
@@ -18,13 +18,11 @@ export const MyCards = ({ cards }: { cards: CardData[] }) => {
       {cards.map((card, index) => (
         <div
           key={index}
-          // Quitamos min-h-[260px] para que la tarjeta se adapte a su contenido
           className="relative p-6 rounded-2xl bg-[var(--color-card-bg)] border border-[var(--color-border-subtle)] hover:border-[var(--hover-color)] shadow-xl overflow-hidden group transition-all duration-500 cursor-default"
           style={{
             ["--hover-color" as any]: `${card.color}30`,
           }}
         >
-          {/* Efectos de Luz y Resplandor (Glow) */}
           <div
             className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[var(--color-accent)]/50 to-transparent opacity-50 group-hover:opacity-100 transition-opacity duration-500"
             style={{
@@ -37,9 +35,7 @@ export const MyCards = ({ cards }: { cards: CardData[] }) => {
           ></div>
           <div className="absolute inset-0 bg-gradient-to-b from-white/[0.01] to-transparent pointer-events-none"></div>
 
-          {/* CONTENIDO PRINCIPAL */}
           <div className="relative z-10 flex flex-col h-full gap-6">
-            {/* Fila Superior: Icono a la izquierda, Badge a la derecha */}
             <div className="flex justify-between items-start">
               <div
                 className="w-11 h-11 rounded-xl flex items-center justify-center border shadow-inner"
@@ -51,7 +47,6 @@ export const MyCards = ({ cards }: { cards: CardData[] }) => {
                 {card.icon}
               </div>
 
-              {/* Usamos las variables dinámicas text-income y text-expense para que funcione en claro/oscuro */}
               <div
                 className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium border shadow-sm
                 ${
@@ -69,7 +64,6 @@ export const MyCards = ({ cards }: { cards: CardData[] }) => {
               </div>
             </div>
 
-            {/* Fila Inferior: Título, Monto y Subtítulo */}
             <div>
               <p className="text-sm font-medium text-[var(--color-text-subtle)] mb-1.5 tracking-tight">
                 {card.title}

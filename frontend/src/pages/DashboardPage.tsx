@@ -12,17 +12,6 @@ interface FilterOptions {
   id: number | string;
   name: string;
 }
-const testExpenseData = [
-  { category_name: "Hogar", total_amount: 450000 },
-  { category_name: "Alimentos", total_amount: 280000 },
-  { category_name: "Fijos", total_amount: 125000 },
-  { category_name: "Transporte", total_amount: 85000 },
-  { category_name: "Salud", total_amount: 65000 },
-  { category_name: "Ocio", total_amount: 55000 },
-  { category_name: "Compras", total_amount: 45000 },
-  { category_name: "Mascotas", total_amount: 35000 },
-  { category_name: "Otros", total_amount: 25000 },
-];
 
 export const DashboardPage = () => {
   const [selectedAccount, setSelectedAccount] = useState<FilterOptions | null>(

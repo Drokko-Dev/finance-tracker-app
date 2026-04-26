@@ -74,8 +74,8 @@ export const useDashboardStats = (accountId?: number, monthId?: string) => {
   const cards = [
     {
       title: "Balance Total",
-      amount: totalBalance.toLocaleString("en-ES"), // Para que ponga las comitas (ej. 24,562)
-      change: "+5.0%", // Esto podrías calcularlo después comparando meses
+      amount: totalBalance.toLocaleString("en-ES"),
+      change: "+5.0%",
       subtitle: "Ingresos - gasto neto",
       isPositive: totalBalance >= 0,
       color: "#38bdf8",
