@@ -1,4 +1,3 @@
-import { TrendingUp, TrendingDown } from "lucide-react";
 import React from "react";
 
 export interface CardData {
@@ -8,8 +7,9 @@ export interface CardData {
   icon: React.ReactNode;
   color: string;
   glowColor: string;
-  change: string;
-  isPositive: boolean;
+  change?: string;
+  iconChange?: React.ReactNode;
+  isPositive?: boolean;
 }
 
 export const MyCards = ({ cards }: { cards: CardData[] }) => {
@@ -47,21 +47,19 @@ export const MyCards = ({ cards }: { cards: CardData[] }) => {
                 {card.icon}
               </div>
 
-              <div
-                className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium border shadow-sm
-                ${
-                  card.isPositive
-                    ? "bg-income/10 border-income/20 text-income"
-                    : "bg-expense/10 border-expense/20 text-expense"
-                }`}
-              >
-                {card.isPositive ? (
-                  <TrendingUp size={12} />
-                ) : (
-                  <TrendingDown size={12} />
-                )}
-                <span>{card.change}</span>
-              </div>
+              {card.change && (
+                <div
+                  className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium border shadow-sm
+                  ${
+                    card.isPositive
+                      ? "bg-income/10 border-income/20 text-income"
+                      : "bg-expense/10 border-expense/20 text-expense"
+                  }`}
+                >
+                  {card.iconChange}
+                  <span>{card.change}</span>
+                </div>
+              )}
             </div>
 
             <div>

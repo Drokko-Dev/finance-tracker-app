@@ -1,5 +1,5 @@
 import { FilterDashboard } from "@/features/dashboard/components/FilterDashboard";
-import { MyCards } from "@/features/dashboard/components/MyCards";
+import { MyCards } from "@/components/MyCards";
 import { useDashboardStats } from "@/features/dashboard/hooks/useDashboardStats";
 import { Calendar, Wallet, Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";

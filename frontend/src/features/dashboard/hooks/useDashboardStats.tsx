@@ -4,7 +4,13 @@ import {
   getYearMonthsTransactions,
 } from "@/api/transactions";
 import { getAccounts } from "@/api/accounts";
-import { Wallet, ArrowDownLeft, ArrowUpRight } from "lucide-react";
+import {
+  Wallet,
+  ArrowDownLeft,
+  ArrowUpRight,
+  TrendingDown,
+  TrendingUp,
+} from "lucide-react";
 import type { Bank } from "@/types/Accounts";
 import type { YearMonth } from "@/types/transactions";
 
@@ -76,6 +82,12 @@ export const useDashboardStats = (accountId?: number, monthId?: string) => {
       title: "Balance Total",
       amount: totalBalance.toLocaleString("en-ES"),
       change: "+5.0%",
+      iconChange:
+        totalBalance >= 0 ? (
+          <TrendingUp size={12} />
+        ) : (
+          <TrendingDown size={12} />
+        ),
       subtitle: "Ingresos - gasto neto",
       isPositive: totalBalance >= 0,
       color: "#38bdf8",
@@ -87,6 +99,7 @@ export const useDashboardStats = (accountId?: number, monthId?: string) => {
       amount: totalIncome.toLocaleString("en-ES"),
       subtitle: "Solo ingresos reales",
       change: "+2.0%",
+      iconChange: <TrendingUp size={12} />,
       isPositive: true,
       color: "#10b981",
       icon: <ArrowDownLeft className="w-5 h-5 text-emerald-400" />,
@@ -97,6 +110,7 @@ export const useDashboardStats = (accountId?: number, monthId?: string) => {
       amount: totalExpense.toLocaleString("en-ES"),
       subtitle: "Gasto neto este mes",
       change: "-2.0%",
+      iconChange: <TrendingDown size={12} />,
       isPositive: false,
       color: "#f43f5e",
       icon: <ArrowUpRight className="w-5 h-5 text-rose-400" />,
