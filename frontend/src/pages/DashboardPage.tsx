@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import type { Bank } from "@/types/Accounts";
 import { WealthEvolutionChart } from "@/features/dashboard/components/WealthEvolutionCharts";
 import { RecentTransactions } from "@/features/dashboard/components/RecentTransactions";
+import { ExpenseCategory } from "@/features/dashboard/components/ExpenseCategory";
 
 interface FilterOptions {
   id: number | string;
@@ -29,6 +30,7 @@ export const DashboardPage = () => {
     isLoadingAccounts,
     filterYearMonths,
     isLoadingYearMonths,
+    categories_expense,
   } = useDashboardStats(accountIdToSend, yearMonthIdToSend);
   const accountOptions = [
     { id: "ALL", name: "Cuentas Bancarias" },
@@ -96,10 +98,13 @@ export const DashboardPage = () => {
           accountId={accountIdToSend}
           monthId={yearMonthIdToSend}
         />
-        <RecentTransactions
-          accountId={accountIdToSend}
-          monthId={yearMonthIdToSend}
-        />
+        <div className="flex flex-col lg:flex-row gap-6">
+          <RecentTransactions
+            accountId={accountIdToSend}
+            monthId={yearMonthIdToSend}
+          />
+          <ExpenseCategory data={categories_expense || []} />
+        </div>
       </main>
     </div>
   );
