@@ -1,6 +1,9 @@
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
-import { categoryConfig } from "@/features/dashboard/assets/categoryConfig";
+import { categoryConfig } from "@/assets/categoryConfig";
+import { useDashboardStats } from "@/features/dashboard/hooks/useDashboardStats";
+import type { WealthEvolutionChartProps } from "@/types/wealthEvolution";
+import { useEffect } from "react";
 
 export interface Transaction {
   id: string;
@@ -12,61 +15,21 @@ export interface Transaction {
   type: "income" | "expense";
 }
 
-// 3. DATOS DE PRUEBA (Simulando lo que llega del backend)
-const recentTransactions: Transaction[] = [
-  {
-    id: "1",
-    title: "Compra de Supermercado",
-    category: "Alimentos",
-    date: "Hoy, 14:30",
-    accountName: "Tarjeta de Crédito",
-    amount: -125500,
-    type: "expense",
-  },
-  {
-    id: "2",
-    title: "Nómina Quincenal",
-    category: "Ingreso",
-    date: "Ayer, 09:00",
-    accountName: "Cuenta Principal",
-    amount: 2100000,
-    type: "income",
-  },
-  {
-    id: "3",
-    title: "Suscripción Software",
-    category: "Fijos",
-    date: "12 Sep, 10:15",
-    accountName: "Tarjeta Virtual",
-    amount: -19990,
-    type: "expense",
-  },
-  {
-    id: "4",
-    title: "Comida para Bobby",
-    category: "Mascotas",
-    date: "10 Sep, 18:00",
-    accountName: "Cuenta Principal",
-    amount: -45200,
-    type: "expense",
-  },
-  {
-    id: "5",
-    title: "Fondo de Emergencia",
-    category: "Ahorro",
-    date: "01 Sep, 12:00",
-    accountName: "Portafolio",
-    amount: -150000,
-    type: "expense",
-  }, // El ahorro sale de la cuenta, por eso es negativo
-];
-
-export const RecentTransactions = () => {
-  // Tomamos solo las últimas 5
-  const displayTransactions = recentTransactions.slice(0, 5);
+export const RecentTransactions = ({
+  accountId,
+  monthId,
+}: WealthEvolutionChartProps) => {
+  const { recentTransactions, categories_expense } = useDashboardStats(
+    accountId,
+    monthId,
+  );
+  useEffect(() => {
+    console.log("Transacciones recientes actualizadas:", recentTransactions);
+    console.log("Resumen por categoría:", categories_expense);
+  }, [recentTransactions, categories_expense]);
 
   return (
-    <div className=" bg-card-bg border border-border-subtle rounded-2xl p-6 w-full max-w-2xl text-white font-sans shadow-lg">
+    <div className=" bg-card-bg border border-border-subtle rounded-2xl p-6 w-full text-white font-sans shadow-lg">
       {/* HEADER */}
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-lg font-bold text-text-main tracking-wide">
@@ -83,12 +46,10 @@ export const RecentTransactions = () => {
 
       {/* LISTA */}
       <div className="flex flex-col gap-3">
-        {displayTransactions.map((tx) => {
-          // Buscamos la configuración visual de la categoría (si no existe, usamos 'Otros')
+        {recentTransactions.map((tx) => {
           const config = categoryConfig[tx.category] || categoryConfig["Otros"];
           const Icon = config.icon;
 
-          // Formateamos el número a estilo Chileno (puntos para miles)
           const formattedAmount = Math.abs(tx.amount).toLocaleString("es-CL");
           const isIncome = tx.type === "income";
 

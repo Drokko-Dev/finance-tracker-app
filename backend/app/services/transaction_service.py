@@ -20,7 +20,7 @@ def get_year_months(db: Session, user_id: int):
         reverse=True
     )
 
-def get_dashboard_summary(db: Session, user_id: int, account_id: Optional[int], month_id: Optional[str]):
+def get_dashboard_summary(db: Session, user_id: int, account_id: Optional[int], month_id: Optional[str], limit: int = 5):
     start_date = None
     end_date = None
     
@@ -41,11 +41,34 @@ def get_dashboard_summary(db: Session, user_id: int, account_id: Optional[int], 
     total_income = sum(t.amount for t in transactions if t.type == "income")
     total_expense = sum(abs(t.amount) for t in transactions if t.type == "expense")
     total_balance = total_income - total_expense
+    recent_txs = []
+    for t in transactions[:limit]:
+        recent_txs.append({
+            "id": t.id,
+            "description": t.description,
+            "category_name": t.category.name if t.category else "Otros", 
+            "account_name": t.account.bank if t.account else "Cuenta Principal",
+            "amount": t.amount,
+            "type": t.type,
+            "created_at": t.created_at
+        })
+    category_expenses = {}
+    for t in transactions:
+        if t.type == "expense":
+            if t.category.name not in category_expenses: 
+                category_expenses[t.category.name] = abs(t.amount)
+            else:
+                category_expenses[t.category.name] += abs(t.amount)
+    category_summary_list = [{"category_name": k, "total_amount": v} for k, v in category_expenses.items()]
+    category_summary_list.sort(key=lambda x: x["total_amount"], reverse=True)
+                
     
     return {
         "total_income": total_income,
         "total_expense": total_expense,
-        "total_balance": total_balance
+        "total_balance": total_balance,
+        "recent_transactions": recent_txs,
+        "category_summary": category_summary_list
     }
 
 def get_evolution_history(db: Session, user_id: int, account_id: Optional[int], month_id: str, period: str):

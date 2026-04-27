@@ -1,11 +1,12 @@
 import { FilterDashboard } from "@/features/dashboard/components/FilterDashboard";
-import { MyCards } from "@/features/dashboard/components/MyCards";
+import { MyCards } from "@/components/MyCards";
 import { useDashboardStats } from "@/features/dashboard/hooks/useDashboardStats";
 import { Calendar, Wallet, Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import type { Bank } from "@/types/Accounts";
 import { WealthEvolutionChart } from "@/features/dashboard/components/WealthEvolutionCharts";
 import { RecentTransactions } from "@/features/dashboard/components/RecentTransactions";
+import { ExpenseCategory } from "@/features/dashboard/components/ExpenseCategory";
 
 interface FilterOptions {
   id: number | string;
@@ -29,6 +30,8 @@ export const DashboardPage = () => {
     isLoadingAccounts,
     filterYearMonths,
     isLoadingYearMonths,
+    categories_expense,
+    percentExpense,
   } = useDashboardStats(accountIdToSend, yearMonthIdToSend);
   const accountOptions = [
     { id: "ALL", name: "Cuentas Bancarias" },
@@ -71,6 +74,7 @@ export const DashboardPage = () => {
               icon={<Wallet className="w-4 h-4 text-text-subtle" />}
               value={selectedAccount}
               onChange={(opcion) => setSelectedAccount(opcion as Bank)}
+              allOptionLabel="Cuentas Bancarias"
             />
           ) : null}{" "}
           {isLoadingYearMonths ? (
@@ -84,6 +88,7 @@ export const DashboardPage = () => {
               icon={<Calendar className="w-4 h-4 text-text-subtle" />}
               value={selectedMonth}
               onChange={setSelectedMonth}
+              allOptionLabel="Meses"
             />
           ) : null}{" "}
         </div>
@@ -94,7 +99,16 @@ export const DashboardPage = () => {
           accountId={accountIdToSend}
           monthId={yearMonthIdToSend}
         />
-        <RecentTransactions />
+        <div className="flex flex-col lg:flex-row gap-6">
+          <ExpenseCategory
+            data={categories_expense || []}
+            percentExpense={percentExpense}
+          />
+          <RecentTransactions
+            accountId={accountIdToSend}
+            monthId={yearMonthIdToSend}
+          />
+        </div>
       </main>
     </div>
   );

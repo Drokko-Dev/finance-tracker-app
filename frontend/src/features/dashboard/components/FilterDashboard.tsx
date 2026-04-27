@@ -18,11 +18,13 @@ export const FilterDashboard = ({
   icon,
   value,
   onChange,
+  allOptionLabel,
 }: {
   options: FilterOptions[];
   icon: React.ReactNode;
   value: FilterOptions;
   onChange: (value: FilterOptions) => void;
+  allOptionLabel?: string; // Nueva prop para personalizar el texto de "Seleccionar Todo"
 }) => {
   return (
     <div className="relative w-full sm:w-auto">
@@ -53,7 +55,7 @@ export const FilterDashboard = ({
                 */}
                 <ListboxOption
                   key="ALL_OPTION"
-                  value={{ id: "ALL", name: "Todas las cuentas" }} // Creamos la opción artificial aquí
+                  value={{ id: "ALL", name: allOptionLabel || "Todas" }} // Creamos la opción artificial aquí
                   className={({ active, selected }) => `
                     cursor-pointer select-none py-2.5 px-4 flex items-center text-sm transition-colors truncate border-b border-border-subtle mb-1
                     ${active ? "bg-white/5 text-text-main" : "text-text-subtle"}
