@@ -6,7 +6,6 @@ from app.models.transaction import Transaction
 import random
 from datetime import datetime, timezone
 
-
 # ──────────────────────────────────────────────
 #  CONFIGURACIÓN DEL USUARIO DE PRUEBA
 # ──────────────────────────────────────────────
@@ -73,14 +72,12 @@ def find_category(categories, hints: list, fallback_type: str):
             return cat.id
     return random.choice([c.id for c in categories])
 
-
 def random_time(year: int, month: int, day: int) -> datetime:
-    """Genera un datetime con hora/minuto/segundo aleatorio."""
+    """Genera un datetime con hora/minuto/segundo aleatorio en UTC."""
     hour   = random.randint(7, 22)
     minute = random.randint(0, 59)
     second = random.randint(0, 59)
     return datetime(year, month, day, hour, minute, second, tzinfo=timezone.utc)
-
 
 # ──────────────────────────────────────────────
 #  SEED PRINCIPAL
@@ -92,7 +89,6 @@ def seed_test_user_transactions():
         test_user = db.query(User).filter(User.email == TEST_USER_EMAIL).first()
         if not test_user:
             print(f"❌ No se encontró el usuario con email '{TEST_USER_EMAIL}'.")
-            print("   Crea el usuario primero y actualiza TEST_USER_EMAIL en este script.")
             return
 
         # ── 2. Obtener cuenta del usuario ─────────────────
@@ -109,26 +105,27 @@ def seed_test_user_transactions():
 
         print(f"👤 Usuario: {test_user.email}")
         print(f"🏦 Cuenta:  {account.id}")
-        print(f"📂 Categorías disponibles: {[c.name for c in categories]}")
-        print()
+        
+        # 👇 NUEVO: Borrar transacciones existentes (RESET) 👇
+        print("🧹 Borrando transacciones anteriores para evitar duplicados...")
+        db.query(Transaction).filter(Transaction.user_id == test_user.id).delete()
+        db.commit()
 
         transactions = []
 
-        # ── 4. Definir los meses ──────────────────────────
-        #   Enero, Febrero, Marzo: mes completo
-        #   Abril: del 1 al 21
+        # ── 4. Definir los meses (Actualizados a 2026) ────
         months = [
-            (2025, 1, 1, 31),
-            (2025, 2, 1, 28),
-            (2025, 3, 1, 31),
-            (2025, 4, 1, 21),
+            (2026, 1, 1, 31),
+            (2026, 2, 1, 28),
+            (2026, 3, 1, 31),
+            (2026, 4, 1, 22), # Hasta el día de hoy
         ]
 
         for (year, month, day_start, day_end) in months:
             month_name = datetime(year, month, 1).strftime("%B %Y")
             print(f"📅 Generando transacciones para {month_name}...")
 
-            # ── 4a. INGRESO: sueldo (día 1–5 del mes) ────
+            # ── 4a. INGRESO: sueldo ────
             salary_day  = random.randint(1, 5)
             salary_cat  = find_category(categories, ["ingreso", "sueldo", "salario", "trabajo"], "ingreso")
             salary_txn  = Transaction(
@@ -136,14 +133,13 @@ def seed_test_user_transactions():
                 account_id = account.id,
                 category_id= salary_cat,
                 type       = "income",
-                amount     = SUELDO,
+                amount     = SUELDO, # Positivo
                 description= "Sueldo mensual",
                 created_at = random_time(year, month, salary_day),
             )
             transactions.append(salary_txn)
-            print(f"  💵 Ingreso: Sueldo ${SUELDO:,} el día {salary_day}")
 
-            # ── 4b. AHORRO: 15–20% del sueldo, 1–3 movimientos ──
+            # ── 4b. AHORRO: 15–20% del sueldo ──
             saving_total   = int(SUELDO * random.uniform(0.15, 0.20))
             n_savings      = random.randint(1, 3)
             saving_amounts = []
@@ -151,11 +147,9 @@ def seed_test_user_transactions():
             if n_savings == 1:
                 saving_amounts = [saving_total]
             else:
-                # Dividir el ahorro en partes aleatorias (redondeadas a $1.000)
                 cuts = sorted(random.sample(range(1, saving_total // 1000), n_savings - 1))
                 parts = [cuts[0]] + [cuts[i] - cuts[i-1] for i in range(1, len(cuts))] + [saving_total // 1000 - cuts[-1]]
                 saving_amounts = [p * 1000 for p in parts if p > 0]
-                # Asegurar que sumen el total
                 saving_amounts[-1] += saving_total - sum(saving_amounts)
 
             saving_cat = find_category(categories, ["ahorro", "saving", "inversion", "inversión"], "ahorro")
@@ -166,25 +160,20 @@ def seed_test_user_transactions():
                     account_id = account.id,
                     category_id= saving_cat,
                     type       = "saving",
-                    amount     = s_amount,
+                    amount     = -s_amount, # 👇 Convertido a negativo para cuadrar con frontend
                     description= f"Ahorro mensual{' (cuota ' + str(i+1) + ')' if n_savings > 1 else ''}",
                     created_at = random_time(year, month, s_day),
                 )
                 transactions.append(saving_txn)
-            print(f"  🐷 Ahorro:  ${saving_total:,} en {n_savings} movimiento(s)")
 
             # ── 4c. GASTOS: ~12–14 por mes ───────────────
             n_expenses = random.randint(12, 14)
-            used_templates = set()
-
-            # Gastos fijos mensuales (siempre presentes)
             fixed_keywords = ["Gastos comunes", "Internet", "Plan celular", "Netflix"]
             fixed_expenses = [t for t in EXPENSE_TEMPLATES if any(k in t["desc"] for k in fixed_keywords)]
             variable_expenses = [t for t in EXPENSE_TEMPLATES if t not in fixed_expenses]
 
-            selected = list(fixed_expenses)  # primero los fijos
+            selected = list(fixed_expenses)
             remaining = n_expenses - len(selected)
-            # Completar con gastos variables aleatorios sin repetir mucho
             pool = [t for t in variable_expenses]
             random.shuffle(pool)
             selected += pool[:remaining]
@@ -198,25 +187,16 @@ def seed_test_user_transactions():
                     account_id = account.id,
                     category_id= exp_cat,
                     type       = "expense",
-                    amount     = amount,
+                    amount     = amount, # 👇 Convertido a negativo para cuadrar con frontend
                     description= tmpl["desc"],
                     created_at = random_time(year, month, exp_day),
                 )
                 transactions.append(exp_txn)
 
-            expense_total = sum(
-                t.amount for t in transactions
-                if t.type == "expense"
-                and t.created_at.month == month
-                and t.created_at.year == year
-            )
-            print(f"  🛒 Gastos: {n_expenses} transacciones  |  Total ~${expense_total:,}")
-
         # ── 5. Insertar todo ──────────────────────────────
         db.add_all(transactions)
         db.commit()
-        print()
-        print(f"✅ Se crearon {len(transactions)} transacciones para '{test_user.email}'.")
+        print(f"\n✅ Se crearon {len(transactions)} transacciones para '{test_user.email}'.")
 
     except Exception as e:
         print(f"❌ Error: {e}")
@@ -224,7 +204,6 @@ def seed_test_user_transactions():
         raise
     finally:
         db.close()
-
 
 if __name__ == "__main__":
     seed_test_user_transactions()

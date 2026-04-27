@@ -29,13 +29,15 @@ def dashboard_summarized_transactions(
     user_id: int = Depends(get_current_user_id), 
     account_id: Optional[int] = None, 
     month_id: Optional[str] = None,
+    limit: int = 5,
     db: Session = Depends(get_db),
 ):
     return service.get_dashboard_summary(
         db=db, 
         user_id=user_id, 
         account_id=account_id, 
-        month_id=month_id
+        month_id=month_id,
+        limit=limit
     )
     
 @router.get("/year-months/", response_model=list[tuple[int, int]])

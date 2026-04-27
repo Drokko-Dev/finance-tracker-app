@@ -1,5 +1,5 @@
 import enum
-from sqlalchemy import Column, Integer, Float, String, ForeignKey, DateTime, Enum
+from sqlalchemy import Boolean, Column, Integer, Float, String, ForeignKey, DateTime, Enum
 from sqlalchemy.orm import relationship
 from datetime import datetime, timezone
 from app.db.session import Base
@@ -29,7 +29,8 @@ class Transaction(Base):
     amount = Column(Integer, nullable=False)
     description = Column(String)
     created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
-    
+    deleted_at = Column(DateTime, nullable=True)  # Para soft delete
+    transaction_split = Column(Boolean, nullable=True)  # Para identificar transacciones divididas
     #relaciones
     account = relationship("Account")
     category = relationship("Category")
