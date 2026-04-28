@@ -33,3 +33,4 @@ class Transaction(Base):
     #relaciones
     account = relationship("Account")
     category = relationship("Category")
+    debt = relationship("TransactionDebt", backref="transaction", uselist=False)

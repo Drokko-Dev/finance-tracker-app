@@ -4,19 +4,9 @@ import { MoveDown, MoveUp } from "lucide-react";
 import { DateFormatter } from "@/constants/date_formatter";
 import { CABECERA_TABLA } from "./constants";
 import type { SortKeys } from "./tableTypes";
-import type { Transaction } from "@/types/transactions";
+import type { FinanceTableProps } from "@/types/MovementPages";
+import { COLORS } from "@/constants/COLORS";
 
-
-const COLORS = {
-  saving: 'text-yellow-400',
-  income: 'text-green-400',
-  expense: 'text-red-400'
-}
-interface FinanceTableProps {
-  data: Transaction[]; 
-  onSort: (key: string) => void; 
-  sortConfig: { key: string; direction: "asc" | "desc" | null }; 
-}
 
 const formatter = (rawDate: string) => {
   const dateObj = new Date(rawDate);
@@ -107,7 +97,7 @@ const FinanceTable = ({ data, onSort, sortConfig }: FinanceTableProps) => {
               {formatter(item.created_at)}
             </span>
 
-            <span className="flex-1 min-w-0 w-full text-center md:text-left text-text-main leading-relaxed break-all md:break-words italic md:not-italic block md:inline">
+            <span className="flex-1 min-w-0 w-full text-center md:text-left text-text-main leading-relaxed break-all md:wrap-break-word italic md:not-italic block md:inline">
               {item.description}
             </span>
           </div>

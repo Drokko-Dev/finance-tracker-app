@@ -1,7 +1,6 @@
 // constants.ts
-import type { SortKeys } from "./tableTypes";
 
-export const CABECERA_TABLA: { key: SortKeys; label: string }[] = [
+export const CABECERA_TABLA= [
   { key: "amount", label: "Monto" },
   {key: 'account_id', label:'Cuenta'},
   { key: "category_id", label: "Categoría" },
