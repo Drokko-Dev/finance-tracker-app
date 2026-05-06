@@ -37,4 +37,4 @@ if __name__ == "__main__":
     # Opcional: Crea las tablas si no existen
     # Base.metadata.create_all(bind=engine)
     
-    seed_users(15)
+    seed_users(3)

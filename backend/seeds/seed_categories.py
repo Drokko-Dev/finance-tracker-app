@@ -5,7 +5,8 @@ def seed_categories():
     # Lista de tus categorías
     categories_names = [
         "Alimentos", "Transporte", "Hogar", "Salud", 
-        "Ocio", "Mascotas", "Compras", "Fijos", "Otros"
+        "Ocio", "Mascotas", "Compras", "Fijos", "Otros",
+        "ingreso", "sueldo", "salario", "trabajo"
     ]
     
     db = SessionLocal()
