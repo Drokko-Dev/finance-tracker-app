@@ -17,7 +17,7 @@ class Transaction(Base):
     user_id = Column(Integer, ForeignKey("users.id"))
     account_id = Column(Integer, ForeignKey("accounts.id"))
     category_id = Column(Integer, ForeignKey("categories.id"))
-    tag_id =Column(Integer, ForeignKey('tag.id'), nullable=True)
+    tag_id =Column(Integer, ForeignKey('tags.id'), nullable=True)
     type = Column(
         Enum(
             TransactionType, 

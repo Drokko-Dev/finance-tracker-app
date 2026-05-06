@@ -9,7 +9,7 @@ from datetime import datetime, timezone
 # ──────────────────────────────────────────────
 #  CONFIGURACIÓN DEL USUARIO DE PRUEBA
 # ──────────────────────────────────────────────
-TEST_USER_EMAIL = "andrewjoyce@example.org"   # Ajusta al email real del usuario de prueba
+TEST_USER_EMAIL = "michael47@example.net"   # Ajusta al email real del usuario de prueba
 SUELDO = 1_000_000                  # Ingreso mensual fijo
 
 # ──────────────────────────────────────────────

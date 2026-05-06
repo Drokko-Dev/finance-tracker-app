@@ -60,13 +60,12 @@ export const Pagination: React.FC<PaginationProps> = ({
   totalPages,
   onPageChange,
 }) => {
-  // Lógica para calcular las 5 páginas visibles (actual + 2 anteriores + 2 siguientes)
+  // Lógica para calcular las páginas visibles
   let startPage = Math.max(1, currentPage - 2);
   let endPage = Math.min(totalPages, currentPage + 2);
 
-  // Ajustes para mantener siempre 5 opciones visibles si estamos en los extremos
   if (currentPage <= 3) {
-    endPage = Math.min(totalPages, 5);
+    endPage = Math.min(totalPages, 5); // Bajamos a 5 para ahorrar espacio
   }
   if (currentPage >= totalPages - 2) {
     startPage = Math.max(1, totalPages - 4);
@@ -80,94 +79,101 @@ export const Pagination: React.FC<PaginationProps> = ({
   const showLeftEllipsis = startPage > 1;
   const showRightEllipsis = endPage < totalPages;
 
+  // Clase base para los botones de navegación
+  const navBtnClass = "flex items-center justify-center w-10 h-10 text-gray-400 bg-[#0d1625] transition-colors border-r border-gray-700 disabled:opacity-30 disabled:cursor-not-allowed enabled:hover:bg-[#23395f] enabled:hover:text-white";
+
   return (
-    <div className="mt-10 mx-auto self-center flex items-center text-sm font-medium border border-gray-700 rounded-md bg-[#2b2d31] overflow-hidden w-max">
-      {/* Botón: Primera Página (Oculto si está en las páginas 1, 2 o 3) */}
-      {currentPage > 3 && (
+    <div className="mt-10 mx-auto flex flex-col items-center gap-4">
+      {/* Indicador de página para móviles (opcional, ayuda a dar contexto) */}
+      <span className="text-gray-500 text-xs font-medium sm:hidden">
+        Página {currentPage} de {totalPages}
+      </span>
+
+      <div className="flex items-center text-sm font-medium border border-gray-700 rounded-md bg-[#0d1625] overflow-hidden w-max shadow-lg">
+        
+        {/* Botón: Primera Página - OCULTO EN MÓVIL */}
         <button
           onClick={() => onPageChange(1)}
-          className="flex items-center justify-center w-10 h-10 text-gray-400 bg-[#4b3133] hover:bg-[#5c3c3f] transition-colors border-r border-gray-700 cursor-pointer"
+          disabled={currentPage === 1}
+          className={`${navBtnClass} `} 
           title="Primera página"
         >
-          1
+          <svg xmlns="http://www.w3.org/2000/svg" width={18} height={18} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+            <path d="M11 7l-5 5l5 5" /><path d="M17 7l-5 5l5 5" />
+          </svg>
         </button>
-      )}
 
-      {/* Botón: Página Anterior */}
-      <button
-        onClick={() => onPageChange(currentPage - 1)}
-        disabled={currentPage === 1}
-        className="flex items-center justify-center w-10 h-10 text-white bg-[#c94b4e] disabled:opacity-50 hover:bg-[#d95659] transition-colors border-l border-gray-700 cursor-pointer"
-        title="Página anterior"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-4 w-4"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          strokeWidth={2}
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M15 19l-7-7 7-7"
-          />
-        </svg>
-      </button>
-
-      {/* Input de Salto Izquierdo */}
-      {showLeftEllipsis && (
-        <JumpInput totalPages={totalPages} onJump={onPageChange} />
-      )}
-
-      {/* Números de Página */}
-      {pages.map((page) => (
+        {/* Botón: Página Anterior */}
         <button
-          key={page}
-          onClick={() => onPageChange(page)}
-          className={`flex items-center justify-center w-10 h-10 border-l border-gray-700 transition-colors cursor-pointer ${
-            currentPage === page
-              ? "bg-[#1c1d21] text-white" // Color activo
-              : "text-gray-300 hover:bg-[#383a40]"
-          }`}
+          onClick={() => onPageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+          className={navBtnClass}
+          title="Página anterior"
         >
-          {page}
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+          </svg>
         </button>
-      ))}
 
-      {/* Input de Salto Derecho */}
-      {showRightEllipsis && (
-        <JumpInput totalPages={totalPages} onJump={onPageChange} />
-      )}
-      {/* Botón: Última Página */}
-      {currentPage < totalPages - 2 && (
+        {/* Input de Salto Izquierdo - OCULTO EN MÓVIL */}
+        <div className="hidden md:block">
+            {showLeftEllipsis && <JumpInput totalPages={totalPages} onJump={onPageChange} />}
+        </div>
+
+        {/* Números de Página */}
+        {pages.map((page) => {
+          const isCurrent = currentPage === page;
+          // Lógica responsiva: 
+          // En móvil solo mostramos el actual y uno a cada lado si es posible.
+          const isNear = Math.abs(currentPage - page) <= 1;
+
+          return (
+            <button
+              key={page}
+              onClick={() => !isCurrent && onPageChange(page)}
+              disabled={isCurrent}
+              className={`flex items-center justify-center w-10 h-10 border-r border-gray-700 transition-colors ${
+                isCurrent
+                  ? "bg-blue-600/20 text-blue-400 cursor-default" 
+                  : isNear 
+                    ? "text-gray-300 hover:bg-[#383a40]" 
+                    : "hidden sm:flex text-gray-300 hover:bg-[#383a40]" // Oculta los lejanos en móvil
+              }`}
+            >
+              {page}
+            </button>
+          );
+        })}
+
+        {/* Input de Salto Derecho - OCULTO EN MÓVIL */}
+        <div className="hidden md:block">
+            {showRightEllipsis && <JumpInput totalPages={totalPages} onJump={onPageChange} />}
+        </div>
+
+        {/* Botón: Página Siguiente */}
+        <button
+          onClick={() => onPageChange(currentPage + 1)}
+          disabled={currentPage === totalPages}
+          className={`${navBtnClass} border-l border-r-0 sm:border-r`}
+          title="Página siguiente"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
+
+        {/* Botón: Última Página - OCULTO EN MÓVIL */}
         <button
           onClick={() => onPageChange(totalPages)}
-          className="flex items-center justify-center w-10 h-10 text-white bg-[#c94b4e] hover:bg-[#d95659] transition-colors border-l border-gray-700 cursor-pointer"
+          disabled={currentPage === totalPages}
+          className={`${navBtnClass} border-l border-r-0 sm:border-r`}
           title="Última página"
         >
-          {totalPages}
+          <svg xmlns="http://www.w3.org/2000/svg" width={18} height={18} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+            <path d="M7 7l5 5l-5 5" /><path d="M13 7l5 5l-5 5" />
+          </svg>
         </button>
-      )}
-      {/* Botón: Página Siguiente */}
-      <button
-        onClick={() => onPageChange(currentPage + 1)}
-        disabled={currentPage === totalPages}
-        className="flex items-center justify-center w-10 h-10 text-white bg-[#c94b4e] disabled:opacity-50 hover:bg-[#d95659] transition-colors border-l border-gray-700"
-        title="Página siguiente"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-4 w-4"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          strokeWidth={2}
-        >
-          <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-        </svg>
-      </button>
+      </div>
     </div>
   );
 };

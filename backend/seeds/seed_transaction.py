@@ -61,4 +61,4 @@ def seed_transactions(n_per_account=10):
         db.close()
 
 if __name__ == "__main__":
-    seed_transactions(20)
+    seed_transactions(50)
