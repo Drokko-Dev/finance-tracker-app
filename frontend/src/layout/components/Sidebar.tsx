@@ -7,14 +7,19 @@ import {
   Users,
   Trash2,
   X,
+  Landmark,
 } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 
 const NAV_LINKS = [
-  { name: "Resumen", href: "/", icon: LayoutDashboard }, // Solo el nombre del componente
+  { name: "Resumen", href: "/", icon: LayoutDashboard },
   { name: "Movimientos", href: "/movimientos", icon: ArrowRightLeft },
   { name: "Mis Ciclos", href: "/ciclos", icon: RefreshCw },
   { name: "Amigos", href: "/amigos", icon: Users },
+  { name: "Cuentas", href: "/cuentas", icon: Landmark },
+];
+
+const BOTTOM_LINKS = [
   { name: "Eliminados", href: "/eliminados", icon: Trash2 },
 ];
 
@@ -25,11 +30,34 @@ const normalLinkStyles =
 const activeLinkStyles =
   "flex items-center gap-3 px-4 py-3 rounded-xl font-medium active";
 
+const NavLink = ({
+  link,
+  isActive,
+  onClose,
+}: {
+  link: (typeof NAV_LINKS)[0];
+  isActive: boolean;
+  onClose: () => void;
+}) => {
+  const Icon = link.icon;
+  return (
+    <Link
+      to={link.href}
+      className={isActive ? activeLinkStyles : normalLinkStyles}
+      onClick={onClose}
+    >
+      <div className="w-5 h-5 flex items-center justify-center shrink-0">
+        <Icon size={20} strokeWidth={2} />
+      </div>
+      <span className="leading-none pt-0.5 antialiased">{link.name}</span>
+    </Link>
+  );
+};
+
 export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
   const location = useLocation();
   return (
     <>
-      {/* Overlay: Fondo oscuro que cierra el menú al tocar fuera (solo en móvil) */}
       <div
         className={`fixed inset-0 bg-black/50 z-40 transition-opacity lg:hidden ${isOpen ? "opacity-100 visible" : "opacity-0 invisible"}`}
         onClick={onClose}
@@ -44,7 +72,6 @@ export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
       `}
       >
         <div className="lg:p-4 px-4 py-2 flex flex-col gap-3">
-          {/* Botón para cerrar (solo móvil) */}
           <div className="lg:hidden flex items-center justify-between border-b border-border-subtle">
             <Logo onClick={onClose} />
             <button
@@ -54,29 +81,27 @@ export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
               <X size={24} />
             </button>
           </div>
+
           <nav className="flex flex-col gap-3">
-            {NAV_LINKS.map((link) => {
-              const Icon = link.icon;
-              return (
-                <Link
-                  key={link.name}
-                  to={link.href}
-                  className={
-                    location.pathname === link.href
-                      ? activeLinkStyles
-                      : normalLinkStyles
-                  }
-                  onClick={onClose}
-                >
-                  <div className="w-5 h-5 flex items-center justify-center shrink-0">
-                    <Icon size={20} strokeWidth={2} />
-                  </div>
-                  <span className="leading-none pt-0.5 antialiased">
-                    {link.name}
-                  </span>
-                </Link>
-              );
-            })}
+            {NAV_LINKS.map((link) => (
+              <NavLink
+                key={link.name}
+                link={link}
+                isActive={location.pathname === link.href}
+                onClose={onClose}
+              />
+            ))}
+
+            <div className="border-t border-border-subtle my-1" />
+
+            {BOTTOM_LINKS.map((link) => (
+              <NavLink
+                key={link.name}
+                link={link}
+                isActive={location.pathname === link.href}
+                onClose={onClose}
+              />
+            ))}
           </nav>
         </div>
       </aside>
