@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import {
   ChevronDown,
   ChevronUp,
@@ -11,6 +11,7 @@ import {
   Trash2,
   Tag as TagIcon,
 } from "lucide-react";
+import {EditTransactionModal} from "./EditTransactionModal";
 
 interface Transaction {
   id: number;
@@ -41,6 +42,17 @@ interface Props {
 
 const TransactionCard: React.FC<Props> = ({ transaction }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const dialogRef = useRef<HTMLDialogElement>(null);
+
+  // Funciones para el modal
+  const openModal = () => dialogRef.current?.showModal();
+  const closeModal = () => dialogRef.current?.close();
+
+  const handleSave = (data: any) => {
+    console.log("Nuevos datos:", data);
+    // Si data.account === 'new', aquí dispararías la lógica para crear cuenta
+    closeModal();
+  };
 
   const isIncome = transaction.type === "income";
 
@@ -179,10 +191,22 @@ const TransactionCard: React.FC<Props> = ({ transaction }) => {
         <button className="text-red-400 hover:text-red-600 transition-colors">
           <Trash2 size={24} />
         </button>
-        <button className="bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-2.5 rounded-xl font-semibold transition-all shadow-md shadow-emerald-100">
+        <button className="bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-2.5 rounded-xl font-semibold transition-all shadow-md shadow-emerald-100" onClick={openModal}>
           Editar
         </button>
       </div>
+      {/* Componente Modal */}
+      <EditTransactionModal 
+        ref={dialogRef}
+        transaction={transaction}
+        onClose={closeModal}
+        onSave={handleSave}
+        // Estas listas vendrían de tu componente padre o un context
+        cycles={[{id: 1, name: 'Primer ciclo'}, {id: 2, name: 'Segundo ciclo'}]}
+        categories={[{id: 10, name: 'Trabajo'}, {id: 11, name: 'Ocio'}]}
+        accounts={[{id: 7, name: 'Ahorro Vista', bank: 'Banco Estado'}]}
+        friends={[{id: 'friend_1', name: 'Juanito'}]}
+      />
     </div>
   );
 };

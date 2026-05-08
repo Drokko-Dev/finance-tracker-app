@@ -12,7 +12,8 @@ import { useAccount } from "@/hooks/useAccount";
 import useDebounce from "@/hooks/useDebounce";
 import type { OptionItem } from "@/types/Category";
 import TransactionCard from "@/features/cashFlow/components/tableElemments/TransactionCard";
-import { SlidersHorizontal   } from "lucide-react";
+import { SlidersHorizontal } from "lucide-react";
+import { NewPagination } from "@/features/cashFlow/components/tableElemments/NewPagination";
 const hoy = new Date(Date.now());
 const fechaFormateada = hoy.toISOString().split("T")[0];
 
@@ -89,63 +90,60 @@ export function CashsFlowPage() {
         <LoadingSpinner />
       ) : (
         <div className="min-h-screen bg-main-bg md:p-2 font-sans md:min-w-100 ">
-            <SearchBar onSvgClick={handleClick} onchangeInput={handleChange} />
-            <button className="my-3 hover:scale-120 transition duration-300">
-              <SlidersHorizontal />
-            </button>
-            <hr className=" text-gray-200"/>
-            {filter ? (
-              <div className="flex flex-col sm:flex-row gap-4 w-full md:mt-4 md:justify-center">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  {categories ? (
-                    <GeneralFilter
-                      label="categoria"
-                      items={categories.data}
-                      selected={selected}
-                      onChange={setSelected}
-                      multiple={true}
-                    />
-                  ) : (
-                    ""
-                  )}
+          <SearchBar onSvgClick={handleClick} onchangeInput={handleChange} />
+          <button className="my-3 hover:scale-120 transition duration-300">
+            <SlidersHorizontal />
+          </button>
+          <hr className=" text-gray-200" />
+          {filter ? (
+            <div className="flex flex-col sm:flex-row gap-4 w-full md:mt-4 md:justify-center">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {categories ? (
+                  <GeneralFilter
+                    label="categoria"
+                    items={categories.data}
+                    selected={selected}
+                    onChange={setSelected}
+                    multiple={true}
+                  />
+                ) : (
+                  ""
+                )}
 
-                  <DateInput
-                    label="Fecha de inicio"
-                    value={
-                      initialdate ? initialdate.toISOString().split("T")[0] : ""
-                    }
-                    onChange={(e) => setinitialDate(new Date(e.target.value))}
-                    min="2020-01-01"
-                  />
-                  <DateInput
-                    label="Fecha de Fin"
-                    value={
-                      finaldate ? finaldate.toISOString().split("T")[0] : ""
-                    }
-                    onChange={(e) => setfinalDate(new Date(e.target.value))}
-                    max={fechaFormateada}
-                  />
-                </div>
+                <DateInput
+                  label="Fecha de inicio"
+                  value={
+                    initialdate ? initialdate.toISOString().split("T")[0] : ""
+                  }
+                  onChange={(e) => setinitialDate(new Date(e.target.value))}
+                  min="2020-01-01"
+                />
+                <DateInput
+                  label="Fecha de Fin"
+                  value={finaldate ? finaldate.toISOString().split("T")[0] : ""}
+                  onChange={(e) => setfinalDate(new Date(e.target.value))}
+                  max={fechaFormateada}
+                />
               </div>
-            ) : (
-              ""
-            )}
-
-            {data && (
-              <>
-                <TransactionCard transaction={test_data[0]} />
-                <TransactionCard transaction={test_data[0]} />
-              </>
-            )}
-            {data?.pages != null ? (
-              <Pagination
-                currentPage={page}
-                totalPages={data ? data.pages : 0}
-                onPageChange={onPageChange}
-              />
-            ) : (
-              ""
-            )}
+            </div>
+          ) : (
+            ""
+          )}
+          {data && (
+            <>
+              <TransactionCard transaction={test_data[0]} />
+              <TransactionCard transaction={test_data[0]} />
+            </>
+          )}
+          {data?.pages != null ? (
+            <NewPagination
+              currentPage={page}
+              totalPages={data ? data.pages : 0}
+              onPageChange={onPageChange}
+            />
+          ) : (
+            ""
+          )}
         </div>
       )}
     </>
