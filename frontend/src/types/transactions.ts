@@ -16,7 +16,7 @@ export interface dataTransaction {
   page: number;
   pages: number | null;
   size: number;
-  total: number; 
+  total: number;
 }
 
 export interface TransactionCreate {
@@ -35,7 +35,7 @@ export interface YearMonth {
 
 export interface RecentTransactionOut {
   id: number;
-  description: string;
+  title: string;
   category_name: string;
   account_name: string;
   amount: number;
