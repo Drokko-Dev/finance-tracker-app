@@ -18,6 +18,9 @@ const CiclesPage = lazy(() =>
 const FriendsPage = lazy(() =>
   import("@/pages/FriendsPage").then((m) => ({ default: m.FriendsPage })),
 );
+const AccountPage = lazy(() =>
+  import("@/pages/AccountPage").then((m) => ({ default: m.AccountPage })),
+);
 const DeletePage = lazy(() =>
   import("@/pages/DeletePage").then((m) => ({ default: m.DeletePage })),
 );
@@ -46,6 +49,7 @@ export const AppRouter = () => {
             <Route path="/movimientos" element={<CashsFlowPage />} />
             <Route path="/ciclos" element={<CiclesPage />} />
             <Route path="/amigos" element={<FriendsPage />} />
+            <Route path="/account" element={<AccountPage />} />
             <Route path="/eliminados" element={<DeletePage />} />
           </Route>
         </Route>
