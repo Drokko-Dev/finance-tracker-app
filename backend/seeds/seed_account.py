@@ -41,4 +41,4 @@ def seed_accounts(accounts_per_user=2):
         db.close()
 
 if __name__ == "__main__":
-    seed_accounts() 
+    seed_accounts(6) 
