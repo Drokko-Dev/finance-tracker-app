@@ -22,3 +22,7 @@ export interface SortConfig {
   key: SortKeys | null;
   direction: "asc" | "desc";
 }
+
+// Tipos para las listas de opciones
+export interface Option { id: number; name: string; bank?: string; }
+export interface Friend { id: string; name: string; }

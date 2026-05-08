@@ -83,7 +83,7 @@ const FinanceTable = ({ data, onSort, sortConfig }: FinanceTableProps) => {
               ${item.amount}
             </span>
             <span className="flex-1 min-w-0 w-full text-center md:text-left font-mono text-green-400 text-lg md:text-base block md:inline">
-              {item.account.name}
+              {item.account.bank}
             </span>
 
             <span className="flex-1 min-w-0 w-full text-center md:text-left text-text-main text-sm md:text-base block md:inline">
