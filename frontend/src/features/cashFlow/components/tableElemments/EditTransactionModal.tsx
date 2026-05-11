@@ -57,7 +57,7 @@ export const EditTransactionModal = forwardRef<HTMLDialogElement, EditModalProps
           if (e.target === ref.current) onClose();
         }}
       >
-        <div className="bg-white px-6 md:px-7">
+        <div className="bg-white px-6 md:px-7 py-2">
           <div className="flex justify-between items-center mb-8">
             <h2 className="text-2xl font-bold text-gray-800">Editar Transacción</h2>
             <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-full transition-colors">
@@ -195,7 +195,7 @@ export const EditTransactionModal = forwardRef<HTMLDialogElement, EditModalProps
                 />
             </div>
 
-            <div className="flex gap-4 pt-4">
+            <div className="flex gap-4">
               <button
                 type="button"
                 onClick={onClose}
@@ -205,7 +205,7 @@ export const EditTransactionModal = forwardRef<HTMLDialogElement, EditModalProps
               </button>
               <button
                 type="submit"
-                className="flex-[2] bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-4 rounded-xl font-bold transition-all shadow-lg shadow-emerald-100"
+                className="flex-[2] bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2 rounded-xl font-bold transition-all shadow-lg shadow-emerald-100"
               >
                 Guardar Cambios
               </button>
