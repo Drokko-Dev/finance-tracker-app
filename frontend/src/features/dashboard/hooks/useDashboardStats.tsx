@@ -31,19 +31,22 @@ export const useDashboardStats = (accountId?: number, monthId?: string) => {
         : 0;
 
   const recentTransactions =
-    transactions?.recent_transactions?.map((t: any) => ({
-      id: t.id.toString(),
-      title: t.description,
-      category: t.category_name,
-      date: new Date(t.created_at).toLocaleDateString("es-CL", {
+    transactions?.recent_transactions?.map((transaction: any) => ({
+      id: transaction.id.toString(),
+      title: transaction.title,
+      category: transaction.category_name,
+      date: new Date(transaction.created_at).toLocaleDateString("es-CL", {
         day: "2-digit",
         month: "short",
         hour: "2-digit",
         minute: "2-digit",
       }),
-      accountName: t.account_name,
-      amount: t.type === "expense" ? -Math.abs(t.amount) : t.amount,
-      type: t.type,
+      accountName: transaction.account_name,
+      amount:
+        transaction.type === "expense"
+          ? -Math.abs(transaction.amount)
+          : transaction.amount,
+      type: transaction.type,
     })) || [];
 
   const categories_expense = transactions?.category_summary;

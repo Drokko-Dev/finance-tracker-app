@@ -80,7 +80,8 @@ export const Pagination: React.FC<PaginationProps> = ({
   const showRightEllipsis = endPage < totalPages;
 
   // Clase base para los botones de navegación
-  const navBtnClass = "flex items-center justify-center w-10 h-10 text-gray-400 bg-[#0d1625] transition-colors border-r border-gray-700 disabled:opacity-30 disabled:cursor-not-allowed enabled:hover:bg-[#23395f] enabled:hover:text-white";
+  const navBtnClass =
+    "flex items-center justify-center w-10 h-10 text-gray-400 bg-[#0d1625] transition-colors border-r border-gray-700 disabled:opacity-30 disabled:cursor-not-allowed enabled:hover:bg-[#23395f] enabled:hover:text-white";
 
   return (
     <div className="mt-10 mx-auto flex flex-col items-center gap-4">
@@ -90,19 +91,6 @@ export const Pagination: React.FC<PaginationProps> = ({
       </span>
 
       <div className="flex items-center text-sm font-medium border border-gray-700 rounded-md bg-[#0d1625] overflow-hidden w-max shadow-lg">
-        
-        {/* Botón: Primera Página - OCULTO EN MÓVIL */}
-        <button
-          onClick={() => onPageChange(1)}
-          disabled={currentPage === 1}
-          className={`${navBtnClass} `} 
-          title="Primera página"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" width={18} height={18} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-            <path d="M11 7l-5 5l5 5" /><path d="M17 7l-5 5l5 5" />
-          </svg>
-        </button>
-
         {/* Botón: Página Anterior */}
         <button
           onClick={() => onPageChange(currentPage - 1)}
@@ -110,20 +98,41 @@ export const Pagination: React.FC<PaginationProps> = ({
           className={navBtnClass}
           title="Página anterior"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-4 w-4"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2}
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M15 19l-7-7 7-7"
+            />
           </svg>
         </button>
-
+        {/* Botón: Primera Página - OCULTO EN MÓVIL */}
+        <button
+          onClick={() => onPageChange(1)}
+          disabled={currentPage === 1}
+          className={`${navBtnClass} `}
+          title="Primera página"
+        >
+          {1}
+        </button>
         {/* Input de Salto Izquierdo - OCULTO EN MÓVIL */}
         <div className="hidden md:block">
-            {showLeftEllipsis && <JumpInput totalPages={totalPages} onJump={onPageChange} />}
+          {showLeftEllipsis && (
+            <JumpInput totalPages={totalPages} onJump={onPageChange} />
+          )}
         </div>
 
         {/* Números de Página */}
         {pages.map((page) => {
           const isCurrent = currentPage === page;
-          // Lógica responsiva: 
+          // Lógica responsiva:
           // En móvil solo mostramos el actual y uno a cada lado si es posible.
           const isNear = Math.abs(currentPage - page) <= 1;
 
@@ -134,9 +143,9 @@ export const Pagination: React.FC<PaginationProps> = ({
               disabled={isCurrent}
               className={`flex items-center justify-center w-10 h-10 border-r border-gray-700 transition-colors ${
                 isCurrent
-                  ? "bg-blue-600/20 text-blue-400 cursor-default" 
-                  : isNear 
-                    ? "text-gray-300 hover:bg-[#383a40]" 
+                  ? "bg-blue-600/20 text-blue-400 cursor-default"
+                  : isNear
+                    ? "text-gray-300 hover:bg-[#383a40]"
                     : "hidden sm:flex text-gray-300 hover:bg-[#383a40]" // Oculta los lejanos en móvil
               }`}
             >
@@ -147,8 +156,19 @@ export const Pagination: React.FC<PaginationProps> = ({
 
         {/* Input de Salto Derecho - OCULTO EN MÓVIL */}
         <div className="hidden md:block">
-            {showRightEllipsis && <JumpInput totalPages={totalPages} onJump={onPageChange} />}
+          {showRightEllipsis && (
+            <JumpInput totalPages={totalPages} onJump={onPageChange} />
+          )}
         </div>
+        {/* Botón: Última Página - OCULTO EN MÓVIL */}
+        <button
+          onClick={() => onPageChange(totalPages)}
+          disabled={currentPage === totalPages}
+          className={`${navBtnClass} border-l border-r-0 sm:border-r`}
+          title="Última página"
+        >
+          {totalPages}
+        </button>
 
         {/* Botón: Página Siguiente */}
         <button
@@ -157,20 +177,19 @@ export const Pagination: React.FC<PaginationProps> = ({
           className={`${navBtnClass} border-l border-r-0 sm:border-r`}
           title="Página siguiente"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-          </svg>
-        </button>
-
-        {/* Botón: Última Página - OCULTO EN MÓVIL */}
-        <button
-          onClick={() => onPageChange(totalPages)}
-          disabled={currentPage === totalPages}
-          className={`${navBtnClass} border-l border-r-0 sm:border-r`}
-          title="Última página"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" width={18} height={18} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-            <path d="M7 7l5 5l-5 5" /><path d="M13 7l5 5l-5 5" />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-4 w-4"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2}
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M9 5l7 7-7 7"
+            />
           </svg>
         </button>
       </div>

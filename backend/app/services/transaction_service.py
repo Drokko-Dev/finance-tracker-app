@@ -45,7 +45,7 @@ def get_dashboard_summary(db: Session, user_id: int, account_id: Optional[int], 
     for t in transactions[:limit]:
         recent_txs.append({
             "id": t.id,
-            "description": t.description,
+            "title": t.title,
             "category_name": t.category.name if t.category else "Otros", 
             "account_name": t.account.bank if t.account else "Cuenta Principal",
             "amount": t.amount,
