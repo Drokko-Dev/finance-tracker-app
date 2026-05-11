@@ -14,7 +14,7 @@ class TransactionCreate(BaseModel):
 class TransactionOg(BaseModel):
     id: int
     amount: float
-    description: str
+    description: Optional[str] = None
 
     class Config:
         from_attributes = True
@@ -26,12 +26,12 @@ class Transaction(BaseModel):
     category_id: int    
     type: str           
     amount: float
-    description: str
-    created_at: datetime 
+    description: Optional[str] = None  # ← mismo fix
+    created_at: datetime
 
 class RecentTransactionOut(BaseModel):
     id: int
-    description: str
+    title: str 
     category_name: str  
     account_name: str    
     amount: float
