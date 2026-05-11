@@ -10,6 +10,13 @@ services:
       - "5433:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   backend:
     build: ./backend
@@ -17,12 +24,15 @@ services:
     # --- AQUÍ SE AGREGA ---
     environment:
       - PYTHONDONTWRITEBYTECODE=1
-      - PYTHONUNBUFFERED=1 
+      - PYTHONUNBUFFERED=1
     # -----------------------
     ports:
       - "8000:8000"
     depends_on:
-      - db
+      db:
+        condition: service_healthy # <- clave
+    networks:
+      - app-network
     volumes:
       - ./backend:/app
 
@@ -38,3 +48,7 @@ services:
 
 volumes:
   postgres_data:
+
+networks:
+  app-network:
+    driver: bridge

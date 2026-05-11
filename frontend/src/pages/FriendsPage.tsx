@@ -1,8 +1,10 @@
-import { useFriendStats } from "@/features/friends/hooks/useFriendStatus";
-import { MyCards } from "@/components/MyCards";
+import { FriendsDirectory } from "@/features/friends/components/FriendsDirectory";
+import { RecentActivity } from "@/features/friends/components/RecentActivity";
+import { QuickAccess } from "@/features/friends/components/QuickAccess";
+import { Pen } from "lucide-react";
+import { PendingRequestsWidget } from "@/features/friends/components/PendingRequestsWidget";
 
 export function FriendsPage() {
-  const { cards, isLoading } = useFriendStats();
   return (
     <div className="flex flex-col gap-5">
       <header className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
@@ -16,7 +18,19 @@ export function FriendsPage() {
         </div>
       </header>
       <main className="flex flex-col gap-6">
-        <MyCards cards={cards} />
+        <QuickAccess />
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-1 flex flex-col gap-6">
+            {/* Nuevo componente arriba */}
+            <PendingRequestsWidget />
+
+            {/* Actividad Reciente abajo */}
+            <RecentActivity />
+          </div>
+          <div className="lg:col-span-2">
+            <FriendsDirectory />
+          </div>
+        </div>
       </main>
     </div>
   );

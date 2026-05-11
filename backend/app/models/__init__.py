@@ -9,9 +9,11 @@ from .cycle import Cycle
 from .friend import Friend
 from .tag import Tag
 from .transaction_tag import TransactionTag
+from .card import Card 
+from .bank import Bank
 
 # Esto es opcional, pero ayuda a saber qué estás exportando
 __all__ = [
     "Base", "User", "Account", "Category", "Transaction", 
-    "TransactionDebt", "Cycle", "Friend", "Tag", "TransactionTag"
+    "TransactionDebt", "Cycle", "Friend", "Tag", "TransactionTag", "Card", "Bank"
 ]
