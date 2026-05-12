@@ -3,6 +3,8 @@ import {
   getPendingRequests,
   acceptFriendRequest,
   rejectFriendRequest,
+  cancelFriendRequest,
+  getSentRequests,
 } from "@/api/friends";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
@@ -17,6 +19,11 @@ export const useFriendStats = () => {
   const { data: pendingFriends, isLoading: isPendingLoading } = useQuery({
     queryKey: ["PendingFriends"],
     queryFn: () => getPendingRequests(),
+  });
+
+  const { data: sentRequests, isLoading: isSentLoading } = useQuery({
+    queryKey: ["SentRequests"],
+    queryFn: () => getSentRequests(),
   });
 
   const { mutate: acceptFriend, isPending: isAcceptFriendLoading } =
@@ -36,14 +43,25 @@ export const useFriendStats = () => {
       },
     });
 
+  const { mutate: cancelRequest, isPending: isCancelLoading } = useMutation({
+    mutationFn: (requestId: number) => cancelFriendRequest(requestId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["SentRequests"] });
+    },
+  });
+
   return {
     friends,
     pendingFriends,
+    sentRequests,
     acceptFriend,
     rejectFriend,
+    cancelRequest,
     isFriendsLoading,
     isPendingLoading,
+    isSentLoading,
     isAcceptFriendLoading,
     isRejectFriendLoading,
+    isCancelLoading,
   };
 };
