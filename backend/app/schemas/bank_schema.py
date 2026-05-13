@@ -1,14 +1,8 @@
 from pydantic import BaseModel
 
 
-class BankBase(BaseModel):
-    name: str
-
-class BankCreate(BankBase):
-    pass
-
-class BankResponse(BankBase):
+class BankRead(BaseModel):
     id: int
-
+    name: str
     class Config:
         from_attributes = True
