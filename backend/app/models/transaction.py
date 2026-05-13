@@ -9,6 +9,8 @@ class TransactionType(str, enum.Enum):
     EXPENSE = "expense"
     INCOME = "income"
     SAVING = "saving"
+    REIMBURSEMENT_SENT = "reimbursement_sent" #cuando tu pagas
+    REIMBURSEMENT_RECEIVED = "reimbursement_received" #cuando te pagan de vuelta
     
 class TransactionMethod(str, enum.Enum):
     CASH = "cash"

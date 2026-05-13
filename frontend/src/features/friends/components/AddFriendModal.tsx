@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { X, Mail, Send, Loader2, CheckCircle2 } from "lucide-react";
-import { sendFriendRequest } from "@/api/friends";
+import { useFriendStats } from "../hooks/useFriendStatus";
+import { AxiosError } from "axios";
 
 interface AddFriendModalProps {
   isOpen: boolean;
@@ -8,44 +9,41 @@ interface AddFriendModalProps {
 }
 
 export const AddFriendModal = ({ isOpen, onClose }: AddFriendModalProps) => {
+  const {
+    sendRequest,
+    isSendingRequest,
+    isSuccess,
+    isError,
+    sendError,
+    reset,
+  } = useFriendStats();
   const [email, setEmail] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState(false);
+
+  // 1. Primero handleClose
+  const handleClose = () => {
+    setEmail("");
+    reset();
+    onClose();
+  };
+
+  // 2. Luego el useEffect (ya puede usar handleClose)
+  useEffect(() => {
+    if (!isSuccess) return;
+    const timer = setTimeout(() => handleClose(), 2000);
+    return () => clearTimeout(timer);
+  }, [isSuccess]);
 
   if (!isOpen) return null;
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!email.trim()) return;
-
-    setIsLoading(true);
-    setError("");
-
-    try {
-      await sendFriendRequest(email);
-      setSuccess(true);
-      // Tras 2 segundos de mostrar el éxito, cerramos el modal y limpiamos
-      setTimeout(() => {
-        handleClose();
-      }, 2000);
-    } catch (err: any) {
-      // Atrapamos el error que mande FastAPI (ej. "Ya son amigos")
-      const errorMsg =
-        err.response?.data?.detail ||
-        "Ocurrió un error al enviar la solicitud.";
-      setError(errorMsg);
-    } finally {
-      setIsLoading(false);
-    }
+    sendRequest(email);
   };
 
-  const handleClose = () => {
-    setEmail("");
-    setError("");
-    setSuccess(false);
-    onClose();
-  };
+  const errorMsg =
+    (sendError as AxiosError<{ detail: string }>)?.response?.data?.detail ||
+    "Ocurrió un error al enviar la solicitud.";
 
   return (
     // Fondo oscuro con desenfoque
@@ -80,7 +78,7 @@ export const AddFriendModal = ({ isOpen, onClose }: AddFriendModalProps) => {
             solicitud. Deberá aceptarla para que puedan compartir gastos.
           </p>
 
-          {success ? (
+          {isSuccess ? (
             // Estado de Éxito
             <div className="flex flex-col items-center justify-center py-6 animate-in slide-in-from-bottom-2">
               <CheckCircle2 className="w-16 h-16 text-emerald-500 mb-4" />
@@ -102,18 +100,18 @@ export const AddFriendModal = ({ isOpen, onClose }: AddFriendModalProps) => {
                 />
               </div>
 
-              {error && (
+              {isError && (
                 <span className="text-red-500 text-xs font-medium px-1">
-                  {error}
+                  {errorMsg}
                 </span>
               )}
 
               <button
                 type="submit"
-                disabled={isLoading || !email}
+                disabled={isSendingRequest || !email}
                 className="w-full mt-2 bg-principal hover:bg-principal/90 text-white font-semibold py-3.5 rounded-xl transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer duration-200 hover:scale-[1.03]"
               >
-                {isLoading ? (
+                {isSendingRequest ? (
                   <>
                     <Loader2 className="w-5 h-5 animate-spin" />
                     Enviando...

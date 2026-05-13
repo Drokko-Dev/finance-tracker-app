@@ -3,6 +3,9 @@ import {
   getPendingRequests,
   acceptFriendRequest,
   rejectFriendRequest,
+  cancelFriendRequest,
+  getSentRequests,
+  sendFriendRequest,
 } from "@/api/friends";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
@@ -17,6 +20,25 @@ export const useFriendStats = () => {
   const { data: pendingFriends, isLoading: isPendingLoading } = useQuery({
     queryKey: ["PendingFriends"],
     queryFn: () => getPendingRequests(),
+  });
+
+  const { data: sentRequests, isLoading: isSentLoading } = useQuery({
+    queryKey: ["SentRequests"],
+    queryFn: () => getSentRequests(),
+  });
+
+  const {
+    mutate: sendRequest,
+    isPending: isSendingRequest,
+    isError,
+    isSuccess,
+    error: sendError,
+    reset,
+  } = useMutation({
+    mutationFn: (email: string) => sendFriendRequest(email),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["SentRequests"] });
+    },
   });
 
   const { mutate: acceptFriend, isPending: isAcceptFriendLoading } =
@@ -36,14 +58,31 @@ export const useFriendStats = () => {
       },
     });
 
+  const { mutate: cancelRequest, isPending: isCancelLoading } = useMutation({
+    mutationFn: (requestId: number) => cancelFriendRequest(requestId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["SentRequests"] });
+    },
+  });
+
   return {
     friends,
     pendingFriends,
+    sentRequests,
     acceptFriend,
     rejectFriend,
+    cancelRequest,
     isFriendsLoading,
     isPendingLoading,
+    isSentLoading,
     isAcceptFriendLoading,
     isRejectFriendLoading,
+    isCancelLoading,
+    sendRequest,
+    isSendingRequest,
+    isError,
+    isSuccess,
+    sendError,
+    reset,
   };
 };
