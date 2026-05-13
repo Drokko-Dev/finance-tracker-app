@@ -32,7 +32,7 @@ const FriendsBalances = lazy(() =>
   })),
 );
 const AccountPage = lazy(() =>
-  import("@/pages/AccountPage").then((m) => ({ default: m.AccountPage })),
+  import("@/pages/AccountPage").then((m) => ({ default: m.AccountsPage })),
 );
 const DeletePage = lazy(() =>
   import("@/pages/DeletePage").then((m) => ({ default: m.DeletePage })),
@@ -65,7 +65,7 @@ export const AppRouter = () => {
             <Route path="/all-friends" element={<AllFriendsPage />} />
             <Route path="/friends/directory" element={<FriendsDirectory />} />
             <Route path="/friends/balances" element={<FriendsBalances />} />
-            <Route path="/account" element={<AccountPage />} />
+            <Route path="/accounts" element={<AccountPage />} />
             <Route path="/eliminados" element={<DeletePage />} />
           </Route>
         </Route>
