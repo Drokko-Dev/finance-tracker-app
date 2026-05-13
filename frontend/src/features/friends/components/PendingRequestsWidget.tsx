@@ -59,14 +59,28 @@ export const PendingRequestsWidget = () => {
       </div>
 
       {/* Lista */}
-      <div className="flex flex-col gap-3">
+      <div
+        className="
+            max-h-[220px] md:max-h-[300px] 
+            overflow-y-auto 
+            flex flex-col gap-3 
+            pr-2
+
+            [&::-webkit-scrollbar]:w-1.5
+            [&::-webkit-scrollbar-track]:rounded-full
+            [&::-webkit-scrollbar-track]:bg-transparent
+            [&::-webkit-scrollbar-thumb]:rounded-full
+            [&::-webkit-scrollbar-thumb]:bg-border-subtle
+            hover:[&::-webkit-scrollbar-thumb]:bg-principal/40
+          "
+      >
         {section === "incoming" ? (
           incomingList.length === 0 ? (
             <p className="text-sm text-text-subtle text-center py-4">
               No tienes solicitudes pendientes.
             </p>
           ) : (
-            incomingList.slice(0, 3).map((req: PendingRequest) => (
+            incomingList.map((req: PendingRequest) => (
               <div
                 key={req.request_id}
                 className="flex items-center justify-between p-3 rounded-xl bg-background border border-border-subtle/50 hover:border-border-subtle transition-colors"
@@ -113,7 +127,7 @@ export const PendingRequestsWidget = () => {
             No tienes solicitudes enviadas.
           </p>
         ) : (
-          outgoingList.slice(0, 3).map((req: SentRequest) => (
+          outgoingList.map((req: SentRequest) => (
             <div
               key={req.request_id}
               className="flex items-center justify-between p-3 rounded-xl bg-background border border-border-subtle/50 hover:border-border-subtle transition-colors"
