@@ -2,7 +2,7 @@ from app.db.session import SessionLocal
 from app.models.account import Account
 from app.models.user import User
 from app.models.category import Category
-from app.models.transaction import Transaction, TransactionMethod
+from app.models.transaction import Transaction, TransactionMethod, TransactionType
 import random
 from datetime import datetime, timezone
 
@@ -176,7 +176,7 @@ def seed_test_user_transactions():
                     user_id        = test_user.id,
                     account_id     = account.id,
                     category_id    = exp_cat,
-                    type           = "expense",
+                    type           = random.choice(list(TransactionType)),
                     amount         = amount,
                     title          = tmpl["desc"],         # ← nuevo campo
                     description    = None,                 # opcional
