@@ -45,8 +45,7 @@ def get_filtered_transactions(
 ):
     query = db.query(Transaction).options(
         joinedload(Transaction.account),
-        joinedload(Transaction.category),
-        joinedload(Transaction.debt)
+        joinedload(Transaction.category)
     )
 
     # --- Aplicar Filtros ---

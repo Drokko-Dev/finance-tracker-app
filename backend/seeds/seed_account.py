@@ -26,7 +26,6 @@ def seed_accounts(accounts_per_user=2):
                 new_account = Account(
                     user_id=u_id,
                     name=random.choice(NOMBRES_CUENTA),
-                    type=random.choice(TIPOS_CUENTA),
                     bank=random.choice(BANCOS)
                 )
                 db.add(new_account)

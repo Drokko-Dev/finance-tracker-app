@@ -58,27 +58,6 @@ class CategoryRead(BaseModel):
     class Config:
         from_attributes = True
 
-# 2. Tu esquema de respuesta actualizado
-class TransactionResponse(BaseModel):
-    id: int
-    amount: float
-    description: Optional[str]
-    type: str
-    created_at: datetime
-    # En lugar de solo IDs, enviamos el objeto completo
-    account: AccountRead 
-    category: CategoryRead
-    debt: bool 
-
-    @field_validator("debt", mode="before")
-    @classmethod
-    def convert_debt_to_bool(cls, v: Any) -> bool:
-        # Si v es el objeto TransactionDebt, devolvemos True, si es None, False
-        return v is not None
-
-    class Config:
-        from_attributes = True
-        
 # Objeto para agrupar los filtros (DTO)
 class TransactionFilterParams(BaseModel):
     page: int = Field(1, ge=1)
@@ -103,9 +82,25 @@ class TransactionFilterParams(BaseModel):
             raise ValueError("El orden debe ser 'asc' o 'desc'")
         return v.lower()
 
+
+class uniqueTransactionBase(BaseModel):
+    id: int
+    account: AccountRead
+    category: CategoryRead
+    tag_id: Optional[int] = None
+    type: str
+    amount: int
+    title: str
+    description: Optional[str] = None
+    transaction_split: Optional[bool] = False
+    payment_method: str
+    card_id: Optional[int] = None
+    created_at: datetime
+    deleted_at: Optional[datetime] = None
+    
 # Respuesta con Metadatos
 class PaginatedTransactionResponse(BaseModel):
-    items: List[TransactionResponse]
+    items: List[uniqueTransactionBase]
     total: int
     page: int
     size: int

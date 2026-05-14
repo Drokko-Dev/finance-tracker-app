@@ -26,7 +26,6 @@ class Transaction(Base):
     type = Column(
         Enum(
             TransactionType, 
-            # Esto le dice a SQLAlchemy: "Usa el .value ('expense'), no el .name ('EXPENSE')"
             values_callable=lambda obj: [e.value for e in obj]
         ), 
         nullable=False
@@ -35,8 +34,8 @@ class Transaction(Base):
     title = Column(String, nullable=False)
     description = Column(String)
     created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
-    deleted_at = Column(DateTime, nullable=True)  # Para soft delete
-    transaction_split = Column(Boolean, nullable=True)  # Para identificar transacciones divididas
+    deleted_at = Column(DateTime, nullable=True)  
+    transaction_split = Column(Boolean, nullable=True)  
     payment_method = Column(
        Enum(
             TransactionMethod, 
@@ -49,4 +48,3 @@ class Transaction(Base):
     #relaciones 
     account = relationship("Account")
     category = relationship("Category")
-    debt = relationship("TransactionDebt", backref="transaction", uselist=False)

@@ -11,20 +11,10 @@ import {
   Trash2,
   Tag as TagIcon,
 } from "lucide-react";
-import {EditTransactionModal} from "./EditTransactionModal";
+import { EditTransactionModal } from "./EditTransactionModal";
 
 interface Transaction {
   id: number;
-  amount: number;
-  title: string; // Mantengo el nombre exacto de tu JSON
-  description: string;
-  type: "income" | "expense";
-  created_at: string;
-  tag: string;
-  cycle: {
-    id: number;
-    name: string;
-  };
   account: {
     id: number;
     name: string;
@@ -34,7 +24,21 @@ interface Transaction {
     id: number;
     name: string;
   };
-  debt: string | null;
+  tag_id?: number | null; // aqui hay que cambiar segun el modelo de los tag cuando se agregen
+  type: string;
+  amount: number;
+  title: string;
+  description?: string | null;
+  transaction_split: boolean; // En Pydantic tiene default False, así que no es estrictamente nulo en la respuesta
+  payment_method: string;
+  card_id?: number | null; // Nuevo campo
+  created_at: string | Date; // datetime de Python se mapea a string (ISO) o Date en TS
+  deleted_at?: string | Date | null; // Nuevo campo opcional
+  /* cycle: {
+    id: number;
+    name: string;
+
+  }; */
 }
 interface Props {
   transaction: Transaction;
@@ -65,7 +69,7 @@ const TransactionCard: React.FC<Props> = ({ transaction }) => {
   };
 
   // Formateador de fecha
-  const formatDate = (dateStr: string) => {
+  const formatDate = (dateStr: string | Date) => {
     const date = new Date(dateStr);
     return date.toLocaleDateString("es-ES", {
       day: "2-digit",
@@ -92,7 +96,7 @@ const TransactionCard: React.FC<Props> = ({ transaction }) => {
           </div>
           <div>
             <h3 className=" text-xl md:text-2xl font-semibold text-gray-800">
-              {transaction.tittle}
+              {transaction.title}
             </h3>
           </div>
         </div>
@@ -105,7 +109,7 @@ const TransactionCard: React.FC<Props> = ({ transaction }) => {
           </span>
           {/* Tags Desktop (al lado del monto) */}
           <div className="flex gap-2 mt-2 justify-start md:justify-end">
-            {transaction.debt ? (
+            {transaction.transaction_split ? (
               <UserCheck size={18} className="text-black mt-2.5 " />
             ) : null}
             <span className="mt-2 px-3 py-1 rounded-lg bg-pink-50 text-pink-600 text-xs font-medium flex items-center gap-1">
@@ -113,7 +117,7 @@ const TransactionCard: React.FC<Props> = ({ transaction }) => {
               {transaction.category.name}
             </span>
             <span className="mt-2 px-3 py-1 rounded-lg bg-blue-50 text-blue-600 text-xs font-medium flex items-center gap-1">
-              <TagIcon size={12} /> {transaction.tag}
+              <TagIcon size={12} /> {transaction.tag_id}
             </span>
           </div>
         </div>
@@ -131,9 +135,9 @@ const TransactionCard: React.FC<Props> = ({ transaction }) => {
         <div className="flex items-center gap-2">
           <RefreshCcw size={18} className="text-gray-400" />
           <span className="font-medium text-gray-400">Ciclo:</span>
-          <span className="text-gray-800 font-semibold">
+          {/* <span className="text-gray-800 font-semibold">
             {transaction.cycle.name}
-          </span>
+          </span> */}
         </div>
       </div>
 
@@ -143,7 +147,7 @@ const TransactionCard: React.FC<Props> = ({ transaction }) => {
           onClick={() => setIsOpen(!isOpen)}
           className="flex items-center justify-between w-full text-gray-400 font-bold text-xs uppercase tracking-wider mb-2"
         >
-          <span>Descripción</span>
+          <span>Más información</span>
           {isOpen ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
         </button>
 
@@ -161,7 +165,7 @@ const TransactionCard: React.FC<Props> = ({ transaction }) => {
                     Deuda asociada a amigo
                   </h4>
                   <p className="text-amber-600 text-xs font-medium">
-                    {transaction.debt} vinculado
+                    {transaction.transaction_split} vinculado
                   </p>
                 </div>
               </div>
@@ -181,7 +185,9 @@ const TransactionCard: React.FC<Props> = ({ transaction }) => {
                 </div>
               </div>
             </div>
-            {transaction.description}
+            {transaction.description ? (
+              <span className="text-text-main">{transaction.description}</span>
+            ) : null}
           </div>
         )}
       </div>
@@ -191,22 +197,31 @@ const TransactionCard: React.FC<Props> = ({ transaction }) => {
         <button className="text-red-400 hover:text-red-600 transition-colors">
           <Trash2 size={24} />
         </button>
-        <button className="bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-2.5 rounded-xl font-semibold transition-all shadow-md shadow-emerald-100" onClick={openModal}>
+        <button
+          className="bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-2.5 rounded-xl font-semibold transition-all shadow-md shadow-emerald-100"
+          onClick={openModal}
+        >
           Editar
         </button>
       </div>
       {/* Componente Modal */}
-      <EditTransactionModal 
+      {/* <EditTransactionModal
         ref={dialogRef}
         transaction={transaction}
         onClose={closeModal}
         onSave={handleSave}
         // Estas listas vendrían de tu componente padre o un context
-        cycles={[{id: 1, name: 'Primer ciclo'}, {id: 2, name: 'Segundo ciclo'}]}
-        categories={[{id: 10, name: 'Trabajo'}, {id: 11, name: 'Ocio'}]}
-        accounts={[{id: 7, name: 'Ahorro Vista', bank: 'Banco Estado'}]}
-        friends={[{id: 'friend_1', name: 'Juanito'}]}
-      />
+        cycles={[
+          { id: 1, name: "Primer ciclo" },
+          { id: 2, name: "Segundo ciclo" },
+        ]}
+        categories={[
+          { id: 10, name: "Trabajo" },
+          { id: 11, name: "Ocio" },
+        ]}
+        accounts={[{ id: 7, name: "Ahorro Vista", bank: "Banco Estado" }]}
+        friends={[{ id: "friend_1", name: "Juanito" }]}
+      /> */}
     </div>
   );
 };

@@ -6,7 +6,7 @@ from app.models.transaction import Transaction, TransactionMethod
 import random
 from datetime import datetime, timezone
 
-TEST_USER_EMAIL = "jason35@example.net"
+TEST_USER_EMAIL = "mmccoy@example.com"
 SUELDO = 1_000_000
 
 EXPENSE_TEMPLATES = [
