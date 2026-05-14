@@ -109,7 +109,7 @@ def get_evolution_history(db: Session, user_id: int, account_id: Optional[int], 
 
         if group_by_day:
             key = fecha_local.strftime("%Y-%m-%d")
-            label = fecha_local.strftime("%d %b")
+            label = f"{fecha_local.day:02d} {meses_es[fecha_local.month - 1]}"
         else:
             key = fecha_local.strftime("%Y-%m")
             label = f"{meses_es[fecha_local.month - 1]} {fecha_local.year}"

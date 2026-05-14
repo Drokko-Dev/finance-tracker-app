@@ -12,6 +12,7 @@ import { getEvolutionHistory } from "@/api/wealthEvolution";
 import type { EvolutionPoint } from "@/types/transactions";
 import type { WealthEvolutionChartProps } from "@/types/wealthEvolution";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
+import { TrendingDown } from "lucide-react";
 
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
@@ -84,8 +85,13 @@ export const WealthEvolutionChart = ({
 
       {/* --- GRÁFICO --- */}
       <div className="w-full h-62.5 sm:h-75 mt-2">
-        {isLoading || chartData.length === 0 ? (
+        {isLoading ? (
           <LoadingSpinner message="Cargando evolución..." />
+        ) : chartData.length === 0 ? (
+          <div className="flex flex-col items-center justify-center h-full gap-2 text-text-subtle">
+            <TrendingDown className="w-8 h-8 opacity-40" />
+            <p className="text-sm">Sin movimientos en este período</p>
+          </div>
         ) : (
           <ResponsiveContainer width="100%" height="100%">
             <ComposedChart

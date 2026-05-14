@@ -25,3 +25,14 @@ class PendingRequestOut(BaseModel):
 
     class Config:
         from_attributes = True
+
+class SentRequestOut(BaseModel):
+    request_id: int
+    receiver_id: int
+    receiver_name: str
+    receiver_initials: str
+    bgColor: str
+    created_at: datetime
+ 
+    class Config:
+        from_attributes = True

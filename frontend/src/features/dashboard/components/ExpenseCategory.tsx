@@ -81,6 +81,15 @@ export const ExpenseCategory = ({
     return { processedData: processed, totalAmount: total };
   }, [data]);
 
+  const getNoDataStatus = () => ({
+    title: "Sin movimientos",
+    message: "No hay transacciones registradas en este período.",
+    icon: Info,
+    color: "text-slate-400",
+    bg: "bg-slate-500/10",
+    border: "border-slate-500/20",
+  });
+
   const getHealthStatus = (percent: number) => {
     if (percent >= 100) {
       return {
@@ -133,7 +142,10 @@ export const ExpenseCategory = ({
     };
   };
 
-  const health = getHealthStatus(percentExpense);
+  const health =
+    processedData.length === 0
+      ? getNoDataStatus()
+      : getHealthStatus(percentExpense);
   return (
     <div className="bg-card-bg border border-border-subtle rounded-3xl p-6 w-full flex flex-col shadow-xl">
       <h2 className="text-lg font-bold text-text-main tracking-tight mb-6">
@@ -142,28 +154,34 @@ export const ExpenseCategory = ({
 
       {/* --- GRÁFICO DONUT REAL (RECHARTS) --- */}
       <div className="relative h-[220px] w-full flex items-center justify-center">
-        <ResponsiveContainer width="100%" height="100%">
-          <PieChart>
-            <Pie
-              data={processedData}
-              innerRadius={75}
-              outerRadius={100}
-              paddingAngle={4}
-              dataKey="total_amount"
-              stroke="none"
-              cornerRadius={6} // Bordes redondeados en las rebanadas
-            >
-              {processedData.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={entry.hexColor} />
-              ))}
-            </Pie>
-            <Tooltip
-              content={<CustomTooltip />}
-              cursor={{ fill: "transparent" }}
-            />
-          </PieChart>
-        </ResponsiveContainer>
-
+        {processedData.length === 0 ? (
+          <div className="flex flex-col items-center gap-2 text-text-subtle">
+            <Info className="w-8 h-8 opacity-40" />
+            <p className="text-sm">Sin gastos en este período</p>
+          </div>
+        ) : (
+          <ResponsiveContainer width="100%" height="100%">
+            <PieChart>
+              <Pie
+                data={processedData}
+                innerRadius={75}
+                outerRadius={100}
+                paddingAngle={4}
+                dataKey="total_amount"
+                stroke="none"
+                cornerRadius={6} // Bordes redondeados en las rebanadas
+              >
+                {processedData.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={entry.hexColor} />
+                ))}
+              </Pie>
+              <Tooltip
+                content={<CustomTooltip />}
+                cursor={{ fill: "transparent" }}
+              />
+            </PieChart>
+          </ResponsiveContainer>
+        )}
         {/* TEXTO CENTRAL (Posicionado absolutamente sobre el gráfico) */}
         {/* <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
           <span className="text-xs font-semibold text-text-subtle tracking-wider uppercase">
@@ -176,31 +194,32 @@ export const ExpenseCategory = ({
       </div>
 
       {/* --- LEYENDA DINÁMICA --- */}
-      <div className="flex flex-col gap-3 mt-8 max-h-[220px] overflow-y-auto pr-2 custom-scrollbar">
-        {processedData.map((item) => (
-          <div
-            key={item.category_name}
-            className="flex items-center justify-between group hover:bg-white/[0.02] p-1.5 -mx-1.5 rounded-lg transition-colors cursor-default"
-          >
-            {/* IZQUIERDA: Punto dinámico y Nombre */}
-            <div className="flex items-center gap-3">
-              <div
-                className="w-3 h-3 rounded-full"
-                style={{ backgroundColor: item.hexColor }}
-              />
-              <span className="text-[15px] font-medium text-text-subtle tracking-tight group-hover:text-text-main transition-colors">
-                {item.category_name}
+      {processedData.length > 0 && (
+        <div className="flex flex-col gap-3 mt-8 max-h-[220px] overflow-y-auto pr-2 custom-scrollbar">
+          {processedData.map((item) => (
+            <div
+              key={item.category_name}
+              className="flex items-center justify-between group hover:bg-white/[0.02] p-1.5 -mx-1.5 rounded-lg transition-colors cursor-default"
+            >
+              {/* IZQUIERDA: Punto dinámico y Nombre */}
+              <div className="flex items-center gap-3">
+                <div
+                  className="w-3 h-3 rounded-full"
+                  style={{ backgroundColor: item.hexColor }}
+                />
+                <span className="text-[15px] font-medium text-text-subtle tracking-tight group-hover:text-text-main transition-colors">
+                  {item.category_name}
+                </span>
+              </div>
+
+              {/* DERECHA: Porcentaje */}
+              <span className="text-[15px] font-semibold text-text-main">
+                {item.percentage}%
               </span>
             </div>
-
-            {/* DERECHA: Porcentaje */}
-            <span className="text-[15px] font-semibold text-text-main">
-              {item.percentage}%
-            </span>
-          </div>
-        ))}
-      </div>
-
+          ))}
+        </div>
+      )}
       {/* --- TARJETA DE SALUD FINANCIERA DINÁMICA --- */}
       <div
         className={`rounded-2xl border p-5 mt-8 flex gap-4 ${health.bg} ${health.border}`}

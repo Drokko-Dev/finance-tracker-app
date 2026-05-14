@@ -3,6 +3,7 @@ import type {
   QuickAccessFriend,
   PendingRequest,
   DefaultResponse,
+  SentRequest,
 } from "../types/Friends";
 
 export const getQuickAccessFriends = async (): Promise<QuickAccessFriend[]> => {
@@ -29,6 +30,13 @@ export const getPendingRequests = async (): Promise<PendingRequest[]> => {
   return response.data;
 };
 
+export const getSentRequests = async (): Promise<SentRequest[]> => {
+  const response = await apiClient.get<SentRequest[]>(
+    "/api/v1/friends/requests/sent",
+  );
+  return response.data;
+};
+
 export const acceptFriendRequest = async (
   requestId: number,
 ): Promise<DefaultResponse> => {
@@ -43,6 +51,15 @@ export const rejectFriendRequest = async (
 ): Promise<DefaultResponse> => {
   const response = await apiClient.delete<DefaultResponse>(
     `/api/v1/friends/requests/${requestId}/reject`,
+  );
+  return response.data;
+};
+
+export const cancelFriendRequest = async (
+  requestId: number,
+): Promise<DefaultResponse> => {
+  const response = await apiClient.delete<DefaultResponse>(
+    `/api/v1/friends/requests/${requestId}/cancel`,
   );
   return response.data;
 };
