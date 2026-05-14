@@ -44,11 +44,14 @@ class DashboardSummaryResponse(BaseModel):
     total_balance: float
     recent_transactions: List[RecentTransactionOut]
     category_summary: List[dict]
-    
+
+class BankRead(BaseModel):
+    id: int
+    name: str    
 class AccountRead(BaseModel):
     id: int
     name: str
-    bank: str
+    bank: BankRead
     class Config:
         from_attributes = True
 

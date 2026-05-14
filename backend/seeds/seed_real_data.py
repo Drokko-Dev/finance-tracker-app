@@ -6,7 +6,7 @@ from app.models.transaction import Transaction, TransactionMethod, TransactionTy
 import random
 from datetime import datetime, timezone
 
-TEST_USER_EMAIL = "mmccoy@example.com"
+TEST_USER_EMAIL = "paulharris@example.com"
 SUELDO = 1_000_000
 
 EXPENSE_TEMPLATES = [
@@ -176,7 +176,7 @@ def seed_test_user_transactions():
                     user_id        = test_user.id,
                     account_id     = account.id,
                     category_id    = exp_cat,
-                    type           = random.choice(list(TransactionType)),
+                    type           = "expense",
                     amount         = amount,
                     title          = tmpl["desc"],         # ← nuevo campo
                     description    = None,                 # opcional
