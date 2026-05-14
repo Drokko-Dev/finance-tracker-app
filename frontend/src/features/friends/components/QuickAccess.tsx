@@ -60,7 +60,7 @@ export const QuickAccess = () => {
             Acceso Rápido
           </h2>
           <Link
-            to={"/movimientos"}
+            to={"/all-friends"}
             className="text-sm text-text-subtle hover:text-text-main transition-colors flex items-center gap-1 group/link cursor-pointer"
           >
             Ver todos

@@ -46,49 +46,57 @@ export const RecentTransactions = ({
 
       {/* LISTA */}
       <div className="flex flex-col gap-3">
-        {recentTransactions.map((tx) => {
-          const config = categoryConfig[tx.category] || categoryConfig["Otros"];
-          const Icon = config.icon;
+        {recentTransactions.length === 0 ? (
+          <div className="flex flex-col items-center justify-center py-10 gap-2 text-text-subtle">
+            <ArrowRight className="w-8 h-8 opacity-40 rotate-90" />
+            <p className="text-sm">Sin movimientos en este período</p>
+          </div>
+        ) : (
+          recentTransactions.map((tx) => {
+            const config =
+              categoryConfig[tx.category] || categoryConfig["Otros"];
+            const Icon = config.icon;
 
-          const formattedAmount = Math.abs(tx.amount).toLocaleString("es-CL");
-          const isIncome = tx.type === "income";
+            const formattedAmount = Math.abs(tx.amount).toLocaleString("es-CL");
+            const isIncome = tx.type === "income";
 
-          return (
-            <div
-              key={tx.id}
-              className="flex items-center justify-between group cursor-pointer hover:bg-hover-movement -mx-3 p-3 rounded-lg transition-colors border-b border-border-subtle"
-            >
-              <div className="flex items-center gap-4">
-                {/* ICONO CON CÍRCULO */}
-                <div
-                  className={`w-12 h-12 hidden sm:flex rounded-full items-center justify-center border ${config.bg} ${config.border}`}
-                >
-                  <Icon className={`w-5 h-5 ${config.color}`} />
-                </div>
-
-                {/* DETALLES */}
-                <div className="flex flex-col">
-                  <span className="font-semibold text-text-main text-[15px]">
-                    {tx.title}
-                  </span>
-                  <span className="text-sm text-text-subtle mt-0.5">
-                    {tx.date}
-                  </span>
-                  <span className="text-sm text-text-subtle mt-0.5">
-                    {tx.accountName}
-                  </span>
-                </div>
-              </div>
-
-              {/* MONTO */}
+            return (
               <div
-                className={`font-bold text-[15px] ${isIncome ? "text-income" : "text-expense"}`}
+                key={tx.id}
+                className="flex items-center justify-between group cursor-pointer hover:bg-hover-movement -mx-3 p-3 rounded-lg transition-colors border-b border-border-subtle"
               >
-                {isIncome ? "+" : "-"}${formattedAmount}
+                <div className="flex items-center gap-4">
+                  {/* ICONO CON CÍRCULO */}
+                  <div
+                    className={`w-12 h-12 hidden sm:flex rounded-full items-center justify-center border ${config.bg} ${config.border}`}
+                  >
+                    <Icon className={`w-5 h-5 ${config.color}`} />
+                  </div>
+
+                  {/* DETALLES */}
+                  <div className="flex flex-col">
+                    <span className="font-semibold text-text-main text-[15px]">
+                      {tx.title}
+                    </span>
+                    <span className="text-sm text-text-subtle mt-0.5">
+                      {tx.date}
+                    </span>
+                    <span className="text-sm text-text-subtle mt-0.5">
+                      {tx.accountName}
+                    </span>
+                  </div>
+                </div>
+
+                {/* MONTO */}
+                <div
+                  className={`font-bold text-[15px] ${isIncome ? "text-income" : "text-expense"}`}
+                >
+                  {isIncome ? "+" : "-"}${formattedAmount}
+                </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })
+        )}
       </div>
     </div>
   );

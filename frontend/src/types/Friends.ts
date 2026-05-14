@@ -18,3 +18,12 @@ export interface PendingRequest {
 export interface DefaultResponse {
   message: string;
 }
+
+export interface SentRequest {
+  request_id: number;
+  receiver_id: number;
+  receiver_name: string;
+  receiver_initials: string;
+  bgColor: string;
+  created_at: string;
+}

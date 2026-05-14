@@ -7,6 +7,7 @@ import type { Bank } from "@/types/Accounts";
 import { WealthEvolutionChart } from "@/features/dashboard/components/WealthEvolutionCharts";
 import { RecentTransactions } from "@/features/dashboard/components/RecentTransactions";
 import { ExpenseCategory } from "@/features/dashboard/components/ExpenseCategory";
+import { useFilterOptions } from "@/features/dashboard/hooks/useFilterOptions";
 
 interface FilterOptions {
   id: number | string;
@@ -20,19 +21,14 @@ export const DashboardPage = () => {
   const [selectedMonth, setSelectedMonth] = useState<FilterOptions | null>(
     null,
   );
-  const accountIdToSend =
-    selectedAccount?.id === "ALL" ? undefined : (selectedAccount?.id as number);
-  const yearMonthIdToSend =
-    selectedMonth?.id === "ALL" ? undefined : (selectedMonth?.id as string);
+
   const {
-    cards,
     bankAccounts,
     isLoadingAccounts,
     filterYearMonths,
     isLoadingYearMonths,
-    categories_expense,
-    percentExpense,
-  } = useDashboardStats(accountIdToSend, yearMonthIdToSend);
+  } = useFilterOptions();
+
   const accountOptions = [
     { id: "ALL", name: "Cuentas Bancarias" },
     ...bankAccounts,
@@ -42,14 +38,32 @@ export const DashboardPage = () => {
     ...filterYearMonths,
   ];
 
+  // Inicialización: solo cuando llegan los datos y no hay selección aún
   useEffect(() => {
     if (bankAccounts.length > 0 && !selectedAccount) {
-      setSelectedAccount(accountOptions[0]);
+      setSelectedAccount(accountOptions[0]); // ALL por defecto
     }
-    if (filterYearMonths && filterYearMonths.length > 0 && !selectedMonth) {
+  }, [bankAccounts]);
+
+  useEffect(() => {
+    if (filterYearMonths.length > 0 && !selectedMonth) {
+      // ✅ Último mes (más reciente), no el primero
       setSelectedMonth(filterYearMonths[0]);
     }
-  }, [bankAccounts, selectedAccount, filterYearMonths, selectedMonth]);
+  }, [filterYearMonths]);
+
+  // Valores a enviar a la API
+  const accountIdToSend =
+    selectedAccount?.id === "ALL" ? undefined : (selectedAccount?.id as number);
+
+  const lastMonth = filterYearMonths[0]?.id as string | undefined;
+  const yearMonthIdToSend =
+    selectedMonth?.id === "ALL" ? lastMonth : (selectedMonth?.id as string);
+
+  const { cards, categories_expense, percentExpense } = useDashboardStats(
+    accountIdToSend,
+    yearMonthIdToSend,
+  );
 
   return (
     <div className="flex flex-col gap-5">

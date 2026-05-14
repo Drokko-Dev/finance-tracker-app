@@ -34,5 +34,14 @@ def get_pending_requests_for_user(db: Session, user_id: int):
         Friend.status == "pending"
     ).all()
 
+def get_sent_requests_by_user(db: Session, user_id: int):
+    """Obtiene las solicitudes que el usuario actual ENVIÓ y siguen pendientes."""
+    return db.query(Friend, User).join(
+        User, Friend.friend_user_id == User.id
+    ).filter(
+        Friend.user_id == user_id,
+        Friend.status == "pending"
+    ).all()
+
 def get_friendship_by_id(db: Session, request_id: int):
     return db.query(Friend).filter(Friend.id == request_id).first()
