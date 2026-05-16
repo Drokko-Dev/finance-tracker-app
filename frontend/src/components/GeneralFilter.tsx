@@ -69,7 +69,7 @@ export function GeneralFilter<T extends OptionItem>({
   };
 
   return (
-    <div className="relative w-full sm:w-64">
+    <div className="relative w-full sm:w-64 mb-3">
       {label && (
         <label className="text-xs font-medium text-text-main block mb-1">
           {label}

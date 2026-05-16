@@ -81,7 +81,7 @@ const TransactionCard: React.FC<Props> = ({ transaction }) => {
   };
 
   return (
-    <div className="bg-white rounded-4xl shadow-sm border border-gray-100 md:pr-4 md:pb-4 md:pl-4 md:pt-2 mb-6 max-w-7xl mx-auto mt-5 min-w-65">
+    <div className="p-5 bg-white rounded-4xl shadow-sm border border-gray-100 md:pr-4 md:pb-4 md:pl-4 md:pt-2 mb-6 max-w-7xl mx-auto mt-5 min-w-65">
       {/* HEADER: Icono, Título y Monto */}
       <div className="grid-rows-2 md:flex items-center justify-between mb-1">
         <div className="flex items-center gap-4">
@@ -180,7 +180,7 @@ const TransactionCard: React.FC<Props> = ({ transaction }) => {
                     {transaction.account.name}
                   </h4>
                   <p className="text-gray-400 text-xs">
-                    {transaction.account.bank} · #{transaction.account.id}
+                    {transaction.account.bank.name} · #{transaction.account.id}
                   </p>
                 </div>
               </div>

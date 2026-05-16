@@ -50,8 +50,6 @@ export function CashsFlowPage() {
   const [preType, setPreType] = useState<OptionItem[]>([]);
   const [preTag, setPreTag] = useState<OptionItem[]>([]);
 
-
-
   const { sortBy, order, handleSort, sortConfig } = useSortableData(
     "created_at",
     "asc",
@@ -87,7 +85,7 @@ export function CashsFlowPage() {
   const handleClick: React.MouseEventHandler<SVGSVGElement> = () => {
     console.log(search);
   };
-  console.log(data);
+  console.log(data?.items);
 
   const onPageChange = (newPage: number) => {
     setPage(newPage);
@@ -105,7 +103,7 @@ export function CashsFlowPage() {
             />
           </button>
           {isFilterOpen && (
-            <form className="animate-in fade-in slide-in-from-top-2 duration-300">
+            <div className="grid-cols-1 gap-y-28 md:gap-1.5 md:flex md:pr-4 md:pb-4 md:pl-4 md:pt-2 mb-6 max-w-7xl mx-auto mt-5 animate-in fade-in slide-in-from-top-2">
               {categories ? (
                 <GeneralFilter
                   label="categoria"
@@ -176,7 +174,7 @@ export function CashsFlowPage() {
                 onChange={(e) => setfinalDate(new Date(e.target.value))}
                 max={fechaFormateada}
               />
-            </form>
+            </div>
           )}
           <hr className=" text-gray-200" />
           {data?.items.map((transaction) => {
