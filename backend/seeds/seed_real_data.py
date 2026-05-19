@@ -2,11 +2,11 @@ from app.db.session import SessionLocal
 from app.models.account import Account
 from app.models.user import User
 from app.models.category import Category
-from app.models.transaction import Transaction, TransactionMethod
+from app.models.transaction import Transaction, TransactionMethod, TransactionType
 import random
 from datetime import datetime, timezone
 
-TEST_USER_EMAIL = "jason35@example.net"
+TEST_USER_EMAIL = "paulharris@example.com"
 SUELDO = 1_000_000
 
 EXPENSE_TEMPLATES = [

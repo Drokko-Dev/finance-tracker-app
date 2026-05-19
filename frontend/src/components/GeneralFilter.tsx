@@ -1,27 +1,27 @@
-import { Fragment, useState, useMemo } from "react";
-import {
-  Listbox,
-  ListboxButton,
-  ListboxOptions,
-  ListboxOption,
-  Transition,
+import { useState, useMemo, Fragment } from "react";
+import { 
+  Listbox, 
+  ListboxButton, 
+  ListboxOptions, 
+  ListboxOption, 
+  Transition 
 } from "@headlessui/react";
-import { Calendar, ChevronDown, Check, Search, CheckSquare, Square } from "lucide-react";
+import { Calendar, ChevronDown, Search, CheckSquare, Square, Check } from "lucide-react"; // Asumiendo que usas lucide
 
-interface OptionItem {
-  id: number;
+export interface OptionItem {
+  id: number | string; // A veces los IDs vienen como strings, buena práctica permitir ambos
   name: string;
 }
 
-// Separamos las props en dos tipos posibles
-type DateSelectorProps<T extends OptionItem> = {
-  label?: string;
+// MEJORA 1: Cambié el nombre de DateSelectorProps a GeneralFilterProps
+export interface GeneralFilterProps<T extends OptionItem> {
   items: T[];
+  label?: string;
+  selected: T | T[] | null;
+  onChange: (value: any) => void;
+  multiple?: boolean;
   placeholder?: string;
-} & (
-  | { multiple: true; selected: T[]; onChange: (value: T[]) => void }
-  | { multiple?: false; selected: T; onChange: (value: T) => void }
-);
+}
 
 export function GeneralFilter<T extends OptionItem>({
   items,
@@ -30,16 +30,13 @@ export function GeneralFilter<T extends OptionItem>({
   onChange,
   multiple = false,
   placeholder = "Seleccionar...",
-}: DateSelectorProps<T>) {
+}: GeneralFilterProps<T>) {
   const [query, setQuery] = useState("");
+
   const handleChange = (val: T | T[]) => {
-    if (multiple) {
-      (onChange as (v: T[]) => void)(val as T[]);
-    } else {
-      (onChange as (v: T) => void)(val as T);
-    }
+    onChange(val);
   };
-  // 1. Filtrado de búsqueda
+
   const filteredItems = useMemo(() => {
     return query === ""
       ? items
@@ -48,14 +45,16 @@ export function GeneralFilter<T extends OptionItem>({
         );
   }, [query, items]);
 
-  // 2. Lógica de "Seleccionar Todos"
-  const isAllSelected = multiple && Array.isArray(selected) && selected.length === items.length;
+  // MEJORA 2: Validación más robusta para evitar errores si selected no es un array
+  const isAllSelected = multiple && Array.isArray(selected) && items.length > 0 && selected.length === items.length;
 
-  const toggleAll = () => {
+  const toggleAll = (e: React.MouseEvent) => {
+    e.preventDefault(); // Evita comportamientos indeseados
+    e.stopPropagation(); // Evita que se cierre el Listbox al hacer clic
     if (isAllSelected) {
-      handleChange([]); // Deseleccionar todos
+      handleChange([]);
     } else {
-      handleChange(items); // Seleccionar todos
+      handleChange(items);
     }
   };
 
@@ -65,28 +64,29 @@ export function GeneralFilter<T extends OptionItem>({
       if (selected.length === items.length) return "Todos seleccionados";
       return `${selected.length} seleccionados`;
     }
-    return (selected as T)?.name || placeholder;
+    // MEJORA 3: Manejo seguro para single select
+    return selected && !Array.isArray(selected) ? (selected as T).name : placeholder;
   };
 
   return (
-    <div className="relative w-full sm:w-64 ">
+    <div className="relative w-full sm:w-64 mb-3">
       {label && (
-        <label className="text-xs font-medium text-text-main">
+        <label className="text-xs font-medium text-text-main block mb-1">
           {label}
         </label>
       )}
       <Listbox value={selected} onChange={handleChange} multiple={multiple as any}>
         {({ open }) => (
           <>
-            <ListboxButton className="flex items-center gap-2 px-3 py-2 w-full sm:w-40 sm:h-8 bg-white/5 border border-border-subtle rounded-xl hover:bg-white/10 transition-all text-sm font-medium text-text-main outline-none group">
-              <Calendar className="w-4 h-4 text-text-subtle" />
+            <ListboxButton className="flex items-center gap-2 px-3 py-2 w-full sm:w-40 sm:h-8 bg-white/5 border border-border-subtle rounded-xl hover:bg-white/10 transition-all text-sm font-medium text-text-main outline-none group cursor-pointer">
+              <Calendar className="w-4 h-4 text-text-subtle shrink-0" />
               <span className="tracking-tight truncate text-sm flex-1 text-left">{getLabel()}</span>
-              <ChevronDown className={`w-4 h-4 text-text-subtle transition-transform ${open ? "rotate-180" : ""}`} />
+              <ChevronDown className={`w-4 h-4 text-text-subtle transition-transform shrink-0 ${open ? "rotate-180" : ""}`} />
             </ListboxButton>
 
             <Transition
               as={Fragment}
-              afterLeave={() => setQuery("")} // Limpiar búsqueda al cerrar
+              afterLeave={() => setQuery("")}
               enter="transition ease-out duration-100"
               enterFrom="transform opacity-0 scale-95"
               enterTo="transform opacity-100 scale-100"
@@ -94,14 +94,17 @@ export function GeneralFilter<T extends OptionItem>({
               leaveFrom="transform opacity-100 scale-100"
               leaveTo="transform opacity-0 scale-95"
             >
-              <ListboxOptions className="absolute right-0 z-50 mt-2 w-64 origin-top-right bg-card-bg border border-border-subtle rounded-xl shadow-2xl overflow-hidden focus:outline-none">
+              <ListboxOptions className="absolute right-0 z-50 mt-2 w-64 origin-top-right bg-card-bg border border-border-subtle rounded-xl shadow-2xl overflow-hidden focus:outline-none bg-white">
                 
                 {/* BUSCADOR */}
-                <div className="p-2 border-b border-border-subtle bg-white/2">
+                <div className="p-2 border-b border-border-subtle bg-gray-50/50">
                   <div className="relative flex items-center">
                     <Search className="absolute left-2.5 w-3.5 h-3.5 text-text-subtle" />
                     <input
                       type="text"
+                      // MEJORA 4: stopPropagation en el input para que al presionar la tecla "Espacio" no se cierre el modal
+                      onKeyDown={(e) => e.stopPropagation()} 
+                      onClick={(e) => e.stopPropagation()}
                       className="w-full bg-white/5 border border-border-subtle rounded-lg py-1.5 pl-8 pr-3 text-xs text-text-main placeholder:text-text-subtle focus:outline-none focus:ring-1 focus:ring-accent"
                       placeholder="Buscar..."
                       onChange={(e) => setQuery(e.target.value)}
@@ -111,11 +114,11 @@ export function GeneralFilter<T extends OptionItem>({
                 </div>
 
                 <div className="max-h-60 overflow-y-auto py-1">
-                  {/* OPCIÓN SELECCIONAR TODOS (Solo en modo múltiple y si no hay búsqueda activa) */}
-                  {multiple && query === "" && (
+                  {/* OPCIÓN SELECCIONAR TODOS */}
+                  {multiple && query === "" && items.length > 0 && (
                     <button
                       onClick={toggleAll}
-                      className="w-full flex items-center gap-2 px-4 py-2 text-xs font-semibold text-accent hover:bg-white/5 transition-colors border-b border-border-subtle/50 mb-1"
+                      className="w-full flex items-center gap-2 px-4 py-2 text-xs font-semibold text-accent hover:bg-gray-100 transition-colors border-b border-border-subtle/50 mb-1 cursor-pointer"
                     >
                       {isAllSelected ? <CheckSquare className="w-3.5 h-3.5" /> : <Square className="w-3.5 h-3.5" />}
                       {isAllSelected ? "Deseleccionar todos" : "Seleccionar todos"}
@@ -123,7 +126,7 @@ export function GeneralFilter<T extends OptionItem>({
                   )}
 
                   {filteredItems.length === 0 ? (
-                    <div className="px-4 py-4 text-xs text-text-subtle text-center">No se encontraron resultados</div>
+                    <div className="px-4 py-4 text-xs text-gray-500 text-center">No se encontraron resultados</div>
                   ) : (
                     filteredItems.map((item) => (
                       <ListboxOption
@@ -131,8 +134,8 @@ export function GeneralFilter<T extends OptionItem>({
                         value={item}
                         className={({ active, selected: isSelected }) => `
                           relative cursor-pointer select-none py-2 px-4 flex items-center justify-between text-sm
-                          ${active ? "bg-white/5 text-text-main" : "text-text-subtle"}
-                          ${isSelected ? "text-green-600 " : "text-accent"}
+                          ${active ? "bg-gray-100 text-gray-900" : "text-gray-700"}
+                          ${isSelected ? "text-blue-600 font-semibold" : ""}
                         `}
                       >
                         {({ selected: isSelected }) => (
@@ -140,7 +143,7 @@ export function GeneralFilter<T extends OptionItem>({
                             <span className={`truncate ${isSelected ? "font-semibold" : "font-normal"}`}>
                               {item.name}
                             </span>
-                            {isSelected && <Check className="w-4 h-4 text-blue-900" />}
+                            {isSelected && <Check className="w-4 h-4 text-blue-600 shrink-0" />}
                           </>
                         )}
                       </ListboxOption>
@@ -154,7 +157,7 @@ export function GeneralFilter<T extends OptionItem>({
       </Listbox>
     </div>
   );
-};
+}
 
 
 import React from "react";
